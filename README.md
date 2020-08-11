@@ -78,7 +78,7 @@ $ sudo python3 main.py
 $ cd fhdawn
 $ make linux ; make build-linux
 ```
-(Remember to use a Strong Key)
+(Remember to use a Strong Key when asked for during build)
 
 ---
 
@@ -87,3 +87,12 @@ $ make linux ; make build-linux
 
 
 This Project is active in developement. There may be Errors and bugs that I may have missed. Please report [here](https://github.com/quantumcored/maalik/issues).
+
+#### Developer
+Hi my name's [Fahad](https://github.com/quantumcore).
+You may contact me, on [Discord](https://discordapp.com/invite/8snh7nx) or [My Website](https://quantumcored.com/)
+
+#### LICENSE
+[VIEW LICENSE](https://github.com/quantumcored/maalik/blob/master/LICENSE) 
+
+The Developer is not responsible for any misuse of Damage caused by the program. This is created only to innovate InfoSec and **YOU**. :point_left:
