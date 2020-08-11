@@ -22,10 +22,8 @@ So Maalik assumes that you've already taken over a computer. After which, Maalik
 ## Features
 ---
 #### V.1
-- Persistence and Stealth.
+- Stealth.
 - Trigger UAC Prompt to run as Administrator.
-- Auto Infection.
-- Auto Add Windows Defender Exclusion for Install Path.
 - Stable Reverse Shell.
 - Execute / list / delete files.
 - Add Windows Defender Exclusions.
