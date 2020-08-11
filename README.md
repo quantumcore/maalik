@@ -24,7 +24,7 @@ So Maalik assumes that you've already taken over a computer. After which, Maalik
 #### V.1
 - Stealth.
 - Trigger UAC Prompt to run as Administrator.
-- Stable Reverse Shell.
+- Full Administrator Stable Reverse Shell.
 - Execute / list / delete files.
 - Add Windows Defender Exclusions.
 - Upload any Malware without getting it Blocked.
