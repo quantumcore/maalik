@@ -11,7 +11,7 @@ def current_version():
 
 def get_version():
     try:
-        status = requests.get("https://raw.githubusercontent.com/quantumcore/Neutron/master/status.md") # Change this link later when repository is public
+        status = requests.get("https://raw.githubusercontent.com/quantumcored/maalik/master/VERSION.md") # Change this link later when repository is public
         data = status.content
         return data.decode()
     except Exception as e:
