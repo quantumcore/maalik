@@ -45,14 +45,42 @@ Built especially for Windows 7 and above.
 
 ### Screenshots
 ![network_scanner](https://blog.quantumcored.com/wp-content/uploads/2020/08/mlk2.png)
+
 ![showinfo](https://blog.quantumcored.com/wp-content/uploads/2020/08/mlk6.png)
+
 ![shell](https://blog.quantumcored.com/wp-content/uploads/2020/08/mlk1.png)
+
 ![attack](https://blog.quantumcored.com/wp-content/uploads/2020/08/mlk5.png)
 
+---
+
 ### Getting Started
-- [Introduction to Maalik](https://blog.quantumcored.com/?p=64)
-- [Installation and Usage](https://blog.quantumcored.com/?p=77)
-- [Pivoting without any Tools](https://blog.quantumcored.com/?p=52)
+- [(Blog post) Introduction to Maalik](https://blog.quantumcored.com/?p=64)
+- [(Blog post) Installation and Usage](https://blog.quantumcored.com/?p=77)
+- [(Blog post) Pivoting without any Tools](https://blog.quantumcored.com/?p=52)
+
+##### Requirements
+- Linux Based PC.
+- Python 3.
+
+```
+$ git clone https://github.com/quantumcored/maalik.git
+$ cd maalik
+$ sudo chmod +x install.sh
+$ sudo ./install.sh
+```
+**Run Maalik**.
+```
+$ sudo python3 main.py
+```
+**Generate Maalik Client (Fhdawn)**.
+```
+$ cd fhdawn
+$ make linux ; make build-linux
+```
+(Remember to use a Strong Key)
+
+---
 
 ### Demonstration (old version)
 [![Demo](https://i.imgur.com/110jcqH.png)](https://youtu.be/4y1lYAkQSF4)
