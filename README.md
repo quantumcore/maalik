@@ -48,3 +48,5 @@ Built especially for Windows 7 and above.
 - [Introduction to Maalik](https://blog.quantumcored.com/?p=64)
 - [Installation and Usage](https://blog.quantumcored.com/?p=77)
 - [Pivoting without any Tools](https://blog.quantumcored.com/?p=52)
+
+This Project is active in developement. There may be Errors and bugs that I may have missed. Please report [here](https://github.com/quantumcored/maalik/issues).
