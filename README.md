@@ -42,6 +42,13 @@ So Maalik assumes that you've already taken over a computer. After which, Maalik
 
 Built especially for Windows 7 and above. 
 
+
+### Screenshots
+![network_scanner](https://blog.quantumcored.com/wp-content/uploads/2020/08/mlk2.png)
+![showinfo](https://blog.quantumcored.com/wp-content/uploads/2020/08/mlk6.png)
+![shell](https://blog.quantumcored.com/wp-content/uploads/2020/08/mlk1.png)
+![attack](https://blog.quantumcored.com/wp-content/uploads/2020/08/mlk5.png)
+
 ### Getting Started
 - [Introduction to Maalik](https://blog.quantumcored.com/?p=64)
 - [Installation and Usage](https://blog.quantumcored.com/?p=77)
