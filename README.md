@@ -86,7 +86,7 @@ $ make linux ; make build-linux
 [![Demo](https://i.imgur.com/110jcqH.png)](https://youtu.be/4y1lYAkQSF4)
 
 
-This Project is active in developement. There may be Errors and bugs that I may have missed. Please report [here](https://github.com/quantumcored/maalik/issues).
+This Project is active in developement. There may be Errors and bugs that I may have missed, Or an Idea or suggestion. Please submit [here](https://github.com/quantumcored/maalik/issues).
 
 #### Developer
 Hi my name's [Fahad](https://github.com/quantumcore).
