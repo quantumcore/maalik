@@ -31,13 +31,6 @@ static bool connected = false;
 
 void UACTrigger();
 
-struct ScanInfo {
-    const char* host;
-    int port;
-};
-
-DWORD WINAPI CHECKPORT(void * parameters);
-
 class FHDAWN{
     public:
     std::string SCANIP;
