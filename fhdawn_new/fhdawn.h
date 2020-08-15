@@ -11,6 +11,7 @@ Modified: -
 */
 
 #include <winsock2.h>
+#include <winsock.h>
 #include <windows.h>
 #include <stdio.h>
 
@@ -19,31 +20,21 @@ Modified: -
 static BOOL connected = FALSE;
 
 struct sockaddr_in server;
-WSASocket sockfd;
-char recvbuf[BUFFER] = { 0 };
-
-
+SOCKET sockfd;
+char recvbuf[BUFFER];
 //=====================
 void ReportError(void);
 void WSAReportError(void);
 
 //=====================
-int sockprintf(WSASocket sock, const char* words, ...);
+int sockprintf(SOCKET sock, const char* words, ...);
 
 // Start Winsock
-int StartWSA()
-{
-    WSADATA wsa;
-    if(WSAStartup(MAKEWORD(2,2), &wsa) != 0)
-    {
-        printf("[Error] Error Starting Winsock.");
-        WSAReportError();
-    }
-}
-
+void StartWSA(void);
 void fhdawn_main(void);
 void MainConnect(void);
 
 void ExecSock(void);
+void REConnect();
 
 #endif  //!__FHDAWN__H__

