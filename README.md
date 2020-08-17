@@ -98,14 +98,5 @@ You may contact me, on [Discord](https://discordapp.com/invite/8snh7nx) or [My W
 The Developer is not responsible for any misuse of Damage caused by the program. This is created only to innovate NetSec and **YOU**. :point_left:
 
 #### Donate
-Help me with my future projects :)
-<html>
-  <div>
-  <a class="donate-with-crypto"
-     href="https://commerce.coinbase.com/checkout/cebcb394-f73e-4990-98b9-b3fdd852358f">
-    Donate with Crypto
-  </a>
-  <script src="https://commerce.coinbase.com/v1/checkout.js?version=201807">
-  </script>
-</div>
-  </html>
+Help me with my future projects. Thank you.
+[Donate with Crypto](https://commerce.coinbase.com/checkout/cebcb394-f73e-4990-98b9-b3fdd852358f)
