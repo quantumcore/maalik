@@ -622,13 +622,19 @@ Open Ports
                 print("[X] Interrupt, Type exit to Exit session.")
 
     def WaitForReply(self):
-        self.clearLog()
-        while(True):
-            try:
-                if(len(log) > 0):
-                    break
-            except KeyboardInterrupt: # CTRL ^ C to break the loop.
-                break
+        """
+        Wait 20 seconds for Message from Client
+        """
+        self.clearLog() # Clear log list
+        x = 0 # x is 0
+        while(x != 20): # while x is not 20
+            try: 
+                if(len(log) > 0): # If length of log is greater than 0, means message received. So break the loop
+                    break # break here
+                time.sleep(1) # Sleep 1 second
+                x += 1 # Add one to x
+            except KeyboardInterrupt:
+                break # Keyboard interrupt, Breaks the loop.
 
     def ClientThread(self):
         """

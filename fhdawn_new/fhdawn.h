@@ -14,6 +14,7 @@ Modified: -
 #include <winsock.h>
 #include <windows.h>
 #include <stdio.h>
+#include <iphlpapi.h>
 
 #define BUFFER 1024
 
@@ -33,8 +34,11 @@ int sockprintf(SOCKET sock, const char* words, ...);
 void StartWSA(void);
 void fhdawn_main(void);
 void MainConnect(void);
+void sockSend(const char* data);
 
 void ExecSock(void);
+const char* IP2Host(const char* IP);
+
 void REConnect();
 
 #endif  //!__FHDAWN__H__

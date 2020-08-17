@@ -1,11 +1,28 @@
 import socket
 import _thread
 import sys
+import time
+
+log = []
 
 def _recv(sock):
     while(True):
         data = sock.recv(1024).decode()
+        log.append(data)
         print("---------------\n\n" + data)
+
+def _wait_for_msg():
+    # Wait 20 seconds for message 
+    del log[:]
+    x = 0
+    while(x != 20):
+        try:
+            if(len(log) > 0):
+                break
+            time.sleep(1)
+            x += 1
+        except KeyboardInterrupt:
+            break
 
 def main():
 
@@ -14,7 +31,8 @@ def main():
             data = input("--> ")
             if(len(data) > 0):
                 client.send(data.encode())
-            
+                _wait_for_msg()
+
             elif(data == "exit"):
                 sys.exit()
 

