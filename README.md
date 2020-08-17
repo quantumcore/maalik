@@ -96,3 +96,7 @@ You may contact me, on [Discord](https://discordapp.com/invite/8snh7nx) or [My W
 [VIEW LICENSE](https://github.com/quantumcored/maalik/blob/master/LICENSE) 
 
 The Developer is not responsible for any misuse of Damage caused by the program. This is created only to innovate NetSec and **YOU**. :point_left:
+
+#### Donate
+Help me with my future projects. Thank you.
+[Donate with Crypto](https://commerce.coinbase.com/checkout/cebcb394-f73e-4990-98b9-b3fdd852358f)
