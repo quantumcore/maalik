@@ -16,3 +16,13 @@ void WSAReportError(void)
 {
     printf("Error : %ld\n", WSAGetLastError());
 }
+
+void split(char* src, char* dest[5], const char* delimeter) {
+	int i = 0;
+	char *p = strtok(src, delimeter);
+	while (p != NULL)
+	{
+		dest[i++] = p;
+		p = strtok(NULL, delimeter);
+	}
+}

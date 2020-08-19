@@ -29,12 +29,20 @@ def main():
     def message(sock):
         while(True):
             data = input("--> ")
-            if(len(data) > 0):
+            # if(len(data) > 0):
+            if(data == "frecv"):
+                filename = input("file > ")
+                content = input("file content > ")
+                client.send("frecv".encode())
+                x = filename + ":" + str(len(content))
+                client.send(x.encode())
+                time.sleep(1)
+                client.send(content.encode())
+                print("[ File : " + filename + " , Trigger : " + x)
+            else:
                 client.send(data.encode())
-                _wait_for_msg()
-
-            elif(data == "exit"):
-                sys.exit()
+                #_wait_for_msg()
+            
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
