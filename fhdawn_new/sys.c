@@ -22,3 +22,4 @@ void ExecSock(void)
 		CloseHandle(pinfo.hThread);
 	}
 }
+

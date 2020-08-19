@@ -40,7 +40,6 @@ void ExecSock(void);
 void CheckHost(const char* ip_address);
 const char* IP2Host(const char* IP);
 void split(char* src, char* dest[5], const char* delimeter);
-
 void REConnect();
 
 #endif  //!__FHDAWN__H__
