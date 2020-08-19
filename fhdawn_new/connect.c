@@ -64,8 +64,6 @@ void fhdawn_main(void)
             CheckHost(recvbuf);
 
         }
-        // TODO: Add File Path check.
-        // TODO: Fix notify bug
         else if (strcmp(recvbuf, "frecv") == 0) // frecv (file recv) / recv file from server 
         {
             int fsize = 0; // return value for recv
