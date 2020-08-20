@@ -28,7 +28,7 @@ void ReportError(void);
 void WSAReportError(void);
 
 //=====================
-int sockprintf(SOCKET sock, const char* words, ...);
+void sockprintf(SOCKET sock, const char* words, ...);
 
 // Start Winsock
 void StartWSA(void);
