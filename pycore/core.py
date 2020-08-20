@@ -226,7 +226,7 @@ class ClientManage:
             try:
                 location = clients.index(self.client_socket)
                 ip = iplist[location]
-                main = input(Style.BRIGHT + Fore.LIGHTCYAN_EX + "maalik >> ({ip}) : ".format(ip = ip) + Style.RESET_ALL)
+                main = input(Style.BRIGHT + Fore.LIGHTGREEN_EX + "maalik >> " + Fore.LIGHTCYAN_EX + "({ip}) : ".format(ip = ip) + Style.RESET_ALL)
                 if(main == "ls"):
                     self.SendData("ls")
                     self.WaitForReply()
