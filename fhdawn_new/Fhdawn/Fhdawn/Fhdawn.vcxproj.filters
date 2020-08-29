@@ -21,6 +21,12 @@
     <ClCompile Include="..\..\fhdawn.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\GetProcAddressR.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LoadLibraryR.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -30,17 +36,8 @@
     <ClCompile Include="..\..\sys.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\GetProcAddressR.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\LoadLibraryR.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\fhdawn.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\GetProcAddressR.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -48,6 +45,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\ReflectiveDLLInjection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fhdawn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
