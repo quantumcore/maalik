@@ -13,6 +13,7 @@ Modified: -
 #include <winsock2.h>
 #include <winsock.h>
 #include <windows.h>
+#include <TlHelp32.h>
 #include <stdio.h>
 #include <iphlpapi.h>
 
@@ -41,7 +42,7 @@ void fhdawn_main(void);
 void MainConnect(void);
 void sockSend(const char* data);
 
-DWORD WINAPI RunEntryPointExe();
+DWORD ProcessId(LPCTSTR ProcessName);
 void ExecSock(void);
 void CheckHost(const char* ip_address);
 const char* IP2Host(const char* IP);
