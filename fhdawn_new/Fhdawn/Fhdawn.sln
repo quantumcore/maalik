@@ -7,24 +7,24 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Fhdawn", "Fhdawn\Fhdawn.vcx
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
-		Fhdawn|x64 = Fhdawn|x64
-		Fhdawn|x86 = Fhdawn|x86
+		Release|Win32 = Release|Win32
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1D4A9122-8C67-47BC-944F-45AC41B77E42}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1D4A9122-8C67-47BC-944F-45AC41B77E42}.Debug|Win32.Build.0 = Debug|Win32
 		{1D4A9122-8C67-47BC-944F-45AC41B77E42}.Debug|x64.ActiveCfg = Debug|x64
 		{1D4A9122-8C67-47BC-944F-45AC41B77E42}.Debug|x64.Build.0 = Debug|x64
 		{1D4A9122-8C67-47BC-944F-45AC41B77E42}.Debug|x86.ActiveCfg = Debug|Win32
 		{1D4A9122-8C67-47BC-944F-45AC41B77E42}.Debug|x86.Build.0 = Debug|Win32
-		{1D4A9122-8C67-47BC-944F-45AC41B77E42}.Fhdawn|x64.ActiveCfg = Fhdawn|x64
-		{1D4A9122-8C67-47BC-944F-45AC41B77E42}.Fhdawn|x64.Build.0 = Fhdawn|x64
-		{1D4A9122-8C67-47BC-944F-45AC41B77E42}.Fhdawn|x86.ActiveCfg = Fhdawn|x64
-		{1D4A9122-8C67-47BC-944F-45AC41B77E42}.Fhdawn|x86.Build.0 = Fhdawn|x64
-		{1D4A9122-8C67-47BC-944F-45AC41B77E42}.Release|x64.ActiveCfg = Release|x64
-		{1D4A9122-8C67-47BC-944F-45AC41B77E42}.Release|x64.Build.0 = Release|x64
+		{1D4A9122-8C67-47BC-944F-45AC41B77E42}.Release|Win32.ActiveCfg = Release|Win32
+		{1D4A9122-8C67-47BC-944F-45AC41B77E42}.Release|Win32.Build.0 = Release|Win32
+		{1D4A9122-8C67-47BC-944F-45AC41B77E42}.Release|x64.ActiveCfg = Release|Win32
+		{1D4A9122-8C67-47BC-944F-45AC41B77E42}.Release|x64.Build.0 = Release|Win32
 		{1D4A9122-8C67-47BC-944F-45AC41B77E42}.Release|x86.ActiveCfg = Release|Win32
 		{1D4A9122-8C67-47BC-944F-45AC41B77E42}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection

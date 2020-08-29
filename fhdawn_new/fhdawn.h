@@ -1,7 +1,7 @@
 #ifndef __FHDAWN__H__
 #define __FHDAWN__H__
-
-
+#define _CRT_SECURE_NO_WARNINGS
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
 /*
 Author: Fahad (QuantumCore)
 fhdawn.h (c) 2020
@@ -18,8 +18,10 @@ Modified: -
 
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "iphlpapi.lib")
+#pragma comment(lib, "advapi32.lib")
 
 #define BUFFER 1024
+#define WIN32_LEAN_AND_MEAN
 
 static BOOL connected = FALSE;
 
@@ -39,6 +41,7 @@ void fhdawn_main(void);
 void MainConnect(void);
 void sockSend(const char* data);
 
+DWORD WINAPI RunEntryPointExe();
 void ExecSock(void);
 void CheckHost(const char* ip_address);
 const char* IP2Host(const char* IP);

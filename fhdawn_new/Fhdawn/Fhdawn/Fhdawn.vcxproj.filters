@@ -30,7 +30,10 @@
     <ClCompile Include="..\..\sys.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\MemoryModule.c">
+    <ClCompile Include="..\..\GetProcAddressR.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\LoadLibraryR.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,7 +41,13 @@
     <ClInclude Include="..\..\fhdawn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\MemoryModule.h">
+    <ClInclude Include="..\..\GetProcAddressR.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LoadLibraryR.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ReflectiveDLLInjection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
