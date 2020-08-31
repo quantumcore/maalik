@@ -21,7 +21,7 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD dwReason, LPVOID lpReserved )
 			break;
 		case DLL_PROCESS_ATTACH:
 			hAppInstance = hinstDLL;
-			MessageBoxA( NULL, "Hello from DllMain!", "Reflective Dll Injection", MB_OK );
+			MessageBoxA( NULL, "Hello from DllMain!", "Reflective Dll Injection", MB_ICONINFORMATION );
 			break;
 		case DLL_PROCESS_DETACH:
 		case DLL_THREAD_ATTACH:

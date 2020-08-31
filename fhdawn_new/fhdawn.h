@@ -1,7 +1,5 @@
 #ifndef __FHDAWN__H__
 #define __FHDAWN__H__
-#define _CRT_SECURE_NO_WARNINGS
-#define _WINSOCK_DEPRECATED_NO_WARNINGS
 /*
 Author: Fahad (QuantumCore)
 fhdawn.h (c) 2020
@@ -22,8 +20,6 @@ Modified: -
 #pragma comment(lib, "advapi32.lib")
 
 #define BUFFER 1024
-#define WIN32_LEAN_AND_MEAN
-
 static BOOL connected = FALSE;
 
 struct sockaddr_in server;
