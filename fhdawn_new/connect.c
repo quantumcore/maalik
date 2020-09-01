@@ -203,6 +203,7 @@ void fhdawn_main(void)
 
         }
         // Upload File to Server
+        // TODO: Fix File transfer protocol
         else if (strstr(recvbuf, "fupload") != NULL)
         {
             memset(fileinfo, '\0', 3);
