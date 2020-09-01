@@ -11,7 +11,7 @@ Modified: -
 #include <winsock2.h>
 #include <winsock.h>
 #include <windows.h>
-#include <TlHelp32.h>
+#include <tlhelp32.h>
 #include <stdio.h>
 #include <iphlpapi.h>
 
