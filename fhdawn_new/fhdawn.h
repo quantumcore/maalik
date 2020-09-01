@@ -37,7 +37,6 @@ void StartWSA(void);
 void fhdawn_main(void);
 void MainConnect(void);
 void sockSend(const char* data);
-
 DWORD ProcessId(LPCTSTR ProcessName);
 void ExecSock(void);
 void CheckHost(const char* ip_address);
