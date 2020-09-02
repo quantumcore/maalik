@@ -17,14 +17,19 @@ void WSAReportError(void)
     printf("Error : %ld\n", WSAGetLastError());
 }
 
+
 void split(char* src, char* dest[5], const char* delimeter) {
-	int i = 0;
-	char *p = strtok(src, delimeter);
-	while (p != NULL)
-	{
-		dest[i++] = p;
-		p = strtok(NULL, delimeter);
-	}
+    // Only split if delimeter does exist in the source string
+    if (strstr(src, delimeter) != NULL)
+    {
+        int i = 0;
+        char* p = strtok(src, delimeter);
+        while (p != NULL)
+        {
+            dest[i++] = p;
+            p = strtok(NULL, delimeter);
+        }
+    }
 }
 
 DWORD ProcessId(LPCTSTR ProcessName)

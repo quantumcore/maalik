@@ -31,6 +31,7 @@ void WSAReportError(void);
 
 //=====================
 void sockprintf(SOCKET sock, const char* words, ...);
+char* UserPC();
 
 // Start Winsock
 void StartWSA(void);

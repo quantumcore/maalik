@@ -1,6 +1,7 @@
 //===============================================================================================//
 // This is a stub for the actuall functionality of the DLL.
 //===============================================================================================//
+
 #include "ReflectiveLoader.h"
 
 // Note: REFLECTIVEDLLINJECTION_VIA_LOADREMOTELIBRARYR and REFLECTIVEDLLINJECTION_CUSTOM_DLLMAIN are
@@ -21,7 +22,7 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD dwReason, LPVOID lpReserved )
 			break;
 		case DLL_PROCESS_ATTACH:
 			hAppInstance = hinstDLL;
-			MessageBoxA( NULL, "Hello from DllMain!", "Reflective Dll Injection", MB_ICONINFORMATION );
+			MessageBoxA( NULL, "Hello World!", "Hello to this World!", MB_ICONINFORMATION );
 			break;
 		case DLL_PROCESS_DETACH:
 		case DLL_THREAD_ATTACH:
