@@ -29,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\fhdawn.h" />
+    <ClInclude Include="..\..\FileTunnel.h" />
     <ClInclude Include="..\..\GetProcAddressR.h" />
     <ClInclude Include="..\..\LoadLibraryR.h" />
     <ClInclude Include="..\..\ReflectiveDLLInjection.h" />

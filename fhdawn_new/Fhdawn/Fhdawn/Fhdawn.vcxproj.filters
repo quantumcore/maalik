@@ -50,5 +50,8 @@
     <ClInclude Include="..\..\fhdawn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\FileTunnel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

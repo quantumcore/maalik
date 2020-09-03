@@ -1,7 +1,7 @@
 This is the Maalik Client (Fhdawn) completely rewritten in C.
 
 #### What's changed? 
-- File Upload / Download functions were completely rewritten to support non overlapped socket.
+- File Upload / Download functions were completely rewritten to support non overlapped socket and are now very much improved.
 - Added Reflective DLL Injection over Socket.
 - Core commands (ls, dir, cd) were ported from C++ to C.
 - Compared to old Fhdawn, This is lightweight and smaller in size.

