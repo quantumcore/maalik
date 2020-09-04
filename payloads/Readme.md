@@ -6,3 +6,5 @@ Fhdawn reads the output and sends back to server.
 
 - ncshell.c - Netcat Basic Reverse shell.
 - ReflectiveDll.c - Standard Reflective DLL, shows messagebox.
+- ChromePassDecryptor.c - Dumps Chrome passwords to 'password.txt'.
+- elevate.c - Used to execute Fhdawn as adminstrator.
