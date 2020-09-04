@@ -364,8 +364,8 @@ void StartWSA(void)
 void MainConnect(void)
 {
     StartWSA();
-    //sockfd = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, 0);
-    sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    sockfd = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, 0);
+    //sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (sockfd == SOCKET_ERROR || sockfd == INVALID_SOCKET)
     {
         printf("Socket Creation Error. ");
