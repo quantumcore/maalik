@@ -11,10 +11,12 @@
 
 void WriteOutput(const char* output)
 {
-    DWORD dwBytesWritten = 0;
-    HANDLE FILE = CreateFile((LPSTR)OUTPUTFILE, FILE_WRITE_DATA, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-    WriteFile(FILE, output, strlen(output), &dwBytesWritten, NULL);
-    CloseHandle(FILE);
+    FILE * fs;
+    if ((fs = fopen(OUTPUTFILE, "wb")) != NULL)
+    {
+        fwrite(output, sizeof(output), 1, fs);
+        fclose(fs);
+    }
 }
 
 

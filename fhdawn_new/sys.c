@@ -38,14 +38,11 @@ void ExecSock(void)
 	}
 }
 
-void GetAbsolutePath(char* file, char* pathbuf[500])
+
+char* cDir()
 {
-	HANDLE F = CreateFile(file, FILE_READ_ONLY, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-	int xf = GetModuleFileName(F, pathbuf, MAX_PATH);
-	if (xf == 0)
-	{
-		memset(pathbuf, 0, 500);
-		snprintf(pathbuf, 500, "Failed to get Absolute Path (Error %ld)", GetLastError());
-	}
-	CloseHandle(F);
+	static char DIR[MAX_PATH];
+	memset(DIR, '\0', MAX_PATH);
+	GetCurrentDirectory(MAX_PATH, DIR);
+	return (char*)DIR;
 }

