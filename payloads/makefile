@@ -14,5 +14,5 @@ ncshell:
 	$(COMPILER) ncshell.o ReflectiveLoader.o -o ncshell.dll -shared -m32 -static -lws2_32
 
 test:
-	$(COMPILER) test.c ReflectiveLoader.c -c -m32
-	$(COMPILER) test.o ReflectiveLoader.o -o test.dll -shared -m32 -static	
+	$(COMPILER) elevate.c ReflectiveLoader.c -c -m32
+	$(COMPILER) elevate.c ReflectiveLoader.o -o test.dll -shared -m32 -static	

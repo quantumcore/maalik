@@ -1,25 +1,44 @@
 #ifndef FILE_TUNNEL_
 #define FILE_TUNNEL_
 
-#include "fhdawn.h"
+#include <Windows.h>
+#include <stdio.h>
 
 #define OUTPUTFILE "output.png" // This is a text file
 
-// Update this
+void WriteOutput(const char* output)
+{
+    FILE* fs;
+    if ((fs = fopen(OUTPUTFILE, "wb")) != NULL)
+    {
+        fwrite(output, sizeof(output), 1, fs);
+        fclose(fs);
+    }
+}
 
-//char* GetOutputData()
-//{
-//	FILE* f = fopen(OUTPUTFILE, "rb");
-//	fseek(f, 0, SEEK_END);
-//	long fsize = ftell(f);
-//	fseek(f, 0, SEEK_SET);
-//
-//	char* string = (char*)malloc(fsize + 1);
-//	fread(string, 1, fsize, f);
-//	fclose(f);
-//	string[fsize] = 0;
-//	return string;
-//}
-//
+char* GetInputOutput()
+{
+    char* buffer = 0;
+    long length;
+    FILE* f = fopen(OUTPUTFILE, "rb");
+
+    if (f)
+    {
+        fseek(f, 0, SEEK_END);
+        length = ftell(f);
+        fseek(f, 0, SEEK_SET);
+        buffer = malloc(length);
+        if (buffer)
+        {
+            fread(buffer, 1, length, f);
+        }
+        fclose(f);
+    }
+
+    if (buffer)
+    {
+        return buffer;
+    }
+}
 
 #endif // !FILE_TUNNEL_
