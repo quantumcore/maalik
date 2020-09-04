@@ -31,6 +31,7 @@ void WSAReportError(void);
 
 //=====================
 void sockprintf(SOCKET sock, const char* words, ...);
+BOOL isFile(const char* file);
 char* UserPC();
 char* cDir();
 // Start Winsock

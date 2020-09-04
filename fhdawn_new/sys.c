@@ -7,7 +7,16 @@ Modified: -
 */
 
 #include "fhdawn.h"
+// This may be useful somewhere
+BOOL isFile(const char* file)
+{
+	DWORD dwAttrib = GetFileAttributes(file);
 
+	return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
+		!(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
+}
+
+// TODO : Add Error handlng
 char* UserPC()
 {
 	char username[UNLEN + 1];

