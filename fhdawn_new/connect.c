@@ -351,8 +351,14 @@ void fhdawn_main(void)
             split(recvbuf, fileinfo, ":");
             if (isFile(fileinfo[1]))
             {
-                remove(fileinfo[1]);
-                sockprintf(sockfd, "DEL_OK,%s,%s", fileinfo[1], cDir());
+                if (DeleteFile(fileinfo[1]))
+                {
+                    sockprintf(sockfd, "DEL_OK,%s,%s", fileinfo[1], cDir());
+                }
+                else {
+                    sockprintf(sockfd, "Error Deleting file : %i", GetLastError());
+                }
+                
             }
             else {
                 sockprintf(sockfd, "File '%s' does not exist.", fileinfo[1]);
