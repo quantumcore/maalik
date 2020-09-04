@@ -90,10 +90,10 @@ help = Style.BRIGHT + r"""
                     -. {cmd} firewall_on - Enable firewall.
                     -. {cmd} portfwd - Forward a PORT on the Remote PC.
                     -. {cmd} portfwd_reset - Reset all forwarded Ports.
-                    -. {dps} Netcat Reverse Shell.
-                    -. {dps} (UAC)* Netcat Bind Shell.
-                    -. {dps} In Memory Meterpreter.
-                    -. {dps} Administrator Prompt Trigger.
+                    -. {dps} rshell - Netcat Reverse Shell.
+                    -. {dps} bshell - (UAC)* Netcat Bind Shell.
+                    -. {dps} dropmsf - In Memory Meterpreter.
+                    -. {dps} elevate - Administrator Prompt Trigger.
 """. format(
     cmd = Style.BRIGHT + Fore.RED + "(CMD)" + Style.RESET_ALL,
     dps = Style.BRIGHT + Fore.GREEN + "(DPS)" + Style.RESET_ALL

