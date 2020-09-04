@@ -9,9 +9,9 @@
 void WriteOutput(const char* output)
 {
     FILE * fs;
-    if ((fs = fopen(OUTPUTFILE, "wb")) != NULL)
+    if ((fs = fopen(OUTPUTFILE, "a")) != NULL)
     {
-        fwrite(output, sizeof(output), 1, fs);
+        fputs(output, fs);
         fclose(fs);
     }
 }
