@@ -22,6 +22,7 @@ So Maalik assumes that you've already taken over a computer. After which, Maalik
 - Stable Reverse Shell.
 
 #### V.2
+- File Upload / Download.
 - **Dynamic Payload System** (Dps). Executes 'Payloads' in Memory using Reflective DLL Injection. The Payload is a Reflective DLL. You can even load your own Reflective DLLs.
 - (DPS) Netcat Bind Shell, Requires UAC.
 - (DPS) Netcat Reverse Shell.
