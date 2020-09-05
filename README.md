@@ -1,6 +1,9 @@
 <p align = "center">
-  <img src="https://github.com/quantumcored/maalik/raw/master/maaliklogo.png" height = "600" width = "500">
+  <img src="https://github.com/quantumcored/maalik/raw/master/maaliklogo.png" height = "300" width = "350">
   </p>
+
+---
+
 # Maalik
 Maalik is a Network Pivoting and Post Exploitation Framework.
 
