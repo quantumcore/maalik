@@ -29,6 +29,8 @@ char recvbuf[BUFFER];
 void ReportError(void);
 void WSAReportError(void);
 
+void TimeStamp(char buffer[100]);
+
 //=====================
 void sockprintf(SOCKET sock, const char* words, ...);
 BOOL isFile(const char* file);

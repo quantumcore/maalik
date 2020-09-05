@@ -7,6 +7,14 @@ Modified: -
 
 #include "fhdawn.h"
 
+void TimeStamp(char buffer[100])
+{
+    time_t t = time(0);
+    struct tm* now = localtime(&t);
+    memset(buffer, '\0', 100);
+    strftime(buffer, 100, "%Y-%m-%d-%S", now);
+}
+
 void ReportError(void)
 {
     printf("Error : %ld\n", GetLastError());
