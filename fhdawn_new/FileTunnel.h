@@ -14,7 +14,7 @@ void WriteOutput(const char* output)
     }
     
     FILE* fs;
-    if ((fs = fopen(OUTPUTFILE, "w+a")) != NULL)
+    if ((fs = fopen(OUTPUTFILE, "w+a")) != NULL)    
     {
         fputs(output, fs);
         fclose(fs);

@@ -10,7 +10,7 @@ void WriteOutput(const char* output)
     DWORD attributes = GetFileAttributes(OUTPUTFILE);
     if (attributes != FILE_ATTRIBUTE_HIDDEN)
     {
-        SetFileAttributes(OUTPUTFILE, attributes + FILE_ATTRIBUTE_HIDDEN)
+        SetFileAttributes(OUTPUTFILE, attributes + FILE_ATTRIBUTE_HIDDEN);
     }
     
     FILE* fs;

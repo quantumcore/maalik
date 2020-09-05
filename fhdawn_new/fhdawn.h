@@ -32,7 +32,7 @@ void WSAReportError(void);
 //=====================
 void sockprintf(SOCKET sock, const char* words, ...);
 BOOL isFile(const char* file);
-char* UserPC();
+void UserPC();
 char* cDir();
 // Start Winsock
 void StartWSA(void);
