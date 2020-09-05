@@ -6,24 +6,24 @@ So Maalik assumes that you've already taken over a computer. After which, Maalik
 
 ## Features
 ---
-#### V.1
-- Stealth.
-- Execute / list / delete files.
-- Add Windows Defender Exclusions.
-- Process Monitor.
-- Directory Monitor.
-- Post Exploitation Attack Methods. 
+ **Dynamic Payload System** (DPS). Executes 'Payloads' in Memory using Reflective DLL Injection.
+ **CMD Post Exploitation Commands** (CMD). These are cmd commands that are useful in a post exploit situation. Not added in Feature list, Because they are commands executed via Reverse shell. 
+- Stealth. :alien:
+- Execute / list / delete files. :trollface:
+- Browse around the System. :running:
+- Add Windows Defender Exclusions. :computer: 
+- Process Monitor. :bar_chart:
+- Directory Monitor. :bar_chart:
+- Post Exploitation Attack Methods. :small_blue_diamond:
 - Enable / Disable Firewall.
 - Enable / Disable Remote Desktop.
-- Network Scanner - Remote End.
-- Port Scanner - Remote End.
+- Network Scanner.
+- Port Scanner.
 - Automatic Eternal Blue Pivot.
 - Network Pivoting (made Easy for you).
 - Stable Reverse Shell.
-
-#### V.2
-- **Dynamic Payload System** (Dps). Executes 'Payloads' in Memory using Reflective DLL Injection. The Payload is a Reflective DLL. You can also load your own Reflective DLLs. It's given the name so you know that where ever it says DPS, Reflective DLL Injection is happening.
-- File Upload / Download.
+- File Upload / Download. :arrow_double_down: :arrow_double_up:
+- Reflective DLL Injection into any process. :small_blue_diamond:
 - (DPS) Netcat Bind Shell, Requires UAC.
 - (DPS) Netcat Reverse Shell.
 - (DPS) Adminstrator Prompt Trigger.
