@@ -22,7 +22,7 @@ So Maalik assumes that you've already taken over a computer. After which, Maalik
 - Automatic Eternal Blue Pivot.
 - Network Pivoting (made Easy for you).
 - Stable Reverse Shell.
-- File Upload / Download. :arrow_double_down: 
+- File Upload / Download.
 - Reflective DLL Injection into any process. 
 - (DPS) Netcat Bind Shell, Requires UAC.
 - (DPS) Netcat Reverse Shell.
