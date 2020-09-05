@@ -1,8 +1,7 @@
 <p align = "center">
-  <img src="https://github.com/quantumcored/maalik/raw/master/maaliklogo.png" height = "500" width = "600">
-<h1><center>Maalik</center></h1>
+  <img src="https://github.com/quantumcored/maalik/raw/master/maaliklogo.png" height = "600" width = "500">
   </p>
-  
+# Maalik
 Maalik is a Network Pivoting and Post Exploitation Framework.
 
 Post-exploitation refers to any actions taken after a Computer is compromised.
