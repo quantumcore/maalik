@@ -1,5 +1,5 @@
 <p align = "center">
-  <img src="https://github.com/quantumcored/maalik/raw/master/maaliklogo.png" height = "300" width = "350">
+  <img src="https://github.com/quantumcored/maalik/raw/master/maaliklogo.png" height = "290" width = "200">
   </p>
 
 ---
