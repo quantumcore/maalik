@@ -366,6 +366,11 @@ void fhdawn_main(void)
             }
         }
 
+        // HELLO PERSON Seeing this!
+        // I feel a bit off regarding how the screenshot is taken
+        // Just look below, It needs error handlers and other checks
+        // I copied this code from somewhere and made it work the way I Wanted to,
+        // Don't remember where. Anyway, If you can, Please improve this.
         else if (strcmp(recvbuf, "screenshot") == 0) {
             char buffer[100] = { 0 };
             BITMAPFILEHEADER bfHeader;
