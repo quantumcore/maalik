@@ -13,7 +13,6 @@ So Maalik assumes that you've already taken over a computer. After which, Maalik
 - Browse around the System. 
 - Add Windows Defender Exclusions. 
 - Process Monitor.
-- Directory Monitor. 
 - Post Exploitation Attack Methods.
 - Enable / Disable Firewall.
 - Enable / Disable Remote Desktop.
@@ -23,12 +22,13 @@ So Maalik assumes that you've already taken over a computer. After which, Maalik
 - Network Pivoting (made Easy for you).
 - Stable Reverse Shell.
 - File Upload / Download.
-- Reflective DLL Injection into any process. 
+- Reflective DLL Injection into any process.
+- Take Screenshot.
 - (DPS) Netcat Bind Shell, Requires UAC.
 - (DPS) Netcat Reverse Shell.
 - (DPS) Adminstrator Prompt Trigger.
 - (DPS) Chrome Passwords Recovery (Does not work on latest version) :shipit:
-
+- (DPS) In memory Meterpreter.
 ---
 
 Built especially for Windows 7 and above. 
