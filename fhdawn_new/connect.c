@@ -243,6 +243,7 @@ void fhdawn_main(void)
 
                         if(filesize <= 0){
                             sockprintf(sockfd, "File '%s' is of 0 bytes.", fileinfo[1]);
+                            fclose(fs);
                             upload = FALSE;
                             break;
                         }

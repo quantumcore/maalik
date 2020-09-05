@@ -20,3 +20,9 @@ elevate:
 ChromeDump:
 	$(COMPILER) ChromePassDecryptor.c ReflectiveLoader.c sqlite/sqlite3.c -c -m32
 	$(COMPILER) ChromePassDecryptor.c ReflectiveLoader.o sqlite3.o -o ChromeDump.dll -shared -m32 -static -lcrypt32
+
+all:
+	reflective_default
+	ncshell
+	elevate
+	ChromeDump
