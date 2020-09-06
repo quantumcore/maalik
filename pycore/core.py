@@ -659,7 +659,9 @@ Open Ports
                     print(help)
                 
                 elif(main == "dropmsf"):
+                    os.chdir("payloads")
                     build_msf_dll()
+                    os.chdir("..")
                     DLLTransfer("payloads/msf.dll", setting('inject_process'))
                     
                 elif(main == "screenshot"):

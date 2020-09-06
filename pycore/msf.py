@@ -13,7 +13,7 @@ def build_msf_dll():
             print(c_array_msf)
 
             print("[i] Writing to Source DLL file.")
-            with open("payloads/msf.c", "r+") as source_file:
+            with open("msf.c", "r+") as source_file:
                 source_code = source_file.read()
                 source_code.replace("{{shellcodehere}}", c_array_msf)
                 source_file.truncate(0)
