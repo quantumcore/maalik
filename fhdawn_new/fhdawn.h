@@ -29,6 +29,7 @@ char recvbuf[BUFFER];
 void ReportError(void);
 void WSAReportError(void);
 
+int CaptureAnImage(HWND hWnd);
 void TimeStamp(char buffer[100]);
 
 //=====================

