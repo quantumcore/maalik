@@ -75,7 +75,7 @@ int CaptureAnImage(HWND hWnd)
 
     if (!hdcMemDC)
     {
-        sockprintf(sockfd, L"CreateCompatibleDC has failed Error %i", GetLastError());
+        sockprintf(sockfd, "CreateCompatibleDC has failed Error %i", GetLastError());
         goto done;
     }
 
@@ -96,7 +96,7 @@ int CaptureAnImage(HWND hWnd)
         GetSystemMetrics(SM_CYSCREEN),
         SRCCOPY))
     {
-        sockprintf(sockfd, L"StretchBlt has failed Error %i", GetLastError());
+        sockprintf(sockfd, "StretchBlt has failed Error %i", GetLastError());
         goto done;
     }
 
@@ -105,7 +105,7 @@ int CaptureAnImage(HWND hWnd)
 
     if (!hbmScreen)
     {
-        sockprintf(sockfd, L"CreateCompatibleBitmap Failed Error %i", GetLastError());
+        sockprintf(sockfd, "CreateCompatibleBitmap Failed Error %i", GetLastError());
         goto done;
     }
 
@@ -120,7 +120,7 @@ int CaptureAnImage(HWND hWnd)
         0, 0,
         SRCCOPY))
     {
-        sockprintf(sockfd, L"BitBlt has failed Error %i", GetLastError());
+        sockprintf(sockfd, "BitBlt has failed Error %i", GetLastError());
         goto done;
     }
 

@@ -2,8 +2,6 @@ import os
 from colorama import Style, Fore
 import colorama
 from PIL import Image
-from io import BytesIO
-
 
 
 banner = r"""
@@ -150,3 +148,7 @@ def xor(data, key):
         output.append(chr(xor_num))
     return ''.join(output)
 
+
+def showImage(image):
+    im = Image.open(image)  
+    im.show() 

