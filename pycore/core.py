@@ -977,7 +977,7 @@ def Console():
             print("Error : " + str(stre))
 
     clear_screen()
-    print(banner.format(ver = current_version()))
+    print(banner.format(makered = Style.BRIGHT + Fore.LIGHTRED_EX, makebright = Style.BRIGHT, ver = current_version()))
     _thread.start_new_thread(TCPServer, ()) 
     global silent
     while(True):
