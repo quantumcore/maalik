@@ -6,6 +6,7 @@
 *.dll
 output.png
 passwords.txt
+downloads/*
 *.bmp
 *.jpg
 *.jpeg
