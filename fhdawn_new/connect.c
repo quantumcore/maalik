@@ -455,7 +455,7 @@ void MainConnect(void)
         exit(1);
     }
 
-    server.sin_addr.s_addr = inet_addr("127.0.0.1");
+    server.sin_addr.s_addr = inet_addr("192.168.0.105");
     server.sin_port = htons(421);
     server.sin_family = AF_INET;
 

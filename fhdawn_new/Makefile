@@ -7,4 +7,4 @@ else
 endif
 
 main:
-	$(COMPILER) main.c sys.c connect.c fhdawn.c network.c LoadLibraryR.c GetProcAddressR.c -o Fhdawn.exe -lws2_32 -static -liphlpapi -m32 -mwindows
+	$(COMPILER) main.c sys.c connect.c fhdawn.c network.c LoadLibraryR.c GetProcAddressR.c -o Fhdawn.exe -lws2_32 -static -liphlpapi -m32 -mwindows -lpsapi
