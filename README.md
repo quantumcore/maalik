@@ -12,8 +12,11 @@ So Maalik assumes that you've already taken over a computer. After which, Maalik
 
 ## Features
 ---
- **Dynamic Payload System** (DPS). Executes 'Payloads' in Memory using Reflective DLL Injection.
- **CMD Post Exploitation Commands** (CMD). These are cmd commands that are useful in a post exploit situation. Not added in Feature list, Because they are commands executed via Reverse shell. 
+##### Dynamic Payload System (DPS). 
+Executes 'Payloads' in Memory using Reflective DLL Injection.
+##### CMD Post Exploitation Commands (CMD)
+These are cmd commands that are useful in a post exploit situation. Not added in Feature list.
+
 - Stealth. 
 - Execute / list / delete files. 
 - Browse around the System. 
@@ -37,47 +40,7 @@ So Maalik assumes that you've already taken over a computer. After which, Maalik
 - (DPS) In memory Meterpreter.
 - (DPS) Keylogger.
 - (DPS) Capture mic input.
----
-
-Built especially for Windows 7 and above. 
-
-
-### Screenshots
-![network_scanner](https://blog.quantumcored.com/wp-content/uploads/2020/08/mlk2.png)
-
-![showinfo](https://blog.quantumcored.com/wp-content/uploads/2020/08/mlk6.png)
-
-![shell](https://blog.quantumcored.com/wp-content/uploads/2020/08/mlk1.png)
-
-![attack](https://blog.quantumcored.com/wp-content/uploads/2020/08/mlk5.png)
-
----
-
-### Getting Started
-- [(Blog post) Introduction to Maalik](https://blog.quantumcored.com/?p=64)
-- [(Blog post) Installation and Usage](https://blog.quantumcored.com/?p=77)
-- [(Blog post) Pivoting without any Tools](https://blog.quantumcored.com/?p=52)
-
-##### Requirements
-- Linux Based PC.
-- Python 3.
-
-```
-$ git clone https://github.com/quantumcored/maalik.git
-$ cd maalik
-$ sudo chmod +x install.sh
-$ sudo ./install.sh
-```
-**Run Maalik**.
-```
-$ sudo python3 main.py
-```
-**Generate Maalik Client (Fhdawn)**.
-```
-$ cd fhdawn
-$ make linux ; make build-linux
-```
-(Remember to use a Strong Key when asked for during build)
+- (DPS) SAM Dump.
 
 ---
 
