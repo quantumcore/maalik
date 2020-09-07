@@ -5,7 +5,7 @@
 #include "ReflectiveLoader.h"
 #include <stdio.h>
 #include <string.h>
-#include <WinSock2.h>
+#include <winsock2.h>
 
 
 extern HINSTANCE hAppInstance;
