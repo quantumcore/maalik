@@ -35,6 +35,11 @@ These are cmd commands that are useful in a post exploit situation. Not added in
 - File Upload / Download.
 - Reflective DLL Injection into any process.
 - Take Screenshot.
+- GeoLocation.
+- Pranking.
+  - Rick roll.
+  - Ricardo virus.
+  - Message Box.
 - (DPS) Netcat Bind Shell, Requires UAC.
 - (DPS) Netcat Reverse Shell.
 - (DPS) Adminstrator Prompt Trigger.
