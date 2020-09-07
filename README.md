@@ -21,8 +21,7 @@ These are cmd commands that are useful in a post exploit situation. Not added in
 - Stealth. 
 - Execute / list / delete files. 
 - Browse around the System. 
-- Add Windows Defender Exclusions. 
-- Process Monitor.
+- Add Windows Defender Exclusions.
 - Post Exploitation Attack Methods.
 - Enable / Disable Firewall.
 - Enable / Disable Remote Desktop.
