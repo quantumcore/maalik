@@ -15,6 +15,8 @@ So Maalik assumes that you've already taken over a computer. After which, Maalik
 ##### Dynamic Payload System (DPS). 
 Executes 'Payloads' in Memory using Reflective DLL Injection.
 The Payload is a 32 bit Reflective DLL, That carries out tasks after successful Injection.
+DLL output is written to a TEXT file named ``output.png`` which is used to smuggle output back to server, And also give the DLL Payload commands.
+
 ##### CMD Post Exploitation Commands (CMD)
 These are cmd commands that are useful in a post exploit situation. Not added in Feature list.
 
