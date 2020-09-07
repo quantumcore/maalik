@@ -15,9 +15,10 @@ def build_msf_dll():
             print("[i] Writing to Source DLL file.")
             with open("msf.c", "r+") as source_file:
                 source_code = source_file.read()
-                source_code.replace("{{shellcodehere}}", c_array_msf)
+                replaced = source_code.replace("{{shellcodehere}}", c_array_msf)
                 source_file.seek(0)
-                source_file.write(source_code)
+                source_file.truncate(0)
+                source_file.write(replaced)
                 print("[i] Building DLL.")
                 # Mingw32, to support my windows envoironment
                 if(os.name == "nt"):

