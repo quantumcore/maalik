@@ -160,7 +160,9 @@ def saveAndShowImage(image):
 
 
 def PrintTextFile(filename):
-    with open(filename, "r") as inn:
-        data = inn.read()
-        print(data)
-        
+    try:
+        with open(filename, "r") as inn:
+            data = inn.read()
+            print(data)
+    except Exception as e:
+        print("[X] Error : " + str(e))
