@@ -1,11 +1,19 @@
 import subprocess
 import os
+# https://stackoverflow.com/a/17548459/13429494
+def inplace_change(filename, old_string, new_string):
+    # Safely read the input filename using 'with'
+    with open(filename) as f:
+        s = f.read()
+        if old_string not in s:
+            #print('"{old_string}" not found in {filename}.'.format(**locals()))
+            return
 
-def clearFile(filename):
-    """
-    -_-
-    """
-    with open(filename, 'w'): pass
+    # Safely write the changed content, if found in the file
+    with open(filename, 'w') as f:
+        #print('Changing "{old_string}" to "{new_string}" in {filename}'.format(**locals()))
+        s = s.replace(old_string, new_string)
+        f.write(s)
 
 def build_msf_dll():
     """
@@ -13,31 +21,24 @@ def build_msf_dll():
     """
     shellcodeFile = input("[+] Enter Path to Shellcode file : ")
     try:
-        with open(shellcodeFile, "r+") as readin_code:
+        with open(shellcodeFile, "r") as readin_code:
             c_array_msf = readin_code.read()
             print("[+] Using : ")
             print(c_array_msf)
 
             print("[i] Writing to Source DLL file.")
-            with open("msff.c", "r+") as source_file:
-                source_code = source_file.read()
-                replaced = source_code.replace("{{shellcodehere}}", c_array_msf)
-                with open("msf.c" , "w") as final:
-                    final.write(replaced)
-                print("[i] Building DLL.")
-                # Mingw32, to support my windows envoironment
-                if(os.name == "nt"):
-                    subprocess.call(["mingw32-make", "msf"])
-                else:
-                    subprocess.call(["make", "msf"])
+            inplace_change("msf.c", "{{shellcodehere}}", c_array_msf)
+            print("[i] Building DLL.")
+            # Mingw32, to support my windows envoironment
+            if(os.name == "nt"):
+                subprocess.call(["mingw32-make", "msf"])
+            else:
+                subprocess.call(["make", "msf"])
 
-                if(not os.path.isfile("msf.dll")):
-                    print("[X] An Error occured when building Dll.")
-                else:
-                    try:
-                        os.remove("msf.c")
-                    except Exception as E:
-                        print("[X] Error : " + str(E))
+            if(not os.path.isfile("msf.dll")):
+                print("[X] An Error occured when building Dll.")
+            else:
+                inplace_change("msf.c", c_array_msf, "{{shellcodehere}}")
 
     except Exception as e:
         print("[X] Error : " + str(e))
