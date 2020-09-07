@@ -1,6 +1,12 @@
 import subprocess
 import os
 
+def clearFile(filename):
+    """
+    -_-
+    """
+    with open(filename, 'w'): pass
+
 def build_msf_dll():
     """
     build dll that executes metasploit shellcode
@@ -16,8 +22,9 @@ def build_msf_dll():
             with open("msf.c", "r+") as source_file:
                 source_code = source_file.read()
                 replaced = source_code.replace("{{shellcodehere}}", c_array_msf)
-                source_file.seek(0)
-                source_file.truncate(0)
+                #source_file.seek(0)
+                #source_file.truncate(0)
+                clearFile("msf.c")
                 source_file.write(replaced)
                 print("[i] Building DLL.")
                 # Mingw32, to support my windows envoironment
@@ -30,8 +37,9 @@ def build_msf_dll():
                     print("[X] An Error occured when building Dll.")
                 else:
                     source_code.replace(c_array_msf, "{{shellcodehere}}")
-                    source_file.seek(0)
-                    source_file.truncate(0)
+                    #source_file.seek(0)
+                    #source_file.truncate(0)
+                    clearFile("msf.c")
                     source_file.write(source_code)
 
     except Exception as e:

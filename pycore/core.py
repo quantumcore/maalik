@@ -663,8 +663,11 @@ Open Ports
                     print("-------------------------")
                     PrintTextFile("downloads/log.log")
                     print("-------------------------")
-                    os.remove("downloads/log.log")
-
+                    try:
+                        os.remove("downloads/log.log")
+                    except FileNotFoundError:
+                        print("[X] No Logs were written.")
+                        
             except KeyboardInterrupt:
                 print("[X] Interrupt, Type exit to Exit session.")
 
