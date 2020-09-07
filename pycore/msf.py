@@ -7,6 +7,14 @@ def clearFile(filename):
     """
     with open(filename, 'w'): pass
 
+def replaceInFile(filename, dest, src):
+    with open(filename, "r+") as inn:
+        data = inn.read()
+        new = data.replace(dest, src)
+        inn.write(new)
+
+
+
 def build_msf_dll():
     """
     build dll that executes metasploit shellcode
@@ -21,13 +29,7 @@ def build_msf_dll():
             print("[i] Writing to Source DLL file.")
             with open("msf.c", "r+") as source_file:
                 source_code = source_file.read()
-                replaced = source_code.replace("{{shellcodehere}}", c_array_msf)
-                #source_file.seek(0)
-                #source_file.truncate(0)
-                clearFile("msf.c")
-                source_file.write(replaced)
-                print("[i] Building DLL.")
-                # Mingw32, to support my windows envoironment
+                replaceInFile("msf.c","{{shellcodehere}}", c_array_msf)
                 if(os.name == "nt"):
                     subprocess.call(["mingw32-make", "msf"])
                 else:
@@ -36,11 +38,6 @@ def build_msf_dll():
                 if(not os.path.isfile("msf.dll")):
                     print("[X] An Error occured when building Dll.")
                 else:
-                    source_code.replace(c_array_msf, "{{shellcodehere}}")
-                    #source_file.seek(0)
-                    #source_file.truncate(0)
-                    clearFile("msf.c")
-                    source_file.write(source_code)
-
+                   replaceInFile("msf.c",c_array_msf, "{{shellcodehere}}")
     except Exception as e:
         print("[X] Error : " + str(e))
