@@ -68,26 +68,6 @@ class ClientManage:
         iplist.remove(iplist[location])
         hostList.remove(hostList[location])
 
-    def DIRMONITOR(self, check_a_file):
-        location = clients.index(self.client_socket)
-        ip = iplist[location]
-        while(True):
-            try:
-                if(silent == True):
-                    if(check_a_file is not None):
-                        self.SendData("ls")
-                        if(check_a_file in str(log)):
-                            break
-                        time.sleep(2)
-                else:
-                    clear_screen()
-                    print(dirmonitor.format(ip = ip))
-                    self.SendData("ls")
-                    time.sleep(2)
-            except KeyboardInterrupt:
-                print("[x] Stopped Monitoring Current Directory.")
-                break
-
     def PROCESS_MONITOR(self, pname = None):
         location = clients.index(self.client_socket)
         ip = iplist[location]
