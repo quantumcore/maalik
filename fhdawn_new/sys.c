@@ -53,3 +53,29 @@ char* cDir()
 	GetCurrentDirectory(MAX_PATH, DIR);
 	return (char*)DIR;
 }
+
+BOOL IsAdmin() {
+	BOOL fIsRunAsAdmin = FALSE;
+	DWORD dwError = ERROR_SUCCESS;
+	PSID pAdministratorsGroup = NULL;
+
+	SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
+	if (!AllocateAndInitializeSid(&NtAuthority, 2,
+		SECURITY_BUILTIN_DOMAIN_RID,
+		DOMAIN_ALIAS_RID_ADMINS, 0, 0, 0, 0, 0, 0, &pAdministratorsGroup)) {
+		dwError = GetLastError();
+
+	}
+	else if (!CheckTokenMembership(NULL, pAdministratorsGroup,
+		&fIsRunAsAdmin)) {
+		dwError = GetLastError();
+
+	}
+
+	if (pAdministratorsGroup) {
+		FreeSid(pAdministratorsGroup);
+		pAdministratorsGroup = NULL;
+	}
+
+	return fIsRunAsAdmin;
+}

