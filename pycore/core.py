@@ -68,27 +68,6 @@ class ClientManage:
         iplist.remove(iplist[location])
         hostList.remove(hostList[location])
 
-    def PROCESS_MONITOR(self, pname = None):
-        location = clients.index(self.client_socket)
-        ip = iplist[location]
-        if(pname == None):
-            pname = input("[+] Enter Process Name : ")
-        if(len(pname) > 0):
-            silent = True
-            print("[i] Press CTRL+C to Quit Process Monitor.")
-            print(procmonitor.format(ip = ip))
-            while(True):
-                try:
-                    self.SendData("procmonitor")
-                    self.SendData(pname)
-                    time.sleep(2)
-                except KeyboardInterrupt:
-                    print("[x] Stopped Monitoring Process : " + pname)
-                    self.SendData("procstop")
-                    silent = False
-                    break
-
-
     def BuildPayload(self, payload):
         os.chdir("../payloads")
         print("[+] Building {x}..".format(x = payload.capitalize()))
