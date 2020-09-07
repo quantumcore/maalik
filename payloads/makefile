@@ -38,6 +38,7 @@ ChromeDump:
 	$(COMPILER) ChromePassDecryptor.c ReflectiveLoader.o sqlite3.o -o ChromeDump.dll -shared -m32 -static -lcrypt32
 
 msf:
+	# DO NOT RENAME msf.c
 	$(COMPILER) msf.c ReflectiveLoader.c -c -m32
 	$(COMPILER) msf.c ReflectiveLoader.o -o msf.dll -shared -m32 -static
 
