@@ -118,10 +118,9 @@ POST Exploitation
 -. {dps} dropmsf - In Memory Meterpreter.
 -. {dps} elevate - Administrator Prompt Trigger.
 -. {dps} chromedump - Dump Google Chrome Passwords.
-""". format(
-    cmd = Style.BRIGHT + Fore.RED + "(CMD)" + Style.RESET_ALL,
-    dps = Style.BRIGHT + Fore.GREEN + "(DPS)" + Style.RESET_ALL
-)
+-. {dps} keylog_start - Start Capturing keystrokes.
+-. {dps} keylog_stop - Stop Capturing keystrokes, And dump keylogs.
+"""
 
 def clear_screen():
     if(os.name == "nt"):
