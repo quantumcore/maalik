@@ -35,6 +35,8 @@ So Maalik assumes that you've already taken over a computer. After which, Maalik
 - (DPS) Adminstrator Prompt Trigger.
 - (DPS) Chrome Passwords Recovery (Does not work on latest version) :shipit:
 - (DPS) In memory Meterpreter.
+- (DPS) Keylogger.
+- (DPS) Capture mic input.
 ---
 
 Built especially for Windows 7 and above. 
