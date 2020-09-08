@@ -96,7 +96,6 @@ HELP
 -. screenshot - Take Screenshot.
 -. psinfo - Get process information.
 -. isadmin - Check if FHDAWN has administrator rights.
--. samdump - Dump Windows Hashes.
 -. geolocate - Get Geolocation.
 
 ----------------------------------
@@ -124,6 +123,7 @@ POST Exploitation
 -. {dps} chromedump - Dump Google Chrome Passwords.
 -. {dps} keylog_start - Start Capturing keystrokes.
 -. {dps} keylog_stop - Stop Capturing keystrokes, And dump keylogs.
+-. {dps} capturemic - Record microphone.
 """.format(dps = Style.BRIGHT  + Fore.GREEN+ "(DPS)" + Style.RESET_ALL , cmd = Style.BRIGHT + Fore.BLUE +"(CMD)" + Style.RESET_ALL)
 
 def clear_screen():
