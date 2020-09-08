@@ -24,7 +24,7 @@ These are cmd commands that are useful in a post exploit situation. Not added in
 - Execute / list / delete files. 
 - Browse around the System. 
 - Add Windows Defender Exclusions.
-- Post Exploitation Attack Methods.
+- Network Pivoting (made Easy for you).
 - Enable / Disable Firewall.
 - Enable / Disable Remote Desktop.
 - Network Scanner.
