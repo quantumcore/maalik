@@ -30,7 +30,6 @@ These are cmd commands that are useful in a post exploit situation. Not added in
 - Network Scanner.
 - Port Scanner.
 - Automatic Eternal Blue Pivot.
-- Network Pivoting (made Easy for you).
 - Stable Reverse Shell.
 - File Upload / Download.
 - Reflective DLL Injection into any process.
