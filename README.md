@@ -52,6 +52,10 @@ These are cmd commands that are useful in a post exploit situation. Not added in
 
 This Project is active in developement. There may be Errors and bugs that I may have missed, Or an Idea or suggestion. Please submit [here](https://github.com/quantumcored/maalik/issues).
 
+#### TODO 
+- Add Route pivoting.
+- Add Reflective Exploits.
+
 #### Developer
 Hi my name's [Fahad](https://github.com/quantumcore).
 You may contact me, on [Discord](https://discordapp.com/invite/8snh7nx) or [My Website](https://quantumcored.com/)
