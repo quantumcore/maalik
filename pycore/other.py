@@ -80,8 +80,6 @@ HELP
 -. delete - delete file.
 -. process_monitor - Monitor a process.
 -. shell - Reverse shell.
--. execute - Execute a file.
--. execargs - Execute a file with command line arguments.
 -. clientinfo - View basic information of FHDAWN.
 -. port_scan - Scan for open ports on a Host.
 -. tasklist - View Running Processes.

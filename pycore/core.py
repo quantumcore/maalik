@@ -1088,12 +1088,13 @@ def Console():
                         sess.Session()
                     except IndexError:
                         print("USAGE : session < client id >")
-                elif(x.startswith("send")):
-                    try:
-                        cid = args[1]
-                        SendData(cid, args[2])
-                    except IndexError:
-                        print("USAGE : send <id> <data>")
+                # enable in tests
+                # elif(x.startswith("send")):
+                #     try:
+                #         cid = args[1]
+                #         SendData(cid, args[2])
+                #     except IndexError:
+                #         print("USAGE : send <id> <data>")
                 elif(x == "exit"):
                     sys.exit(1)
                 elif(x == "help"):
@@ -1103,7 +1104,6 @@ def Console():
                         ---------------
                         -> Commands : 
                         -. help - Print this help message.
-                        -. send - send data to client (dev only - remove later).
                         -. sessions - View online clients.
                         -. session - interact with a session.
                         -. build - Build FHDAWN.

