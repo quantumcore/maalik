@@ -24,13 +24,12 @@ These are cmd commands that are useful in a post exploit situation. Not added in
 - Execute / list / delete files. 
 - Browse around the System. 
 - Add Windows Defender Exclusions.
-- Post Exploitation Attack Methods.
+- Network Pivoting (made Easy for you).
 - Enable / Disable Firewall.
 - Enable / Disable Remote Desktop.
 - Network Scanner.
 - Port Scanner.
 - Automatic Eternal Blue Pivot.
-- Network Pivoting (made Easy for you).
 - Stable Reverse Shell.
 - File Upload / Download.
 - Reflective DLL Injection into any process.
@@ -51,6 +50,10 @@ These are cmd commands that are useful in a post exploit situation. Not added in
 
 
 This Project is active in developement. There may be Errors and bugs that I may have missed, Or an Idea or suggestion. Please submit [here](https://github.com/quantumcored/maalik/issues).
+
+#### TODO 
+- Add Route pivoting.
+- Add Reflective Exploits.
 
 #### Developer
 Hi my name's [Fahad](https://github.com/quantumcore).
