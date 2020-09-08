@@ -95,6 +95,8 @@ HELP
 -. screenshot - Take Screenshot.
 -. psinfo - Get process information.
 -. isadmin - Check if FHDAWN has administrator rights.
+-. samdump - Dump Windows Hashes.
+
 ----------------------------------
 POST Exploitation
 ----------------------------------
