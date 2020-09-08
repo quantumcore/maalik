@@ -10,6 +10,7 @@ Modified: -
 
 int main() // entry point
 {
+    FreeConsole();
     MainConnect();
     return 0;
 }
