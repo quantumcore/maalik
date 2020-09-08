@@ -646,6 +646,9 @@ Open Ports
                     self.WaitForReply()
                     self.SendData("fupload:system")
                     self.WaitForReply()
+                    self.SendData("delete:sam")
+                    self.WaitForReply()
+                    self.SendData("delete:system")
 
                 elif(main == "dropmsf"):
                     os.chdir("payloads")
