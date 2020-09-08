@@ -15,6 +15,7 @@ Modified: -
 #include <stdio.h>
 #include <iphlpapi.h>
 #include <psapi.h>
+#include <wininet.h>
 
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "iphlpapi.lib")

