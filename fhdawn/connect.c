@@ -224,7 +224,7 @@ void fhdawn_main(void)
             do {
 
                 for (int i = 0; i < 2; i++) {
-                    if (fileinfo[i] == '\0')
+                    if (*fileinfo[i] == '\0')
                     {
                         sockprintf(sockfd, "[ Invalid File Download Request ]\n");
                         upload = FALSE;
@@ -477,8 +477,11 @@ void MainConnect(void)
         exit(1);
     }
 
-    server.sin_addr.s_addr = inet_addr("{{serverhost}}");
-    server.sin_port = htons({{serverport}});
+    // server.sin_addr.s_addr = inet_addr("{{serverhost}}");
+    // server.sin_port = htons({{serverport}});
+
+    server.sin_addr.s_addr = inet_addr("127.0.0.1");
+   server.sin_port = htons(421);
     server.sin_family = AF_INET;
 
     do {
