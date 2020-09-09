@@ -36,7 +36,7 @@ Reflective DLL Injection | Reflective DLL Injection into any process.
 Screenshot | Take screenshot (``bmp=>png``).
 GeoLocation | Geolocate Fhdawn.
 SAM Dump | Dumps SAM and SYSTEM files to disk, Downloads and dumps them using ``samdump2``.
-(DPS) Reverse Shell | Netchat Reverse shell.
+(DPS) Reverse Shell | Netcat Reverse shell.
 (DPS) Administrator Prompt Trigger | Forcefully attempt to Execute Fhdawn as Administrator.
 (DPS) Chrome Password Recovery | Dumps Saved Google Chrome passwords. (Does not work on latest version) :shipit:
 (DPS) In Memory Meterpreter | Reflective DLL to Execute Metasploit C Shellcode.
