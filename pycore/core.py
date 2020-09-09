@@ -232,7 +232,8 @@ class ClientManage:
 
         if(session):
             self.SendData("isadmin") # check admin first
-            self.WaitForReply()
+            #self.WaitForReply()
+            time.sleep(2)
             if(self.elevated):
                 print(Style.BRIGHT + Fore.GREEN + "[+]" + Style.RESET_ALL + " Interacting with Session {x} on {upc} with Administrator Access ..." .format(x = iplist[clients.index(self.client_socket)], upc = hostList[clients.index(self.client_socket)]))
             else:
@@ -745,6 +746,7 @@ Open Ports
         Wait 20 seconds for Message from Client
         """
         self.clearLog() # Clear log list
+        time.sleep(2)
         x = 0 # x is 0
         while(x != 20): # while x is not 20
             try: 
