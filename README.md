@@ -21,7 +21,7 @@ DLL output is written to a TEXT file named ``output.png`` which is used to smugg
 These are cmd commands that are useful in a post exploit situation. Not added in Feature list.
 
 Feature | Description
---------|--------|-------------
+--------|-------------
 Stealth | Runs in background, Only writes plaintext to disk, In a hidden location
 Execute / list / delete files and Browse | Full access to all files. Browse the system remotley.
 Windows Defender Exclusions | Add Windows Defender Exclusions.
