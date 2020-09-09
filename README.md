@@ -50,9 +50,9 @@ These are cmd commands that are useful in a post exploit situation. Not listed h
 
 ---
 
-### Demonstration (old version)
-[![Demo](https://i.imgur.com/110jcqH.png)](https://youtu.be/4y1lYAkQSF4)
-
+#### Usage :
+- netsec link
+- netsec link2
 
 This Project is active in developement. There may be Errors and bugs that I may have missed, Or an Idea or suggestion. Please submit [here](https://github.com/quantumcored/maalik/issues).
 
