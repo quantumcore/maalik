@@ -15,7 +15,7 @@ So Maalik assumes that you've already taken over a computer. After which, Maalik
 
 Feature | Description
 --------|-------------
-Stealth | Runs in background, Only writes temporary plaintext file to disk.
+Stealth | Runs in background, Only writes hidden plaintext file to disk.
 Execute / list / delete files and Browse | Full access to all files. Browse the system remotley.
 Windows Defender Exclusions | Add Windows Defender Exclusions.
 Network Pivoting | Forwards a Port to another Host on the network to forward exploit traffic onto it.
