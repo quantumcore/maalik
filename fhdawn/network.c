@@ -60,3 +60,29 @@ void CheckHost(const char* ip_address)
         sockprintf(sockfd, "Error Failed to get Mac : %s", ip_address);
     }
 }
+
+void checkPort(const char* ip, int port)
+{
+    SOCKET connectsock;
+    struct sockaddr_in hostx;
+    connectsock = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, (unsigned int)NULL, (unsigned int)NULL);
+    if(connectsock == SOCKET_ERROR || connectsock == INVALID_SOCKET)
+    {
+       sockprintf(sockfd, "Error creating socket %ld", WSAGetLastError());
+    }
+
+    hostx.sin_addr.s_addr = inet_addr(ip);
+    hostx.sin_port = htons(port);
+    hostx.sin_family = AF_INET;
+
+    int check = connect(connectsock, (struct sockaddr*)&hostx, sizeof(hostx));
+    if(check != SOCKET_ERROR)
+    {
+        sockprintf(sockfd, "OPENPORT:%s,%i", ip,port);
+        closesocket(connectsock);
+        
+    } else {
+        closesocket(connectsock);
+    }
+    
+}

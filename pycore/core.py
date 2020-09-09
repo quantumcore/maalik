@@ -346,7 +346,7 @@ class ClientManage:
                                     lines = commonportlist.readlines()
                                     for line in lines:
                                         port = line.split(" ")[1].strip()
-                                        self.SendData("scanip")
+                                        self.SendData("checkport")
                                         self.SendData(ip +","+port)
                                         time.sleep(2)
                                     break
@@ -409,7 +409,7 @@ class ClientManage:
                     self.WaitForReply()
                 elif( main == "network_scan"):
                     try:
-                        iprange = prompt("[" + Style.BRIGHT +  Fore.LIGHTYELLOW_EX + "^" + Style.RESET_ALL + "] Enter Range (eg: 192.168.0.1/24) : ")
+                        iprange = prompt("[^] Enter Range (eg: 192.168.0.1/24) : ")
                         scanRange = iprange.split("/")
                         start = scanRange[0]
                         get = start.split(".")

