@@ -3,10 +3,10 @@ from pycore.updates import *
 
 def main():
     clear_screen()
-    try:
-        NotifyUpdates()
-    except KeyboardInterrupt:
-        pass
+    # try:
+    #     NotifyUpdates()
+    # except KeyboardInterrupt:
+    #     pass
     
     Console()
     

