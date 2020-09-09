@@ -1129,6 +1129,7 @@ def Console():
                         -. sessions - View online clients.
                         -. session - interact with a session.
                         -. build - Build FHDAWN.
+                        -. kill - Kill session.
                         -. exit - Exit Maalik.
                         """
                         + Style.RESET_ALL)
@@ -1137,6 +1138,16 @@ def Console():
                     port = prompt("[+] Port : ")
                     if(len(host) > 0 and len(port) > 0):
                         Build(host, port)
+                        
+                elif(x.startswith("kill")):
+                    try:
+                        cid = int(args[1])
+                        SendData(cid, "kill")
+                        clients[cid].shutdown(socket.SHUT_RDWR)
+                        clients[cid].close()
+                        
+                    except IndexError:
+                        print("USAGE : kill <session id>")
 
                 else:
                     if(len(x) > 0):
