@@ -12,13 +12,6 @@ So Maalik assumes that you've already taken over a computer. After which, Maalik
 
 ## Features
 ---
-##### Dynamic Payload System (DPS). 
-Executes 'Payloads' in Memory using Reflective DLL Injection.
-The Payload is a 32 bit Reflective DLL, That carries out tasks after successful Injection.
-DLL output is written to a TEXT file named ``output.png`` which is used to smuggle output back to server, And also give the DLL Payload commands.
-
-##### CMD Post Exploitation Commands (CMD)
-These are cmd commands that are useful in a post exploit situation. Not added in Feature list.
 
 Feature | Description
 --------|-------------
@@ -36,12 +29,24 @@ Reflective DLL Injection | Reflective DLL Injection into any process.
 Screenshot | Take screenshot (``bmp=>png``).
 GeoLocation | Geolocate Fhdawn.
 SAM Dump | Dumps SAM and SYSTEM files to disk, Downloads and dumps them using ``samdump2``.
+
+
+##### Dynamic Payload System (DPS). 
+Executes 'Payloads' in Memory using Reflective DLL Injection.
+The Payload is a 32 bit Reflective DLL, That carries out tasks after successful Injection.
+DLL output is written to a TEXT file named ``output.png`` which is used to smuggle output back to server, And also give the DLL Payload commands.
+
+Payload | Description
+--------|------------
 (DPS) Reverse Shell | Netcat Reverse shell.
 (DPS) Administrator Prompt Trigger | Forcefully attempt to Execute Fhdawn as Administrator.
 (DPS) Chrome Password Recovery | Dumps Saved Google Chrome passwords. (Does not work on latest version) :shipit:
 (DPS) In Memory Meterpreter | Execute Metasploit C Shellcode.
 (DPS) Keystroke logging | Log keystrokes.
 (DPS) Capture Mic Input | Record Mic.
+
+##### CMD Post Exploitation Commands (CMD)
+These are cmd commands that are useful in a post exploit situation. Not listed here.
 
 ---
 
