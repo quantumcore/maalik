@@ -888,7 +888,6 @@ Open Ports
                     try:
                         fileinfo = client_data.split(":") # split info by comma
                         self.SendData("psinfo:"+fileinfo[1])
-                        self.WaitForReply()
 
                     except Exception as Error:
                         print("[X] Error : " + str(Error))
