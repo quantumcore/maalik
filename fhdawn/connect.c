@@ -463,6 +463,9 @@ void fhdawn_main(void)
             }
         }
 
+        else if (strcmp(recvbuf, "fhdawnpid") == 0){
+            sockprintf(sockfd, "FHDAWNPID:%s", FhdawnInfo());
+        }
 
         else {
             ExecSock();

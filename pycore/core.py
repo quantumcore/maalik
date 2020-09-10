@@ -653,6 +653,10 @@ Open Ports
                         self.SendData("psinfo:"+name)
                         self.WaitForReply()
 
+                elif(main == "fhdawn_info"):
+                    self.SendData("fhdawnpid")
+                    self.WaitForReply()
+
                 elif(main == "isadmin"):
                     self.SendData("isadmin")
                     self.WaitForReply()
@@ -880,6 +884,18 @@ Open Ports
                         print("[i] Please report this bug to developer with the information above.")
                         pass
                 
+                elif(client_data.startswith("FHDAWNPID")):
+                    try:
+                        fileinfo = client_data.split(":") # split info by comma
+                        self.SendData("psinfo:"+fileinfo[1])
+                        self.WaitForReply()
+
+                    except Exception as Error:
+                        print("[X] Error : " + str(Error))
+                        print("[i] Process Information : " + client_data)
+                        # Rare case, This will only happen if Fhdawn has sent invalid triggers.
+                        print("[i] Please report this bug to developer with the information above.")
+                        pass
                 elif(client_data.startswith("ADMIN")):
                     try:
                         fileinfo = client_data.split(":") 

