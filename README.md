@@ -5,10 +5,7 @@
 ---
 
 # Maalik
-Maalik is a Network Pivoting and Post Exploitation Framework.
-
-Post-exploitation refers to any actions taken after a Computer is compromised.
-So Maalik assumes that you've already taken over a computer. After which, Maalik can be used to Pivot deeper into the network (Exploit other computers on the same Network). **Keep in mind that Maalik is not made for malicious or blackhat purposes but can be used for so. So You are responsible for anything that you do with it**. 
+Network Pivoting and Post Exploitation Framework.
 
 ## Features
 ---
