@@ -39,7 +39,7 @@ DLL output is written to a TEXT file named ``output.png`` which is used to smugg
 Payload | Description
 --------|------------
 (DPS) Reverse Shell | Netcat Reverse shell.
-(DPS) Administrator Prompt Trigger | Forcefully attempt to Execute Fhdawn as Administrator.
+(DPS) Administrator Prompt Trigger | Forcefully attempt to Execute an Application as Administrator.
 (DPS) Chrome Password Recovery | Dumps Saved Google Chrome passwords. (Does not work on latest version) :shipit:
 (DPS) In Memory Meterpreter | Execute Metasploit C Shellcode.
 (DPS) Keystroke logging | Log keystrokes.
