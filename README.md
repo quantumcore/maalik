@@ -5,10 +5,7 @@
 ---
 
 # Maalik
-Maalik is a Network Pivoting and Post Exploitation Framework.
-
-Post-exploitation refers to any actions taken after a Computer is compromised.
-So Maalik assumes that you've already taken over a computer. After which, Maalik can be used to Pivot deeper into the network (Exploit other computers on the same Network). **Keep in mind that Maalik is not made for malicious or blackhat purposes but can be used for so. So You are responsible for anything that you do with it**. 
+Network Pivoting and Post Exploitation Framework.
 
 ## Features
 ---
@@ -39,7 +36,7 @@ DLL output is written to a TEXT file named ``output.png`` which is used to smugg
 Payload | Description
 --------|------------
 (DPS) Reverse Shell | Netcat Reverse shell.
-(DPS) Administrator Prompt Trigger | Forcefully attempt to Execute Fhdawn as Administrator.
+(DPS) Administrator Prompt Trigger | Forcefully attempt to Execute an Application as Administrator.
 (DPS) Chrome Password Recovery | Dumps Saved Google Chrome passwords. (Does not work on latest version) :shipit:
 (DPS) In Memory Meterpreter | Execute Metasploit C Shellcode.
 (DPS) Keystroke logging | Log keystrokes.
