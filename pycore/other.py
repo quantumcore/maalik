@@ -78,7 +78,6 @@ HELP
 -. cd < dir > - Go in another directory.
 -. osinfo - systeminfo output.
 -. delete - delete file.
--. process_monitor - Monitor a process.
 -. shell - Reverse shell.
 -. clientinfo - View basic information of FHDAWN.
 -. port_scan - Scan for open ports on a Host.
