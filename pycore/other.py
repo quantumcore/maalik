@@ -117,7 +117,7 @@ POST Exploitation
 -. {dps} rshell - Netcat Reverse Shell.
 -. {dps} bshell - (UAC)* Netcat Bind Shell.
 -. {dps} dropmsf - In Memory Meterpreter.
--. {dps} elevate - Administrator Prompt Trigger.
+-. {dps} runasadmin - Run an application as Administrator.
 -. {dps} chromedump - Dump Google Chrome Passwords.
 -. {dps} keylog_start - Start Capturing keystrokes.
 -. {dps} keylog_stop - Stop Capturing keystrokes, And dump keylogs.

