@@ -10,6 +10,20 @@ Network Pivoting and Post Exploitation Framework.
 ## Features
 ---
 
+#### Console Features
+
+- Desktop notification on new session.
+- Kill Online session easily.
+- Build Maalik Client, Fhdawn easily.
+- Configurable values in ``settings.ini`` 
+- Root shell.
+- Multithreaded, Get multiple sessions.
+- Maalik is extremenly easy to use.
+
+---
+#### Fhdawn Features
+Fhdawn is the maalik client.
+
 Feature | Description
 --------|-------------
 Stealth | Runs in background, Only writes hidden plaintext file to disk.
@@ -44,6 +58,20 @@ Payload | Description
 
 ##### CMD Post Exploitation Commands (CMD)
 These are cmd commands that are useful in a post exploit situation. Not listed here.
+- List users.
+- View full System Information.
+- View all Drivers.
+- Get list of running processes.
+- Get Available Drive Letters.
+- Get all envoironment variables.
+- Displays information about sessions on a Remote Desktop Session Host server.
+- Acronym for 'netsh wlan show profiles'.
+- Enable Remote Desktop.
+- Disable Remote Desktop.
+- Disable Firewall.
+- Enable firewall.
+- Forward a PORT on the Remote PC.
+- Reset all forwarded Ports.
 
 ---
 
