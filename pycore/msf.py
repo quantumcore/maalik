@@ -1,3 +1,9 @@
+"""
+Have a good time reading the source. You're an amazing person.
+If you decide to copy, Don't forget to give me credit.
+"""
+
+
 import subprocess
 import os
 # https://stackoverflow.com/a/17548459/13429494

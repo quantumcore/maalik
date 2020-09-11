@@ -2,6 +2,12 @@
 // This is a stub for the actuall functionality of the DLL.
 //===============================================================================================//
 
+/*
+Have a good time reading the source. You're an amazing person.
+If you decide to copy, Don't forget to give me credit.
+*/
+
+
 #include "ReflectiveLoader.h"
 
 // Note: REFLECTIVEDLLINJECTION_VIA_LOADREMOTELIBRARYR and REFLECTIVEDLLINJECTION_CUSTOM_DLLMAIN are

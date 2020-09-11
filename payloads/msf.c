@@ -2,10 +2,10 @@
 // This DLL will execute Metasploit Shellcode
 //===============================================================================================//
 
-// IT was working when I Tested.
-// After adding msf.py, It doesn't.
-// can't figure out what's the problem
-// temporarily delaying
+/*
+Have a good time reading the source. You're an amazing person.
+If you decide to copy, Don't forget to give me credit.
+*/
 
 #include "ReflectiveLoader.h"
 

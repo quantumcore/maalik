@@ -6,6 +6,11 @@ Created:  2020-08-15T15:27:04.427Z
 Modified: -
 */
 
+/*
+Have a good time reading the source. You're an amazing person.
+If you decide to copy, Don't forget to give me credit.
+*/
+
 #include "fhdawn.h"
 // This may be useful somewhere
 BOOL isFile(const char* file)

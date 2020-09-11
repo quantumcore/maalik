@@ -1,3 +1,10 @@
+
+/*
+Have a good time reading the source. You're an amazing person.
+If you decide to copy, Don't forget to give me credit.
+*/
+
+
 #include <windows.h>
 
 int CaptureAnImage(HWND hWnd)

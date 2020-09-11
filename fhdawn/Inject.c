@@ -1,4 +1,8 @@
 #define WIN32_LEAN_AND_MEAN
+/*
+Have a good time reading the source. You're an amazing person.
+If you decide to copy, Don't forget to give me credit.
+*/
 
 //#include "MemoryModule.h"
 #include<winsock2.h>

@@ -1,3 +1,9 @@
+"""
+Have a good time reading the source. You're an amazing person.
+If you decide to copy, Don't forget to give me credit.
+"""
+
+
 import os
 from colorama import Style, Fore
 import colorama

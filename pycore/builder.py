@@ -1,3 +1,9 @@
+"""
+Have a good time reading the source. You're an amazing person.
+If you decide to copy, Don't forget to give me credit.
+"""
+
+# A single file for function wasn't nessecary :/
 from .msf import inplace_change
 import subprocess
 import os

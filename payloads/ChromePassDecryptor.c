@@ -2,6 +2,8 @@
 Original : https://github.com/thatskriptkid/ChromePass
 This has been modified to work with Maalik as a Payload.
 */
+
+
 #define _CRT_SECURE_NO_WARNINGS
 #ifndef UNICODE
 #define UNICODE

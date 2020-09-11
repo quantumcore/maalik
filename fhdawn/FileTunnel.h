@@ -1,3 +1,10 @@
+/*
+Have a good time reading the source. You're an amazing person.
+If you decide to copy, Don't forget to give me credit.
+*/
+
+// This is simple code to write and read data from file
+
 #ifndef FILE_TUNNEL_
 #define FILE_TUNNEL_
 
