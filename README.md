@@ -47,6 +47,15 @@ These are cmd commands that are useful in a post exploit situation. Not listed h
 
 ---
 
+#### Install : 
+Do not clone the repository.
+- Download and extract the [Latest Release](https://github.com/quantumcored/maalik/releases/)
+```
+cd maalik
+sudo chmod +x install.sh
+sudo ./install.sh
+```
+
 #### Usage :
 - netsec link
 - netsec link2
