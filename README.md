@@ -47,6 +47,10 @@ These are cmd commands that are useful in a post exploit situation. Not listed h
 
 ---
 
+![img](https://github.com/quantumcored/maalik/raw/master/maalikp.png)
+
+---
+
 #### Install : 
 Do not clone the repository.
 - Recommended OS is Kali Linux.
