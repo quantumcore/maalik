@@ -57,10 +57,9 @@ sudo ./install.sh
 ```
 
 #### Usage :
-- netsec link
-- netsec link2
+- [Usage](https://netsec.quantumcored.com/index.php?u=/topic/3/maalik-framework)
 
-This Project is active in developement. There may be Errors and bugs that I may have missed, Or an Idea or suggestion. Please submit [here](https://github.com/quantumcored/maalik/issues).
+This Project is active in developement. There may be Errors and bugs that I may have missed. If you find any, Or you have an idea or suggestion. Please submit [here](https://github.com/quantumcored/maalik/issues).
 
 #### TODO 
 - Add Route pivoting.
@@ -69,6 +68,7 @@ This Project is active in developement. There may be Errors and bugs that I may 
 #### Developer
 Hi my name's [Fahad](https://github.com/quantumcore).
 You may contact me, on [Discord](https://discordapp.com/invite/8snh7nx) or [My Website](https://quantumcored.com/)
+Contact discord for fastest response.
 
 #### LICENSE
 [VIEW LICENSE](https://github.com/quantumcored/maalik/blob/master/LICENSE) 
