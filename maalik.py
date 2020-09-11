@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from pycore.core import *
 from pycore.updates import *
 
