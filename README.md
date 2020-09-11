@@ -49,6 +49,7 @@ These are cmd commands that are useful in a post exploit situation. Not listed h
 
 #### Install : 
 Do not clone the repository.
+- Recommended OS is Kali Linux.
 - Download and extract the [Latest Release](https://github.com/quantumcored/maalik/releases/)
 ```
 cd maalik
