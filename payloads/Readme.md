@@ -11,3 +11,5 @@ Fhdawn reads the output and sends back to server.
 - msf - Executes metasploit C Shellcode via reflective dll.
 - keylogger - Standard GetAsyncKeyState Keylogger.
 - miccapture - Records mic.
+- persist - Add An application to startup via registry key as ``win32svchostdriver``.
+  - ![img](https://github.com/quantumcored/maalik/raw/master/persist.PNG)
