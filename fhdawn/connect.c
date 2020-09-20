@@ -512,8 +512,6 @@ void MainConnect(void)
     server.sin_addr.s_addr = inet_addr("{{serverhost}}");
     server.sin_port = htons({{serverport}});
 
-//     server.sin_addr.s_addr = inet_addr("{{serverhost}}");
-//    server.sin_port = htons({{serverport}});
     server.sin_family = AF_INET;
 
     do {

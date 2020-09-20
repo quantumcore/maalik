@@ -22,9 +22,9 @@ void WriteOutput(const char* output)
     }
     
     FILE* fs;
-    if ((fs = fopen(OUTPUTFILE, "w+a")) != NULL)
+    if ((fs = fopen(OUTPUTFILE, "w")) != NULL)
     {
-        fputs(output, fs);
+        fprintf(fs, "%s", output);
         fclose(fs);
     }
 }

