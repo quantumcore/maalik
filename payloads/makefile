@@ -50,8 +50,8 @@ capturemic:
 	$(CPCOMPILER) capturemic.o ReflectiveLoader.o -o capturemic.dll -shared -m32 -static -lwinmm
 
 persist:
-	$(CPCOMPILER) persist.cpp ReflectiveLoader.c -c -m32
-	$(CPCOMPILER) persist.o ReflectiveLoader.o -o persist.dll -shared -m32 -static 
+	$(COMPILER) persist.c ReflectiveLoader.c -c -m32
+	$(COMPILER) persist.o ReflectiveLoader.o -o persist.dll -shared -m32 -static 
 
 clean:
 	$(DEL) *.o *.dll
