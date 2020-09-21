@@ -90,7 +90,7 @@ sudo ./install.sh
 ```
 
 #### Usage :
-- [Usage](https://netsec.quantumcored.com/index.php?u=/topic/3/maalik-framework)
+- [Usage](https://netsec.quantumcored.com/index.php/2020/09/21/maalik-framework/)
 
 This Project is active in developement. There may be Errors and bugs that I may have missed. If you find any, Or you have an idea or suggestion. Please submit [here](https://github.com/quantumcored/maalik/issues).
 
