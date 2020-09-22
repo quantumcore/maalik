@@ -108,6 +108,7 @@ HELP
 -. dllinject - Reflective DLL Injection. Load your own Reflective DLL.
 -. port_scan - Scan for open ports on a Host.
 -. network_scan - Scan the network.
+-. eternalblue_scan - Check scanned hosts for MS17-10 Vulnerability or specific Host (use -h to specify host).
 -. {dps} rshell - Netcat Reverse Shell.
 -. {dps} dropmsf - In Memory Meterpreter.
 -. {cmd} rdp_enable - Enable Remote Desktop.
