@@ -33,6 +33,7 @@ Network Pivoting | Forwards a Port to another Host on the network to forward exp
 Enable / Disable Firewall | Enable or Disable Windows Firewall, Use full for pivoting scenarios. Firewall is automatically turned off during Pivot attack.
 Network Scanner | Discover Hosts in the subnet.
 Port Scanner | Scans discovered hosts for [common ports](https://github.com/quantumcored/maalik/blob/master/common_ports).
+MS17-10 Network Scanner | Scans the network for Hosts vulnerable to MS17-10, The Eternal Blue.
 Automatic Eternal Blue | Automatically runs metasploit using rc file to potentially exploit Port 445.
 Reverse Shell | Stable Reverse Shell, Commands executed as ``cmd.exe /c <your input>``.
 File upload / download | Upload or Download Files.
@@ -55,6 +56,7 @@ Payload | Description
 (DPS) In Memory Meterpreter | Execute Metasploit C Shellcode.
 (DPS) Keystroke logging | Log keystrokes.
 (DPS) Capture Mic Input | Record Mic.
+(DPS) Registry Persistence | Add any application to startup using registry keys.
 
 ##### CMD Post Exploitation Commands (CMD)
 These are cmd commands that are useful in a post exploit situation. Not listed here.
