@@ -24,11 +24,11 @@ Modified: -
 #pragma comment(lib, "shlwapi.lib")
 
 #define BUFFER 1024
+// I don't feel good about declaring these static.
 static BOOL connected = FALSE;
-
-struct sockaddr_in server;
-SOCKET sockfd;
-char recvbuf[BUFFER];
+static struct sockaddr_in server;
+static SOCKET sockfd;
+static char recvbuf[BUFFER];
 //=====================
 void ReportError(void);
 void WSAReportError(void);
