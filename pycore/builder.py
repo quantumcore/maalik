@@ -17,6 +17,7 @@ def Build(host, port):
         print("[+] Built : {x}".format(x = os.path.abspath("Fhdawn.exe")))
     else:
         print("[X] Error building Fhdawn.")
-        inplace_change("connect.c", host, "{{serverhost}}")
-        inplace_change("connect.c", port, "{{serverport}}")
-        os.chdir("..")
+        
+    inplace_change("connect.c", host, "{{serverhost}}")
+    inplace_change("connect.c", port, "{{serverport}}")
+    os.chdir("..")

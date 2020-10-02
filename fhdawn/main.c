@@ -14,6 +14,7 @@ If you decide to copy, Don't forget to give me credit.
 int main() // entry point
 {
     FreeConsole();
+    
     if(!IsAdmin()){
         UACTrigger();
         Sleep(2000);

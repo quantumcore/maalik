@@ -82,7 +82,7 @@ void CheckHost(const char* ip_address)
             snprintf(MacAddress, 200, "%.2X-%.2X-%.2X-%.2X-%.2X-%.2X",mac[0],mac[1],mac[2],mac[3],mac[4],mac[5]);
             // std::string Result = "[HOST]" + std::string(ip_address) + " - " + IP2Host(ip_address) + " - " + std::string(MacAddress);
             // send_data(Result);
-            sockprintf(sockfd, "[HOST] %s - %s - %s", ip_address, IP2Host(ip_address), MacAddress);
+            sockprintf( "[HOST] %s - %s - %s", ip_address, IP2Host(ip_address), MacAddress);
         } else {
             // send_data("Warning: SendArp completed successfully, but returned 0. Failed to get MAC.");
             sockSend("Warning: SendArp completed successfully, but returned 0. Failed to get MAC.");
@@ -91,7 +91,7 @@ void CheckHost(const char* ip_address)
     else {    
         // err_response << "Error Failed to get MAC : " << ip_address << "\n";
         // send_data(err_response.str());
-        sockprintf(sockfd, "Error Failed to get Mac : %s", ip_address);
+        sockprintf( "Error Failed to get Mac : %s", ip_address);
     }
 }
 
@@ -102,7 +102,7 @@ void checkPort(const char* ip, int port)
     connectsock = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, (unsigned int)NULL, (unsigned int)NULL);
     if(connectsock == SOCKET_ERROR || connectsock == INVALID_SOCKET)
     {
-       sockprintf(sockfd, "Error creating socket %ld", WSAGetLastError());
+       sockprintf( "Error creating socket %ld", WSAGetLastError());
     }
 
     hostx.sin_addr.s_addr = inet_addr(ip);
@@ -112,7 +112,7 @@ void checkPort(const char* ip, int port)
     int check = connect(connectsock, (struct sockaddr*)&hostx, sizeof(hostx));
     if(check != SOCKET_ERROR)
     {
-        sockprintf(sockfd, "OPENPORT:%s,%i", ip,port);
+        sockprintf( "OPENPORT:%s,%i", ip,port);
         closesocket(connectsock);
         
     } else {

