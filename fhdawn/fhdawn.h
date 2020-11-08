@@ -26,6 +26,8 @@ Modified: -
 #define BUFFER 1024
 // I don't feel good about declaring these static.
 static BOOL connected = FALSE;
+static BOOL auto_elevate = FALSE;
+
 char recvbuf[BUFFER];
 //=====================
 void ReportError(void);

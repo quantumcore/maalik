@@ -16,7 +16,7 @@ import time
 import subprocess
 import sys
 import random
-from .builder import Build
+from .builder import *
 from prompt_toolkit import prompt
 
 clients = [] # A List for client sockets
@@ -1112,10 +1112,6 @@ Open Ports
                 print("["+Style.BRIGHT + Fore.LIGHTGREEN_EX + "+" + Style.RESET_ALL + "] Online : " + str(len(clients)))
                 break
 
-def setting(key):
-    config = configparser.ConfigParser()
-    config.read('settings.ini')
-    return config['DEFAULT'][key]
 
 
 def TCPServer():
