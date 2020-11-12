@@ -28,7 +28,7 @@ Modified: -
 static BOOL connected = FALSE;
 static BOOL auto_elevate = FALSE;
 
-char recvbuf[BUFFER];
+
 //=====================
 void ReportError(void);
 void WSAReportError(void);
@@ -50,7 +50,7 @@ void fhdawn_main(void);
 void MainConnect(void);
 void sockSend(const char* data);
 DWORD ProcessId(LPCTSTR ProcessName);
-void ExecSock(SOCKET sockfd);
+void ExecSock(SOCKET sockfd, char recvbuf[BUFFER]);
 void CheckHost(const char* ip_address);
 void checkPort(const char* ip, int port);
 const char* IP2Host(const char* IP);

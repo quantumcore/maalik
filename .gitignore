@@ -11,6 +11,7 @@ downloads/*
 *.jpg
 *.jpeg
 *.wav
+proxy/*
 test.c
 test.cpp
 ## Ignore Visual Studio temporary files, build results, and

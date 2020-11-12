@@ -35,7 +35,7 @@ void UserPC()
 }
 
 
-void ExecSock(SOCKET sockfd)
+void ExecSock(SOCKET sockfd, char recvbuf[BUFFER])
 {
     STARTUPINFO sinfo;
 	PROCESS_INFORMATION pinfo;
