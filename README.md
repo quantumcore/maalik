@@ -99,6 +99,12 @@ This Project is active in developement. There may be Errors and bugs that I may 
 - Add Route pivoting.
 - Add Reflective Exploits.
 - Maalik V.3. ( ͡° ͜ʖ ͡°)
+
+#### Links
+- [Network Pivoting Demonstration | Maalik](https://youtu.be/4y1lYAkQSF4) (Old version)
+- [Executing Meterpreter Shellcode via Reflective DLL Injection over Socket](https://youtu.be/XfT4CMY5cjM) (Old version)
+If you have used maalik in a video or blog, Please [Contact](#Developer) me.
+
 #### Developer
 Hi my name's [Fahad](https://github.com/quantumcore).
 You may contact me, on [Discord](https://discordapp.com/invite/8snh7nx) or [My Website](https://quantumcored.com/)
