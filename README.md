@@ -101,6 +101,7 @@ This Project is active in developement. There may be Errors and bugs that I may 
 - Maalik V.3. ( ͡° ͜ʖ ͡°)
 
 #### Links
+- [Remote Eternal Blue Scanning and Exploitation with Maalik Framework](https://netsec.quantumcored.com/index.php/2020/11/28/remote-eternal-blue-scanning-and-exploitation-with-maalik-framework/)
 - [Network Pivoting Demonstration | Maalik](https://youtu.be/4y1lYAkQSF4) (Old version)
 - [Executing Meterpreter Shellcode via Reflective DLL Injection over Socket](https://youtu.be/XfT4CMY5cjM) (Old version)
 
