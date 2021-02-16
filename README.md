@@ -91,7 +91,7 @@ cd maalik
 sudo chmod +x install.sh
 sudo ./install.sh
 ```
-- [Click here for Maalik Usage guide.](https://blog.quantumcored.com/index.php/2020/09/21/maalik-framework/)
+- [Click here for Maalik Usage guide.](https://quantumcored.com/index.php/2021/02/10/introduction-to-maalik-framework/)
 
 This Project is active in developement. There may be Errors and bugs that I may have missed. If you find any, Or you have an idea or suggestion. Please submit [here](https://github.com/quantumcored/maalik/issues).
 
@@ -101,7 +101,7 @@ This Project is active in developement. There may be Errors and bugs that I may 
 - Maalik V.3. ( ͡° ͜ʖ ͡°)
 
 #### Links
-- [Remote Eternal Blue Scanning and Exploitation with Maalik Framework](https://blog.quantumcored.com/index.php/2020/11/28/remote-eternal-blue-scanning-and-exploitation-with-maalik-framework/)
+- [Remote Eternal Blue Scanning and Exploitation with Maalik Framework](https://quantumcored.com/index.php/2021/02/12/remote-eternal-blue-scanning-and-exploitation-with-maalik-framework/)
 - [Network Pivoting Demonstration | Maalik](https://youtu.be/4y1lYAkQSF4) (Old version)
 - [Executing Meterpreter Shellcode via Reflective DLL Injection over Socket](https://youtu.be/XfT4CMY5cjM) (Old version)
 
