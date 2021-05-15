@@ -45,6 +45,7 @@ SAM Dump | Dumps SAM and SYSTEM files to disk, Downloads and dumps them using ``
 
 
 ##### Dynamic Payload System (DPS). 
+Note (This is incomplete, And was completed in a [different project](https://github.com/quantumcored/remote_hacker_probe), I may update this in the future.
 Executes 'Payloads' in Memory using Reflective DLL Injection.
 The Payload is a 32 bit Reflective DLL, That carries out tasks after successful Injection.
 DLL output is written to a TEXT file named ``output.png`` which is used to smuggle output back to server, And also give the DLL Payload commands.
